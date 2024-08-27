@@ -383,7 +383,7 @@ include '../componentes/sidebar.php';
               <div class="col-12 col-md-12 col-lg-8">
                 <div style="padding:10px;" class="card">
                 <div class="card-header milinea dos">
-                            <div class="titulox"><h4>Listado de Soportes</h4></div>
+                            <div class="titulox"><h4>Listado de Proveedores</h4></div>
                             
                         </div>
                 <table class="table table-striped" id="tableExportadora">

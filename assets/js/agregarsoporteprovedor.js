@@ -83,23 +83,29 @@ document.addEventListener('DOMContentLoaded', function () {
             id_soporte: idSoporte
         })
     })
-    .then(response => {
+    .then(async response => {  // Convierte la función en async
         console.log('Código de estado:', response.status); // Imprime el código de estado
-        return response.text().then(text => {
-            if (response.ok) {
-                mostrarExito('Soporte agregado correctamente!');
-                $('#agregarsoporteprov').modal('hide');
-                showLoading();
-                location.reload();
-                try {
-                    return JSON.parse(text); // Intenta parsear el texto como JSON
-                } catch (error) {
-                    throw new Error('Respuesta no es JSON válido: ' + text);
-                }
-            } else {
-                throw new Error(`Error ${response.status}: ${text}`);
+        
+        const text = await response.text(); // Espera a que se complete la conversión a texto
+
+        if (response.ok) {
+            $('#agregarsoporteprov').modal('hide');
+            
+            // Espera a que se muestre el mensaje de éxito
+            await mostrarExito('¡Soporte agregado correctamente!');
+    
+            // Mostrar el GIF de carga
+            showLoading();
+            location.reload();
+
+            try {
+                return JSON.parse(text); // Intenta parsear el texto como JSON
+            } catch (error) {
+                throw new Error('Respuesta no es JSON válido: ' + text);
             }
-        });
+        } else {
+            throw new Error(`Error ${response.status}: ${text}`);
+        }
     })
     .then(data => {
         console.log("Soporte registrado exitosamente:", data);
@@ -284,9 +290,12 @@ async function submitFormSoporte2(event) {
             });
 
             if (responseSoporteProveedor.ok) {
-                mostrarExito('¡Soporte agregado exitosamente!');
+  
                 $('#agregarSoportessss').modal('hide');
                 $('#formualarioSoporteProv')[0].reset();
+                await mostrarExito('¡Soporte agregado exitosamente!');
+    
+                // Mostrar el GIF de carga
                 showLoading();
                 location.reload();
             } else {
@@ -368,13 +377,17 @@ function populateTable(soportes) {
 
 
 
-function mostrarExito(mensaje) {
-    Swal.fire({
-        icon: 'success',
-        title: 'Éxito',
-        text: mensaje,
-        showConfirmButton: false,
-        timer: 1500
+async function mostrarExito(mensaje) {
+    return new Promise((resolve) => {
+        // Asumiendo que esta función muestra un mensaje y luego resuelve la promesa
+        Swal.fire({
+            title: '¡Éxito!',
+            text: mensaje,
+            icon: 'success',
+            confirmButtonText: 'OK'
+        }).then(() => {
+            resolve(); // Resuelve la promesa cuando se cierra el Swal
+        });
     });
 }
 
