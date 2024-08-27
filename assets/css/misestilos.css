@@ -361,3 +361,6 @@ body{
 .btn.btn-danger.micono.ver-agencia-btn.novedad {
   border-radius: 30px;
 }
+.card-header.milinea.dos {
+  padding: 12px 5px !important;
+}

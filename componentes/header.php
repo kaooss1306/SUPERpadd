@@ -14,7 +14,7 @@ $nombre = $_SESSION['user_name'];
 
 
 
-$ruta = 'https://orange-space-umbrella-q79wqj9wpgj6c6475-3000.app.github.dev/';
+$ruta = 'https://scaling-guacamole-jj4vwjxxvr6qh54pp-3000.app.github.dev/';
 
 
 

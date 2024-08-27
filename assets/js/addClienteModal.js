@@ -107,7 +107,6 @@ function fillFormWithClienteData(clienteData) {
         }
     });
 
-    // ... (el resto de la función se mantiene igual)
+    
 }
 
-// ... (el resto del código se mantiene igual)

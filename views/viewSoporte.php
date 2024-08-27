@@ -99,13 +99,81 @@ if (!empty($id_provedoresxx)) {
 include '../componentes/header.php';
 include '../componentes/sidebar.php';
 ?>
+
+<style>
+       .is-invalid {
+        border-color: #dc3545 !important;
+    }
+    .custom-tooltip {
+        position: absolute;
+        background-color: #dc3545;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        z-index: 1000;
+        opacity: 0;
+        transition: opacity 0.3s;
+        pointer-events: none;
+    }
+    .custom-tooltip::before {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #dc3545 transparent transparent transparent;
+    }
+    .input-wrapper {
+        position: relative;
+    }
+
+    .expand-icon {
+        cursor: pointer;
+        transition: transform 0.2s ease;
+    }
+    .expand-icon.open {
+        transform: rotate(90deg);
+    }
+    .fade-in {
+        animation: fadeIn 0.1s;
+    }
+    @keyframes fadeIn {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+    .child-row {
+        background-color: #f8f9fa;
+        overflow: hidden;
+       
+    }
+    .child-row.show {
+        max-height: 1000px; /* Ajusta este valor según sea necesario */
+    }
+    .expand-icon.fas.fa-angle-down, .expand-icon.fas.fa-angle-right {
+  font-size: 17px !important;
+}
+.sorting_1 {
+  text-align: center !important;
+}
+.fas.fa-globe.mediow {
+  color: #EF4D36;
+  font-size: 20px;
+}
+.dist_marketing-btn-icon__AWP8I {
+  color: red;
+  width: 20px;
+}
+</style>
       <!-- Main Content -->
       <div class="main-content">
       
       <nav aria-label="breadcrumb">
                       <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="<?php echo $ruta; ?>dashboard.php">Home</a></li>
-                        <li class="breadcrumb-item"><a href="<?php echo $ruta; ?>ListClientes.php">Ver Clientes</a></li>
+                        <li class="breadcrumb-item"><a href="<?php echo $ruta; ?>ListClientes.php">Ver Soportes</a></li>
                         <li class="breadcrumb-item active" aria-current="page"><?php echo $datosCliente['nombreIdentficiador'] ; ?></li>
                       </ol>
                     </nav>
@@ -314,7 +382,12 @@ include '../componentes/sidebar.php';
               </div>
               <div class="col-12 col-md-12 col-lg-8">
                 <div style="padding:10px;" class="card">
+                <div class="card-header milinea dos">
+                            <div class="titulox"><h4>Listado de Soportes</h4></div>
+                            
+                        </div>
                 <table class="table table-striped" id="tableExportadora">
+                
     <thead>
         <tr>
       

@@ -9,7 +9,7 @@ include 'componentes/header.php';
 include 'componentes/sidebar.php';
 ?>
 <style>
-       .is-invalid {
+    .is-invalid {
         border-color: #dc3545 !important;
     }
     .custom-tooltip {
@@ -37,9 +37,21 @@ include 'componentes/sidebar.php';
     .input-wrapper {
         position: relative;
     }
+    #loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
 </style>
 <div class="main-content">
-<nav aria-label="breadcrumb">
+    <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="<?php echo $ruta; ?>dashboard.php">Home</a></li>
             <li class="breadcrumb-item active" aria-current="page">Lista de Clientes</li>
@@ -85,22 +97,19 @@ include 'componentes/sidebar.php';
                                             <td><?php echo $regionesMap[$cliente['id_region']] ?? ''; ?></td>
                                             <td><?php echo $comunasMap[$cliente['id_comuna']] ?? ''; ?></td>
                                             <td>
-                                            <div class="alineado">
-       <label class="custom-switch sino" data-toggle="tooltip" 
-       title="<?php echo $cliente['estado'] ? 'Desactivar Cliente' : 'Activar Cliente'; ?>">
-    <input type="checkbox" 
-           class="custom-switch-input estado-switch"
-           data-id="<?php echo $cliente['id_cliente']; ?>" data-tipo="cliente" <?php echo $cliente['estado'] ? 'checked' : ''; ?>> <span class="custom-switch-indicator"></span>
-</label>
-    </div>
+                                                <div class="alineado">
+                                                    <label class="custom-switch sino" data-toggle="tooltip" 
+                                                    title="<?php echo $cliente['estado'] ? 'Desactivar Cliente' : 'Activar Cliente'; ?>">
+                                                        <input type="checkbox" 
+                                                            class="custom-switch-input estado-switch"
+                                                            data-id="<?php echo $cliente['id_cliente']; ?>" data-tipo="cliente" <?php echo $cliente['estado'] ? 'checked' : ''; ?>>
+                                                        <span class="custom-switch-indicator"></span>
+                                                    </label>
+                                                </div>
                                             </td>
                                             <td>
                                                 <a class="btn btn-primary micono" href="views/viewCliente.php?id_cliente=<?php echo $cliente['id_cliente']; ?>" data-toggle="tooltip" title="Ver Cliente"><i class="fas fa-eye "></i></a>
                                                 <button type="button" class="btn btn-success micono" data-bs-toggle="modal" data-bs-target="#actualizarcliente" data-idcliente="<?php echo $cliente['id_cliente']; ?>" onclick="loadClienteData(this)" ><i class="fas fa-pencil-alt"></i></button>
-
-
-                                            
-
                                             </td>
                                         </tr>
                                         <?php endforeach; ?>
@@ -114,22 +123,6 @@ include 'componentes/sidebar.php';
         </div>
     </section>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <!-- Modal para Agregar Cliente -->
 <div class="modal fade" id="addClienteModal" tabindex="-1" aria-labelledby="addClienteModalLabel" aria-hidden="true">
@@ -269,27 +262,25 @@ include 'componentes/sidebar.php';
                                 <label for="email" class="form-label">Email</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                                    <input type="email" class="form-control" id="email" name="email" required>
+                                    <input type="email" class="form-control email-input" id="email" name="email" required>
                                 </div>
                                 <div class="custom-tooltip" id="email-tooltip"></div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                   <div class="row">
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="formato" class="form-label">Formato</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-file-earmark-text"></i></span>
                                     <select class="form-select" id="update_formato" name="formato">
-    
-    <?php foreach ($formatoComisionMap as $id => $comision): ?>
-        <option value="<?php echo htmlspecialchars($id); ?>">
-            <?php echo htmlspecialchars($comision['nombreFormato']); ?>
-        </option>
-    <?php endforeach; ?>
-</select>
-                                    
+                                        <?php foreach ($formatoComisionMap as $id => $comision): ?>
+                                            <option value="<?php echo htmlspecialchars($id); ?>">
+                                                <?php echo htmlspecialchars($comision['nombreFormato']); ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -299,13 +290,12 @@ include 'componentes/sidebar.php';
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-currency-exchange"></i></span>
                                     <select class="form-select" id="update_nombreMoneda" name="nombreMoneda">
-  
-    <?php foreach ($tipoMonedaMap as $id => $tipozMoneda): ?>
-        <option value="<?php echo htmlspecialchars($id); ?>">
-            <?php echo htmlspecialchars($tipozMoneda['nombreMoneda']); ?>
-        </option>
-    <?php endforeach; ?>
-</select>
+                                        <?php foreach ($tipoMonedaMap as $id => $tipozMoneda): ?>
+                                            <option value="<?php echo htmlspecialchars($id); ?>">
+                                                <?php echo htmlspecialchars($tipozMoneda['nombreMoneda']); ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -328,10 +318,6 @@ include 'componentes/sidebar.php';
         </div>
     </div>
 </div>
-
-
-
-
 
 <!-- Modal para Actualizar Cliente -->
 <div class="modal fade" id="actualizarcliente" tabindex="-1" aria-labelledby="actualizarclienteLabel" aria-hidden="true">
@@ -413,9 +399,9 @@ include 'componentes/sidebar.php';
                                 <label for="update_Rut_representante" class="form-label">RUT Representante</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-card-text"></i></span>
-                                    <input type="text" class="form-control" id="update_Rut_representante" name="Rut_representante" required>
+                                    <input type="text" class="form-control" id="update_RUT_representante" name="RUT_representante" required>
                                 </div>
-                                <div class="custom-tooltip" id="update_Rut_representante-tooltip"></div>
+                                <div class="custom-tooltip" id="update_RUT_representante-tooltip"></div>
                             </div>
                         </div>
                     </div>
@@ -485,11 +471,11 @@ include 'componentes/sidebar.php';
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-file-earmark-text"></i></span>
                                     <select class="form-select" id="update_formato" name="formato">
-                                    <?php foreach ($formatoComisionMap as $id => $comision): ?>
-        <option value="<?php echo htmlspecialchars($id); ?>">
-            <?php echo htmlspecialchars($comision['nombreFormato']); ?>
-        </option>
-    <?php endforeach; ?>
+                                        <?php foreach ($formatoComisionMap as $id => $comision): ?>
+                                            <option value="<?php echo htmlspecialchars($id); ?>">
+                                                <?php echo htmlspecialchars($comision['nombreFormato']); ?>
+                                            </option>
+                                        <?php endforeach; ?>
                                     </select>
                                 </div>
                             </div>
@@ -500,11 +486,11 @@ include 'componentes/sidebar.php';
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-currency-exchange"></i></span>
                                     <select class="form-select" id="update_nombreMoneda" name="nombreMoneda">
-                                    <?php foreach ($tipoMonedaMap as $id => $tipozMoneda): ?>
-        <option value="<?php echo htmlspecialchars($id); ?>">
-            <?php echo htmlspecialchars($tipozMoneda['nombreMoneda']); ?>
-        </option>
-    <?php endforeach; ?>
+                                        <?php foreach ($tipoMonedaMap as $id => $tipozMoneda): ?>
+                                            <option value="<?php echo htmlspecialchars($id); ?>">
+                                                <?php echo htmlspecialchars($tipozMoneda['nombreMoneda']); ?>
+                                            </option>
+                                        <?php endforeach; ?>
                                     </select>
                                 </div>
                             </div>
@@ -529,18 +515,8 @@ include 'componentes/sidebar.php';
     </div>
 </div>
 
-
-
-
-
-
-
-
-
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  
     function showError(input, message) {
         input.classList.add('is-invalid');
         var tooltip = document.getElementById(input.id + '-tooltip');
@@ -560,7 +536,6 @@ document.addEventListener('DOMContentLoaded', function() {
         tooltip.style.left = '10px';
         tooltip.style.top = -(tooltip.offsetHeight + 5) + 'px';
     }
-    
     var Fn = {
         validaRut: function(rutCompleto) {
             if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(rutCompleto)) return false;
@@ -576,15 +551,13 @@ document.addEventListener('DOMContentLoaded', function() {
             return S ? S - 1 : 'k';
         }
     };
+
     function validaPhoneChileno(phone) {
-        // Patrón para teléfonos chilenos
-        // Acepta formatos: +56912345678, 912345678, 221234567
         var phonePattern = /^(\+?56|0)?([2-9]\d{8}|[2-9]\d{7})$/;
         return phonePattern.test(phone);
     }
 
-    // Validación en tiempo real para RUTs
-    var rutInputs = document.querySelectorAll('#RUT, #Rut_representante');
+    var rutInputs = document.querySelectorAll('#RUT, #Rut_representante, #update_RUT, #update_RUT_representante');
     rutInputs.forEach(function(input) {
         input.addEventListener('input', function() {
             if (this.value === "") {
@@ -597,21 +570,25 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Validación en tiempo real para Email
-    var emailInput = document.getElementById('email');
-    emailInput.addEventListener('input', function() {
+    function validateEmail(input) {
         var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (this.value === "") {
-            hideError(this);
-        } else if (!emailPattern.test(this.value)) {
-            showError(this, "EMAIL INCORRECTO");
+        if (input.value === "") {
+            hideError(input);
+        } else if (!emailPattern.test(input.value)) {
+            showError(input, "EMAIL INCORRECTO");
         } else {
-            hideError(this);
+            hideError(input);
         }
+    }
+
+    var emailInputs = document.querySelectorAll('.email-input, #update_email');
+    emailInputs.forEach(function(input) {
+        input.addEventListener('input', function() {
+            validateEmail(this);
+        });
     });
 
-      // Validación en tiempo real para teléfonos
-      var phoneInputs = document.querySelectorAll('#telCelular, #telFijo');
+    var phoneInputs = document.querySelectorAll('#telCelular, #telFijo, #update_telCelular, #update_telFijo');
     phoneInputs.forEach(function(input) {
         input.addEventListener('input', function() {
             if (this.value === "") {
@@ -659,55 +636,47 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function submitForm() {
-    var form = document.getElementById('addClienteForm');
-    var formData = new FormData(form);
+        var form = document.getElementById('addClienteForm');
+        var formData = new FormData(form);
 
-    fetch('querys/qinsert_cliente.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            Swal.fire({
-                title: '¡Éxito!',
-                text: 'Cliente agregado exitosamente',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    location.reload();
-                }
-            });
-            $('#addClienteModal').modal('hide');
-        } else {
+        fetch('querys/qinsert_cliente.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: 'Cliente agregado exitosamente',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload();
+                    }
+                });
+                $('#addClienteModal').modal('hide');
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Error al agregar cliente: ' + data.error,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
             Swal.fire({
                 title: 'Error',
-                text: 'Error al agregar cliente: ' + data.error,
+                text: 'Error al procesar la solicitud',
                 icon: 'error',
                 confirmButtonText: 'OK'
             });
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        Swal.fire({
-            title: 'Error',
-            text: 'Error al procesar la solicitud',
-            icon: 'error',
-            confirmButtonText: 'OK'
         });
-    });
-}
-});
-</script>
+    }
 
-
-
-
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('id_region').addEventListener('change', function () {
         var regionId = this.value;
         var comunaSelect = document.getElementById('id_comuna');
@@ -728,15 +697,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     document.getElementById('id_region').dispatchEvent(new Event('change'));
-});
-</script>
 
-
-
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Asociar la función loadClienteData a todos los botones de edición
     var editButtons = document.querySelectorAll('[data-bs-toggle="modal"][data-bs-target="#actualizarcliente"]');
     editButtons.forEach(function(button) {
         button.addEventListener('click', function() {
@@ -744,211 +705,198 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Asociar el evento click al botón de actualizar cliente
     var updateClienteBtn = document.getElementById('updateClienteBtn');
     if (updateClienteBtn) {
         updateClienteBtn.addEventListener('click', updateCliente);
     } else {
         console.error('Botón de actualizar cliente no encontrado');
     }
-});
 
-function loadClienteData(button) {
-    const id_cliente = button.getAttribute('data-idcliente');
-    console.log('ID del cliente obtenido del botón:', id_cliente);
-
-    if (!id_cliente) {
-        console.error('Error: No se pudo obtener el ID del cliente del botón');
-        Swal.fire({
-            title: 'Error',
-            text: 'No se pudo obtener el ID del cliente',
-            icon: 'error',
-            confirmButtonText: 'OK'
-        });
-        return;
+    function showLoading() {
+        let loadingElement = document.getElementById('custom-loading');
+        if (!loadingElement) {
+            loadingElement = document.createElement('div');
+            loadingElement.id = 'custom-loading';
+            loadingElement.innerHTML = `
+                <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); display: flex; justify-content: center; align-items: center; z-index: 9999;">
+                    <img src="/assets/img/loading.gif" alt="Cargando..." style="width: 220px; height: 135px;">
+                </div>
+            `;
+            document.body.appendChild(loadingElement);
+        }
+        loadingElement.style.display = 'block';
     }
 
-    // Establecer el ID del cliente en el campo oculto del formulario
-    document.getElementById('id_cliente').value = id_cliente;
-    console.log('ID del cliente establecido en el formulario:', document.getElementById('id_cliente').value);
+    function hideLoading() {
+        const loadingElement = document.getElementById('custom-loading');
+        if (loadingElement) {
+            loadingElement.style.display = 'none';
+        }
+    }
 
-    fetch('querys/qget_cliente.php?id_cliente=' + id_cliente)
+    function loadClienteData(button) {
+        const id_cliente = button.getAttribute('data-idcliente');
+        console.log('ID del cliente obtenido del botón:', id_cliente);
+
+        if (!id_cliente) {
+            console.error('Error: No se pudo obtener el ID del cliente del botón');
+            Swal.fire({
+                title: 'Error',
+                text: 'No se pudo obtener el ID del cliente',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+            return;
+        }
+
+        document.getElementById('id_cliente').value = id_cliente;
+        console.log('ID del cliente establecido en el formulario:', document.getElementById('id_cliente').value);
+
+        fetch('querys/qget_cliente.php?id_cliente=' + id_cliente)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('HTTP error ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    const cliente = data.cliente;
+                    console.log('Datos del cliente recibidos:', cliente);
+                    
+                    const campos = [
+                        'nombreCliente', 'nombreFantasia', 'id_tipoCliente',
+                        'razonSocial', 'grupo', 'RUT', 'giro', 'nombreRepresentanteLegal',
+                        'direccionEmpresa', 'id_region', 'telCelular',
+                        'telFijo', 'email', 'formato', 'nombreMoneda', 'valor',
+                        'RUT_representante'
+                    ];
+
+                    campos.forEach(campo => {
+                        const valor = cliente[campo] || cliente[campo.toUpperCase()] || '';
+                        setValueSafely('update_' + campo, valor);
+                        console.log(`Campo ${campo} establecido:`, valor);
+                    });
+
+                    const regionSelect = document.getElementById('update_id_region');
+                    if (regionSelect) {
+                        regionSelect.dispatchEvent(new Event('change'));
+                    
+                        setTimeout(() => {
+                            const idComuna = cliente.id_comuna || cliente.ID_COMUNA || '';
+                            setValueSafely('update_id_comuna', idComuna);
+                            console.log('ID Comuna establecido:', idComuna);
+                        }, 100);
+                    }
+
+                    updateSelectField('update_id_tipoCliente', cliente.id_tipoCliente || cliente.ID_TIPOCLIENTE);
+                    updateSelectField('update_id_region', cliente.id_region || cliente.ID_REGION);
+
+                    console.log('Datos del cliente cargados correctamente');
+                } else {
+                    throw new Error(data.error || 'Error desconocido al cargar los datos del cliente');
+                }
+            })
+            .catch(error => {
+                console.error('Error en loadClienteData:', error);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Hubo un problema al cargar los datos del cliente: ' + error.message,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            });
+    }
+
+    function setValueSafely(id, value) {
+        const element = document.getElementById(id);
+        if (element) {
+            element.value = value !== undefined && value !== null ? value : '';
+            console.log(`Valor establecido para ${id}:`, element.value);
+            element.dispatchEvent(new Event('change', { bubbles: true }));
+        } else {
+            console.warn(`Elemento no encontrado: ${id}`);
+        }
+    }
+
+    function updateSelectField(id, value) {
+        var select = document.getElementById(id);
+        if (select && select.tagName === 'SELECT') {
+            var option = select.querySelector(`option[value="${value}"]`);
+            if (option) {
+                option.selected = true;
+                console.log(`Opción seleccionada para ${id}:`, value);
+                select.dispatchEvent(new Event('change', { bubbles: true }));
+            } else {
+                console.warn(`Opción no encontrada para ${id} con valor ${value}`);
+            }
+        } else {
+            console.warn(`Elemento select no encontrado: ${id}`);
+        }
+    }
+
+    function updateCliente() {
+        console.log('Función updateCliente iniciada');
+        var form = document.getElementById('updateClienteForm');
+        var formData = new FormData(form);
+
+        var idCliente = document.getElementById('id_cliente').value;
+        formData.append('id_cliente', idCliente);
+
+        console.log('ID Cliente:', formData.get('id_cliente'));
+
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
+
+        fetch('querys/qupdate_cliente.php', {
+            method: 'POST',
+            body: formData
+        })
         .then(response => {
+            console.log('Respuesta del servidor recibida');
             if (!response.ok) {
-                throw new Error('HTTP error ' + response.status);
+                return response.text().then(text => {
+                    throw new Error('HTTP error ' + response.status + ': ' + text);
+                });
             }
             return response.json();
         })
         .then(data => {
+            console.log('Datos de respuesta:', data);
             if (data.success) {
-                const cliente = data.cliente;
-                console.log('Datos del cliente recibidos:', cliente);
-                
-                // Mapeo de campos
-                const campos = [
-                    'nombreCliente', 'nombreFantasia', 'id_tipoCliente',
-                    'razonSocial', 'grupo', 'RUT', 'giro', 'nombreRepresentanteLegal',
-                    'direccionEmpresa', 'id_region', 'telCelular',
-                    'telFijo', 'email', 'formato', 'nombreMoneda', 'valor'
-                ];
+                var modal = bootstrap.Modal.getInstance(document.getElementById('actualizarcliente'));
+                modal.hide();
 
-                campos.forEach(campo => {
-                    const valor = cliente[campo] || cliente[campo.toUpperCase()] || '';
-                    setValueSafely('update_' + campo, valor);
-                    console.log(`Campo ${campo} establecido:`, valor);
+                Swal.fire({
+                    title: data.alert.title,
+                    text: data.alert.text,
+                    icon: data.alert.icon,
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        showLoading(); // Mostrar el indicador de carga personalizado
+                        window.location.reload();
+                    }
                 });
-
-                // Manejo específico para Rut_representante
-                const rutRepresentante = cliente.Rut_representante || 
-                                         cliente.RUT_representante || 
-                                         cliente.rut_representante || 
-                                         cliente.RUT_REPRESENTANTE || 
-                                         '';
-                setValueSafely('update_Rut_representante', rutRepresentante);
-                console.log('RUT representante establecido:', rutRepresentante);
-
-                // Actualizar las comunas basadas en la región seleccionada
-                const regionSelect = document.getElementById('update_id_region');
-                if (regionSelect) {
-                    regionSelect.dispatchEvent(new Event('change'));
-                
-                    // Esperar un momento para que las comunas se actualicen y luego seleccionar la comuna correcta
-                    setTimeout(() => {
-                        const idComuna = cliente.id_comuna || cliente.ID_COMUNA || '';
-                        setValueSafely('update_id_comuna', idComuna);
-                        console.log('ID Comuna establecido:', idComuna);
-                    }, 100);
-                }
-
-                // Actualizar campos adicionales si es necesario
-                updateSelectField('update_id_tipoCliente', cliente.id_tipoCliente || cliente.ID_TIPOCLIENTE);
-                updateSelectField('update_id_region', cliente.id_region || cliente.ID_REGION);
-
-                console.log('Datos del cliente cargados correctamente');
             } else {
-                throw new Error(data.error || 'Error desconocido al cargar los datos del cliente');
+                throw new Error(data.error || 'Error desconocido al actualizar el cliente');
             }
         })
         .catch(error => {
-            console.error('Error en loadClienteData:', error);
+            console.error('Error completo:', error);
             Swal.fire({
                 title: 'Error',
-                text: 'Hubo un problema al cargar los datos del cliente: ' + error.message,
+                text: 'Hubo un problema al actualizar el cliente: ' + error.message,
                 icon: 'error',
                 confirmButtonText: 'OK'
             });
         });
-}
-
-function setValueSafely(id, value) {
-    const element = document.getElementById(id);
-    if (element) {
-        element.value = value;
-        console.log(`Valor establecido para ${id}:`, value);
-    } else {
-        console.warn(`Elemento no encontrado: ${id}`);
-    }
-}
-
-function updateSelectField(id, value) {
-    var select = document.getElementById(id);
-    if (select && select.tagName === 'SELECT') {
-        var option = select.querySelector(`option[value="${value}"]`);
-        if (option) {
-            option.selected = true;
-            console.log(`Opción seleccionada para ${id}:`, value);
-        } else {
-            console.warn(`Opción no encontrada para ${id} con valor ${value}`);
-        }
-    } else {
-        console.warn(`Elemento select no encontrado: ${id}`);
-    }
-}
-
-function setValueSafely(id, value) {
-    var element = document.getElementById(id);
-    if (element) {
-        element.value = value !== undefined && value !== null ? value : '';
-    } else {
-        console.warn('Elemento no encontrado:', id);
-    }
-}
-
-function updateSelectField(id, value) {
-    var select = document.getElementById(id);
-    if (select && select.tagName === 'SELECT') {
-        var option = select.querySelector(`option[value="${value}"]`);
-        if (option) {
-            option.selected = true;
-        } else {
-            console.warn(`Opción no encontrada para ${id} con valor ${value}`);
-        }
-    }
-}
-
-function updateCliente() {
-    console.log('Función updateCliente iniciada');
-    var form = document.getElementById('updateClienteForm');
-    var formData = new FormData(form);
-
-    var idCliente = document.getElementById('id_cliente').value;
-    formData.append('id_cliente', idCliente);
-
-    console.log('ID Cliente:', formData.get('id_cliente'));
-
-    for (var pair of formData.entries()) {
-        console.log(pair[0] + ': ' + pair[1]);
     }
 
-    fetch('querys/qupdate_cliente.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => {
-        console.log('Respuesta del servidor recibida');
-        if (!response.ok) {
-            return response.text().then(text => {
-                throw new Error('HTTP error ' + response.status + ': ' + text);
-            });
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Datos de respuesta:', data);
-        if (data.success) {
-            // Cerrar el modal antes de mostrar el Sweet Alert
-            var modal = bootstrap.Modal.getInstance(document.getElementById('actualizarcliente'));
-            modal.hide();
-
-            Swal.fire({
-                title: data.alert.title,
-                text: data.alert.text,
-                icon: data.alert.icon,
-                confirmButtonText: 'OK'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.reload();
-                }
-            });
-        } else {
-            throw new Error(data.error || 'Error desconocido al actualizar el cliente');
-        }
-    })
-    .catch(error => {
-        console.error('Error completo:', error);
-        Swal.fire({
-            title: 'Error',
-            text: 'Hubo un problema al actualizar el cliente: ' + error.message,
-            icon: 'error',
-            confirmButtonText: 'OK'
-        });
-    });
-}
-
+    window.addEventListener('load', hideLoading);
+});
 </script>
-
-
-
 
 <?php include 'componentes/settings.php'; ?>
 <script src="assets/js/toggleClientes.js"></script>

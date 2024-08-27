@@ -80,6 +80,12 @@ function e($string) {
 }
 </style>
 <div class="main-content">
+<nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="<?php echo $ruta; ?>dashboard.php">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Lista de Soportes</li>
+        </ol>
+    </nav><br>
     <section class="section">
         <div class="section-body">
             <div class="row">
@@ -116,7 +122,7 @@ function e($string) {
                                                 <td>
                                                     <div class="alineado">
                                                         <label class="custom-switch sino" data-toggle="tooltip"
-                                                            title="<?= $soporte['estado'] ? 'Desactivar Soporte' : 'Activar Cliente' ?>">
+                                                            title="<?= $soporte['estado'] ? 'Desactivar Soporte' : 'Activar Soportes' ?>">
                                                             <input type="checkbox"
                                                                 class="custom-switch-input estado-soporte"
                                                                 data-id="<?= e($soporte['id_soporte'] ?? '') ?>" 
@@ -127,7 +133,8 @@ function e($string) {
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a class="btn btn-primary micono" href="views/viewSoportes.php?id_soporte=<?= e($soporte['id_soporte']) ?>" data-toggle="tooltip" title="Ver Soporte">
+                                  
+                                                    <a class="btn btn-primary micono" href="views/viewSoporte.php?id_soporte=<?= e($soporte['id_soporte']) ?>" data-toggle="tooltip" title="Ver Soporte">
                                                         <i class="fas fa-eye"></i>
                                                     </a>
                                                     <?php
@@ -160,7 +167,7 @@ function e($string) {
                                                             // Paso 3: Mostrar los nombres en una lista tipo tooltip
                                                             ?> 
                                                     <a class="btn btn-success micono" data-bs-toggle="modal" data-bs-target="#actualizarSoporte" data-idmedios="<?php echo $id_medios_json; ?>"   data-id-soporte="<?= e($soporte['id_soporte']) ?>" onclick="loadProveedorDataSoporte(this)">
-                                                        <i class="fas fa-pencil-alt"></i> <?= e($soporte['id_soporte']) ?>
+                                                        <i class="fas fa-pencil-alt"></i>
                                                     </a>
                                                 </td>
                                             </tr>

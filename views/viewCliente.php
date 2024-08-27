@@ -61,6 +61,37 @@ $formatosMap = array_column($formatos, 'nombreFormato', 'id_formatoComision');
 include '../componentes/header.php';
 include '../componentes/sidebar.php';
 ?>
+
+<style>
+       .is-invalid {
+        border-color: #dc3545 !important;
+    }
+    .custom-tooltip {
+        position: absolute;
+        background-color: #dc3545;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        z-index: 1000;
+        opacity: 0;
+        transition: opacity 0.3s;
+        pointer-events: none;
+    }
+    .custom-tooltip::before {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #dc3545 transparent transparent transparent;
+    }
+    .input-wrapper {
+        position: relative;
+    }
+</style>
 <!-- Main Content -->
 <div class="main-content">
 
@@ -1291,6 +1322,139 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 
+
+
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  
+    function showError(input, message) {
+        input.classList.add('is-invalid');
+        var tooltip = document.getElementById(input.id + '-tooltip');
+        tooltip.textContent = message;
+        tooltip.style.opacity = '1';
+        positionTooltip(input, tooltip);
+    }
+
+    function hideError(input) {
+        input.classList.remove('is-invalid');
+        var tooltip = document.getElementById(input.id + '-tooltip');
+        tooltip.style.opacity = '0';
+    }
+
+    function positionTooltip(input, tooltip) {
+        var rect = input.getBoundingClientRect();
+        tooltip.style.left = '10px';
+        tooltip.style.top = -(tooltip.offsetHeight + 5) + 'px';
+    }
+    
+    var Fn = {
+        validaRut: function(rutCompleto) {
+            if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(rutCompleto)) return false;
+            var tmp = rutCompleto.split('-');
+            var digv = tmp[1];
+            var rut = tmp[0];
+            if (digv == 'K') digv = 'k';
+            return (Fn.dv(rut) == digv);
+        },
+        dv: function(T) {
+            var M = 0, S = 1;
+            for (; T; T = Math.floor(T / 10)) S = (S + T % 10 * (9 - M++ % 6)) % 11;
+            return S ? S - 1 : 'k';
+        }
+    };
+    function validaPhoneChileno(phone) {
+        // Patrón para teléfonos chilenos
+        // Acepta formatos: +56912345678, 912345678, 221234567
+        var phonePattern = /^(\+?56|0)?([2-9]\d{8}|[2-9]\d{7})$/;
+        return phonePattern.test(phone);
+    }
+
+    // Validación en tiempo real para RUTs
+    var rutInputs = document.querySelectorAll('#RUT, #Rut_representante, #update_RUT, #update_RUT_representante');
+    rutInputs.forEach(function(input) {
+        input.addEventListener('input', function() {
+            if (this.value === "") {
+                hideError(this);
+            } else if (!Fn.validaRut(this.value)) {
+                showError(this, "RUT INVALIDO - DEBES INGRESAR SIN PUNTOS Y CON GUIÓN");
+            } else {
+                hideError(this);
+            }
+        });
+    });
+
+   // Función de validación de email
+function validateEmail(input) {
+    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (input.value === "") {
+        hideError(input);
+    } else if (!emailPattern.test(input.value)) {
+        showError(input, "EMAIL INCORRECTO");
+    } else {
+        hideError(input);
+    }
+}
+
+// Aplicar validación a ambos campos de email
+var emailInputs = document.querySelectorAll('.email-input, #update_email');
+emailInputs.forEach(function(input) {
+    input.addEventListener('input', function() {
+        validateEmail(this);
+    });
+});
+
+      // Validación en tiempo real para teléfonos
+      var phoneInputs = document.querySelectorAll('#telCelular, #telFijo, #update_telCelular, #update_telFijo');
+    phoneInputs.forEach(function(input) {
+        input.addEventListener('input', function() {
+            if (this.value === "") {
+                hideError(this);
+            } else if (!validaPhoneChileno(this.value)) {
+                showError(this, "NÚMERO DE TELÉFONO NO VÁLIDO");
+            } else {
+                hideError(this);
+            }
+        });
+    });
+
+    document.getElementById('saveClienteBtn').addEventListener('click', function() {
+        if (validateForm()) {
+            submitForm();
+        } else {
+            alert("Por favor, complete todos los campos correctamente antes de enviar.");
+        }
+    });
+
+    function validateForm() {
+        var inputs = document.querySelectorAll('#addClienteForm input, #addClienteForm select');
+        var valid = true;
+        
+        inputs.forEach(function(input) {
+            if (input.value === "") {
+                input.classList.add("invalid");
+                valid = false;
+            } else {
+                input.classList.remove("invalid");
+            }
+        });
+
+        if (!Fn.validaRut(document.getElementById('RUT').value) ||
+            !Fn.validaRut(document.getElementById('Rut_representante').value)) {
+            valid = false;
+        }
+
+        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(document.getElementById('email').value)) {
+            valid = false;
+        }
+
+        return valid;
+    }
+});
+</script>
 
 
 
