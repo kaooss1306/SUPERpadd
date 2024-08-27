@@ -80,14 +80,20 @@ document.addEventListener('DOMContentLoaded', function () {
             id_soporte: idSoporte
         })
     })
-    .then(response => {
+    .then(async response => {
         console.log('Código de estado:', response.status); // Imprime el código de estado
-        return response.text().then(text => {
-            if (response.ok) {
-                mostrarExito('Soporte agregado correctamente!');
-                $('#agregarsoporteprov').modal('hide');
-                showLoading()
-                location.reload();
+        
+        const text = await response.text(); // Espera a que se complete la conversión a texto
+
+        if (response.ok) {
+            $('#agregarsoporteprov').modal('hide');
+            
+            // Espera a que se muestre el mensaje de éxito
+            await mostrarExito('Soporte agregado correctamente');
+    
+            // Mostrar el GIF de carga
+            showLoading();
+            location.reload();
                 try {
                     return JSON.parse(text); // Intenta parsear el texto como JSON
                 } catch (error) {
@@ -96,12 +102,12 @@ document.addEventListener('DOMContentLoaded', function () {
             } else {
                 throw new Error(`Error ${response.status}: ${text}`);
             }
-        });
-    })
-    .then(data => {
-        console.log("Soporte registrado exitosamente:", data);
-        // Puedes mostrar un mensaje de éxito o cerrar el modal aquí
-        $('#agregarsoporteprov').modal('hide');
+        })
+  
+    .then(async (data) => {
+        await mostrarExito('Soporte agregado correctamente');
+
+        // Mostrar el GIF de carga
         showLoading();
         location.reload();
     })
@@ -124,13 +130,18 @@ function showLoading() {
     }
     loadingElement.style.display = 'block';
 }
-function mostrarExito(mensaje) {
-    Swal.fire({
-        icon: 'success',
-        title: 'Éxito',
-        text: mensaje,
-        showConfirmButton: false,
-        timer: 1500
+
+async function mostrarExito(mensaje) {
+    return new Promise((resolve) => {
+        // Asumiendo que esta función muestra un mensaje y luego resuelve la promesa
+        Swal.fire({
+            title: '¡Éxito!',
+            text: mensaje,
+            icon: 'success',
+            confirmButtonText: 'OK'
+        }).then(() => {
+            resolve(); // Resuelve la promesa cuando se cierra el Swal
+        });
     });
 }
 

@@ -44,7 +44,20 @@ function getFormDataSoporte() {
         created_at: new Date().toISOString()
     };
 }
-
+function showLoading() {
+    let loadingElement = document.getElementById('custom-loading');
+    if (!loadingElement) {
+        loadingElement = document.createElement('div');
+        loadingElement.id = 'custom-loading';
+        loadingElement.innerHTML = `
+            <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); display: flex; justify-content: center; align-items: center; z-index: 9999;">
+                <img src="/assets/img/loading.gif" alt="Cargando..." style="width: 220px; height: 135px;">
+            </div>
+        `;
+        document.body.appendChild(loadingElement);
+    }
+    loadingElement.style.display = 'block';
+}
 async function submitFormSoporte(event) {
     event.preventDefault(); // Evita la recarga de la página
 
@@ -149,10 +162,14 @@ async function submitFormSoporte(event) {
                 }
 
             });
-                
-                mostrarExito('¡Soporte agregado exitosamente!');
+            
+      
                 $('#agregarSoportessss').modal('hide');
             $('#formualarioSoporte')[0].reset();
+            await mostrarExito('¡Soporte agregado exitosamente!');
+    
+            // Mostrar el GIF de carga
+            showLoading();
             location.reload();
             } else {
                 const errorData = await responseSoporteMedios.text(); // Obtener respuesta como texto
@@ -171,13 +188,17 @@ async function submitFormSoporte(event) {
     location.reload();
     }
 }
-function mostrarExito(mensaje) {
-    Swal.fire({
-        icon: 'success',
-        title: 'Éxito',
-        text: mensaje,
-        showConfirmButton: false,
-        timer: 1500
+async function mostrarExito(mensaje) {
+    return new Promise((resolve) => {
+        // Asumiendo que esta función muestra un mensaje y luego resuelve la promesa
+        Swal.fire({
+            title: '¡Éxito!',
+            text: mensaje,
+            icon: 'success',
+            confirmButtonText: 'OK'
+        }).then(() => {
+            resolve(); // Resuelve la promesa cuando se cierra el Swal
+        });
     });
 }
 
