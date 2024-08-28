@@ -158,25 +158,31 @@ function loadProveedorData(button) {
             }
         
             // Si todo fue exitoso
-            mostrarExito('Actualización correcta');
+            
             $('#actualizarProveedor').modal('hide');
             $('#formactualizarproveedor')[0].reset();
-            showLoading();
-            location.reload();
-            
+        
+                  await mostrarExito('Actualización correcta');
+                // Mostrar el GIF de carga
+                showLoading();
+                location.reload();
         } catch (error) {
             console.error("Error de red:", error);
             alert("Error de red, intentelo nuevamente");
         }
     }
     
-    function mostrarExito(mensaje) {
-        Swal.fire({
-            icon: 'success',
-            title: 'Éxito',
-            text: mensaje,
-            showConfirmButton: false,
-            timer: 1500
+    async function mostrarExito(mensaje) {
+        return new Promise((resolve) => {
+            // Asumiendo que esta función muestra un mensaje y luego resuelve la promesa
+            Swal.fire({
+                title: '¡Éxito!',
+                text: mensaje,
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                resolve(); // Resuelve la promesa cuando se cierra el Swal
+            });
         });
     }
     

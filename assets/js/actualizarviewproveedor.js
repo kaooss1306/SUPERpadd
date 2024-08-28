@@ -150,6 +150,14 @@ async function submitForm3(event) {
     
                 $('#actualizarProveedor').modal('hide');
                 $('#formactualizarproveedor')[0].reset();
+          
+                await Swal.fire({
+                    title: '¡Éxito!',
+                    text: 'Actualización correcta',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+                // Mostrar el GIF de carga
                 showLoading();
                 location.reload();
             } else {
@@ -182,13 +190,18 @@ function showLoading() {
     loadingElement.style.display = 'block';
 }
 
-function mostrarExito(mensaje) {
-    Swal.fire({
-        icon: 'success',
-        title: 'Éxito',
-        text: mensaje,
-        showConfirmButton: false,
-        timer: 1500
+
+async function mostrarExito(mensaje) {
+    return new Promise((resolve) => {
+        // Asumiendo que esta función muestra un mensaje y luego resuelve la promesa
+        Swal.fire({
+            title: '¡Éxito!',
+            text: mensaje,
+            icon: 'success',
+            confirmButtonText: 'OK'
+        }).then(() => {
+            resolve(); // Resuelve la promesa cuando se cierra el Swal
+        });
     });
 }
 // Asigna el evento de envío al formulario de actualizar proveedor

@@ -166,9 +166,15 @@ async function submitForm3(event) {
                     console.log(soporteMediosData, "data soporte");
     
                     if (insertResponse.ok) {
-                        mostrarExito('Soporte actualizado correctamente');
+             
                         $('#actualizarsoporte22').modal('hide');
                         $('#formularioactualizarSoporteProv')[0].reset();
+                        await Swal.fire({
+                            title: '¡Éxito!',
+                            text: 'Soporte actualizado correctamente',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
                         showLoading();
                         location.reload();
                     } else {
@@ -178,13 +184,19 @@ async function submitForm3(event) {
                     }
                 } else {
                     // Si no hay medios para registrar, simplemente mostrar éxito
-                    mostrarExito('Soporte actualizado correctamente');
-                    $('#actualizarsoporte22').modal('hide');
+                                     $('#actualizarsoporte22').modal('hide');
                                         $('#formularioactualizarSoporteProv')[0].reset();
                     // Mostrar el GIF de carga
-                    showLoading();
-
-                    location.reload();
+       
+                    await Swal.fire({
+                        title: '¡Éxito!',
+                        text: 'Actualización correcta',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                // Mostrar el GIF de carga
+                showLoading();
+                location.reload();
                 }
             } else {
                 const errorData = await deleteResponse.text();
@@ -267,13 +279,17 @@ function populateTable(soportes) {
 
 
 
-function mostrarExito(mensaje) {
-    Swal.fire({
-        icon: 'success',
-        title: 'Éxito',
-        text: mensaje,
-        showConfirmButton: false,
-        timer: 1500
+async function mostrarExito(mensaje) {
+    return new Promise((resolve) => {
+        // Asumiendo que esta función muestra un mensaje y luego resuelve la promesa
+        Swal.fire({
+            title: '¡Éxito!',
+            text: mensaje,
+            icon: 'success',
+            confirmButtonText: 'OK'
+        }).then(() => {
+            resolve(); // Resuelve la promesa cuando se cierra el Swal
+        });
     });
 }
 
