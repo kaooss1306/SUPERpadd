@@ -30,6 +30,11 @@ $pagos = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/FormaDePa
 $tipoP = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/TipoDePublicidad?select=*');
 $anios = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Anios?select=*');
 $meses = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Meses?select=*');
+$tipoGeracionOrden = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/TipoGeneracionDeOrden?select=*');
+
+
+
+
 
 $contratosMap = [];
 foreach ($contratos as $contrato) {
@@ -66,6 +71,13 @@ foreach ($anios as $anio) {
 }
 $mesesMap = [];
 foreach ($meses as $mes) {
-    $mesesMap[$mes['id']] = $mes;
+    $mesesMap[$mes['Id']] = $mes;
 }
+
+$ordenMap = [];
+foreach ($tipoGeracionOrden as $orden) {
+    $ordenMap[$orden['id']] = $orden;
+}
+
+
 ?>

@@ -1,14 +1,15 @@
 document.addEventListener('DOMContentLoaded', function() {
     const btnAddContrato = document.getElementById('btn-add-contrato');
     const formAddContrato = document.getElementById('form-add-contrato');
-    const selectCliente = document.getElementById('idCliente');
+    const selectCliente = document.getElementById('IdCliente');
     const selectProducto = document.getElementById('idProducto');
-    const selectProveedor = document.getElementById('idProveedor');
-    const selectMedio = document.getElementById('idMedio');
-
-    if (!selectMedio) {
-        console.error("Error: No se pudo encontrar el elemento con ID 'idMedio'");
-    }
+    const selectProveedor = document.getElementById('IdProveedor');
+    const selectMedio = document.getElementById('IdMedios');
+    const inputValorNeto = document.getElementById('ValorNeto');
+    const inputValorBruto = document.getElementById('ValorBruto');
+    const inputDescuento = document.getElementById('Descuento1');
+    const inputValorTotal = document.getElementById('ValorTotal');
+    const inputNumContrato = document.getElementById('num_contrato');
 
     if (btnAddContrato) {
         btnAddContrato.addEventListener('click', function(event) {
@@ -23,31 +24,72 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error("Error: No se pudo encontrar el botón de añadir contrato");
     }
 
+    // Agregar un event listener para cuando se abra el modal
+    $('#modalAddContrato').on('show.bs.modal', function (e) {
+        getNextContractNumber();
+    });
+
     if (selectCliente) {
         selectCliente.addEventListener('change', function() {
-            console.log('Cliente seleccionado:', this.value);
             cargarProductoCliente(this.value);
         });
-    } else {
-        console.error("Error: No se pudo encontrar el elemento select del cliente");
     }
 
     if (selectProveedor) {
         selectProveedor.addEventListener('change', function() {
-            console.log('Proveedor seleccionado:', this.value);
             filtrarMediosProveedor(this.value);
         });
+    }
+
+    if (inputValorNeto) {
+        inputValorNeto.addEventListener('input', calcularValores);
     } else {
-        console.error("Error: No se pudo encontrar el elemento select del proveedor");
+        console.error("Error: No se pudo encontrar el input de Valor Neto");
+    }
+
+    if (inputDescuento) {
+        inputDescuento.addEventListener('input', calcularValores);
+    } else {
+        console.error("Error: No se pudo encontrar el input de Descuento");
+    }
+
+    function calcularValores() {
+        const valorNeto = parseFloat(inputValorNeto.value) || 0;
+        const valorBruto = Math.round(valorNeto * 1.19);
+        const descuento = parseFloat(inputDescuento.value) || 0;
+        const valorTotal = Math.max(0, valorBruto - descuento);
+
+        inputValorBruto.value = valorBruto;
+        inputValorTotal.value = valorTotal;
+    }
+
+    function getNextContractNumber() {
+        fetch("https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Contratos?select=num_contrato&order=num_contrato.desc&limit=1", {
+            headers: {
+                "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
+                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc"
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            let nextNumber = 1;
+            if (data.length > 0 && data[0].num_contrato) {
+                nextNumber = parseInt(data[0].num_contrato) + 1;
+            }
+            inputNumContrato.value = nextNumber;
+        })
+        .catch(error => {
+            console.error("Error al obtener el siguiente número de contrato:", error);
+            inputNumContrato.value = 1; // Valor por defecto en caso de error
+        });
     }
 
     function cargarProductoCliente(idCliente) {
-        console.log('Cargando producto para el cliente:', idCliente);
         if (!selectProducto) {
             console.error("Error: El elemento select de productos no está disponible");
             return;
         }
-        selectProducto.innerHTML = '<option value="">Cargando producto...</option>';
+        selectProducto.innerHTML = '<option value="">Cargando productos del cliente...</option>';
 
         if (!idCliente) {
             selectProducto.innerHTML = '<option value="">Seleccione un cliente primero</option>';
@@ -62,20 +104,17 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(productos => {
-            console.log('Productos recibidos:', productos);
             selectProducto.innerHTML = '';
 
             if (productos.length > 0) {
                 productos.forEach(producto => {
                     const option = document.createElement('option');
-                    option.value = producto.id;
+                    option.value = producto.NombreDelProducto;
                     option.textContent = producto.NombreDelProducto;
                     selectProducto.appendChild(option);
                 });
                 
-                selectProducto.value = productos[0].id;
-                console.log('Producto seleccionado:', selectProducto.value);
-                
+                selectProducto.value = productos[0].NombreDelProducto;
                 selectProducto.dispatchEvent(new Event('change'));
             } else {
                 const option = document.createElement('option');
@@ -86,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => {
             console.error("Error al cargar productos:", error);
-            selectProducto.innerHTML = '<option value="">Error al cargar producto</option>';
+            selectProducto.innerHTML = '<option value="">Error al cargar productos</option>';
         });
     }
 
@@ -95,18 +134,17 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error("Error: El elemento select de medios no está disponible");
             return;
         }
-
-        console.log('Filtrando medios para el proveedor:', idProveedor);
+        
+        selectMedio.innerHTML = '<option value="">Cargando medios del proveedor...</option>';
+        selectMedio.disabled = true;
 
         if (!idProveedor) {
-            // Mostrar todos los medios si no se selecciona un proveedor
-            Array.from(selectMedio.options).forEach(option => {
-                option.style.display = '';
-            });
+            selectMedio.innerHTML = '<option value="">Seleccione un proveedor primero</option>';
+            selectMedio.disabled = false;
             return;
         }
 
-        fetch(`https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/proveedor_medios?id_proveedor=eq.${idProveedor}&select=*`, {
+        fetch(`https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/proveedor_medios?id_proveedor=eq.${idProveedor}&select=id_medio`, {
             headers: {
                 "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
                 "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc"
@@ -114,39 +152,42 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(relaciones => {
-            console.log('Relaciones proveedor-medios:', relaciones);
             if (relaciones.length > 0) {
-                const idMediosDelProveedor = new Set(relaciones.map(rel => rel.id_medio));
-                
-                Array.from(selectMedio.options).forEach(option => {
-                    if (idMediosDelProveedor.has(parseInt(option.value))) {
-                        option.style.display = '';
-                    } else {
-                        option.style.display = 'none';
+                const idMedios = relaciones.map(rel => rel.id_medio);
+                return fetch(`https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Medios?id=in.(${idMedios.join(',')})&select=*`, {
+                    headers: {
+                        "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
+                        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc"
                     }
                 });
-
-                // Seleccionar el primer medio visible
-                const primerMedioVisible = Array.from(selectMedio.options).find(option => option.style.display !== 'none');
-                if (primerMedioVisible) {
-                    selectMedio.value = primerMedioVisible.value;
-                } else {
-                    selectMedio.value = '';
-                }
-
-                console.log('Medio seleccionado:', selectMedio.value);
+            } else {
+                throw new Error("No hay medios asociados a este proveedor");
+            }
+        })
+        .then(response => response.json())
+        .then(medios => {
+            selectMedio.innerHTML = '';
+            if (medios.length > 0) {
+                medios.forEach(medio => {
+                    const option = document.createElement('option');
+                    option.value = medio.id; // Cambiado de NombredelMedio a id
+                    option.textContent = medio.NombredelMedio;
+                    selectMedio.appendChild(option);
+                });
+                selectMedio.value = medios[0].id; // Cambiado de NombredelMedio a id
                 selectMedio.dispatchEvent(new Event('change'));
             } else {
-                console.log('No se encontraron medios para este proveedor');
-                Array.from(selectMedio.options).forEach(option => {
-                    option.style.display = 'none';
-                });
-                selectMedio.value = '';
+                const option = document.createElement('option');
+                option.value = "";
+                option.textContent = "No hay medios disponibles para este proveedor";
+                selectMedio.appendChild(option);
             }
+            selectMedio.disabled = false;
         })
         .catch(error => {
             console.error("Error al cargar medios:", error);
-            console.error("Detalles del error:", error.message);
+            selectMedio.innerHTML = '<option value="">Error al cargar medios</option>';
+            selectMedio.disabled = false;
         });
     }
 
@@ -154,29 +195,27 @@ document.addEventListener('DOMContentLoaded', function() {
         const formData = new FormData(formAddContrato);
         const dataObject = {};
         formData.forEach((value, key) => {
-            dataObject[key] = value;
+            if (key === 'Estado') {
+                dataObject[key] = value === "1";
+            } else if (['IdCliente', 'IdProveedor', 'id_FormadePago', 'ValorNeto', 'ValorBruto', 'Descuento1', 'ValorTotal', 'IdMedios', 'id_Mes', 'id_Anio', 'IdTipoDePublicidad', 'id_GeneraracionOrdenTipo', 'num_contrato'].includes(key)) {
+                dataObject[key] = value !== "" ? parseInt(value, 10) : null;
+            } else if (key === 'idProducto') {
+                dataObject['nombreProducto'] = value;
+            } else {
+                dataObject[key] = value;
+            }
         });
-        console.log(dataObject, "Datos del formulario");
-        
-        return {
-            NombreContrato: dataObject.nombreContrato,
-            IdCliente: parseInt(dataObject.idCliente),
-            IdProducto: parseInt(dataObject.idProducto),
-            IdProveedor: parseInt(dataObject.idProveedor),
-            IdMedios: parseInt(dataObject.IdMedios),
-            id_FormadePago: parseInt(dataObject.id_FormadePago),
-            Estado: dataObject.Estado === "1" // Convierte a booleano
-        };
+        return dataObject;
     }
-
     function submitForm() {
         let bodyContent = JSON.stringify(getFormData());
-        console.log(bodyContent, "Datos a enviar");
+        console.log("Datos a enviar:", bodyContent);
 
         let headersList = {
             "Content-Type": "application/json",
             "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc"
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
+            "Prefer": "return=representation"
         };
 
         fetch("https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Contratos", {
@@ -185,34 +224,43 @@ document.addEventListener('DOMContentLoaded', function() {
             headers: headersList
         })
         .then(response => {
-            console.log("Estado de la respuesta:", response.status);
-            console.log("Cabeceras de la respuesta:", response.headers);
+            console.log("Status:", response.status);
+            console.log("Status Text:", response.statusText);
             return response.text().then(text => {
-                console.log("Cuerpo de la respuesta:", text);
-                if (response.ok) {
-                    return text ? JSON.parse(text) : {};
-                } else {
-                    throw new Error(`El servidor respondió con estado: ${response.status}. Cuerpo: ${text}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}, body: ${text}`);
                 }
+                return text;
             });
         })
         .then(data => {
-            console.log("Registro correcto", data);
-            Swal.fire({
-                title: '¡Éxito!',
-                text: 'El contrato ha sido agregado correctamente.',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.reload();
+            console.log("Respuesta del servidor:", data);
+            if (data) {
+                try {
+                    let jsonData = JSON.parse(data);
+                    console.log("Contrato agregado correctamente:", jsonData);
+                    Swal.fire({
+                        title: '¡Éxito!',
+                        text: 'El contrato ha sido agregado correctamente.',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.reload();
+                        }
+                    });
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('modalAddContrato'));
+                    modal.hide();
+                } catch (e) {
+                    console.error("Error al procesar la respuesta JSON:", e);
+                    throw new Error(`Respuesta no válida: ${data}`);
                 }
-            });
-            const modal = bootstrap.Modal.getInstance(document.getElementById('modalAddContrato'));
-            modal.hide();
+            } else {
+                throw new Error("La respuesta del servidor está vacía");
+            }
         })
         .catch(error => {
-            console.error("Detalles del error:", error);
+            console.error("Error al agregar el contrato:", error);
             Swal.fire({
                 title: 'Error',
                 text: `Hubo un problema al agregar el contrato: ${error.message}`,

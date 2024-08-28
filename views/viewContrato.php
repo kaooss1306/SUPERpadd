@@ -22,8 +22,9 @@ if (isset($productosMap[$contrato['IdCliente']]) && !empty($productosMap[$contra
 $nombreMedio = isset($mediosMap[$contrato['IdMedios']]) ? $mediosMap[$contrato['IdMedios']]['NombredelMedio'] : 'N/A';
 $tipoPublicidad = isset($tipoPMap[$contrato['IdTipoDePublicidad']]) ? $tipoPMap[$contrato['IdTipoDePublicidad']]['NombreTipoPublicidad'] : 'N/A';
 $anioz = isset($aniosMap[$contrato['id_Anio']]) ? $aniosMap[$contrato['id_Anio']]['years'] : 'N/A';
-$mez = isset($mesesMap[$contrato['Id']]) ? $mesesMap[$contrato['Id']]['Nombre'] : 'N/A';
+$mez = isset($mesesMap[$contrato['id']]) ? $mesesMap[$contrato['id_Mes']]['Nombre'] : 'N/A';
 $formaPago = isset($pagosMap[$contrato['id_FormadePago']]) ? $pagosMap[$contrato['id_FormadePago']]['NombreFormadePago'] : 'N/A';
+$ordenGeracionTipo = isset($ordenMap[$contrato['id_GeneraracionOrdenTipo']]) ? $ordenMap[$contrato['id_GeneraracionOrdenTipo']]['NombreTipoOrden'] : 'N/A';
 
 include '../componentes/header.php';
 include '../componentes/sidebar.php';
@@ -82,11 +83,77 @@ include '../componentes/sidebar.php';
 ?>
                    
                       </div>
+                      
                       <div class="w-100 d-sm-none"></div>
+
+                      
                     </div>
                   </div>
                 </div>
-              
+                <div class="card">
+                        <div class="card-header">
+                            <div class="cabeza">
+                             <h4>Detalles del Contrato</h4> 
+                             <button type="button" class="btn btn-danger micono" data-bs-toggle="modal" data-bs-target="#actualizarclienteView" data-id-cliente="23" onclick="loadClienteDataView(this)"><svg class="svg-inline--fa fa-pencil" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="pencil" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1 0 32c0 8.8 7.2 16 16 16l32 0zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"></path></svg><!-- <i class="fas fa-pencil-alt"></i> Font Awesome fontawesome.com --> Editar datos</button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="py-4">
+                                <p class="clearfix">
+                                    <span class="float-start">
+                                        Nombre Contrato
+                                    </span>
+                                    <span class="float-right text-muted">
+                                    <?php echo $contrato['NombreContrato']; ?></span>
+                                </p>
+                                <p class="clearfix">
+                                    <span class="float-start">
+                                        Nombre de Fantasía
+                                    </span>
+                                    <span class="float-right text-muted">
+                                        PREMIUM VIP</span>
+                                </p>
+                                <p class="clearfix">
+                                    <span class="float-start">
+                                        Razón Social
+                                    </span>
+                                    <span class="float-right text-muted">
+                                        PREMIUM VIP NUEVA</span>
+                                </p>
+                                <p class="clearfix">
+                                    <span class="float-start">
+                                        Tipo de Cliente
+                                    </span>
+                                    <span class="float-right text-muted">
+                                        Directo</span>
+                                </p>
+                                <p class="clearfix">
+                                    <span class="float-start">
+                                        RUT
+                                    </span>
+                                    <span class="float-right text-muted">
+                                        7798080-6</span>
+                                </p>
+                                <p class="clearfix">
+                                    <span class="float-start">
+                                        Representante Legal
+                                    </span>
+                                    <span class="float-right text-muted">
+                                        Miguel Cepeda Ceballos</span>
+                                </p>
+                                <p class="clearfix">
+                                    <span class="float-start">
+                                        RUT Representante Legal
+                                    </span>
+                                    <span class="float-right text-muted">
+                                        7798080-6</span>
+                                </p>
+                               
+                             
+                               
+                            </div>
+                        </div>
+                    </div>
                
               </div>
               <div class="col-12 col-md-12 col-lg-8">
@@ -143,6 +210,12 @@ include '../componentes/sidebar.php';
                             <strong>Mes</strong>
                             <br>
                             <p class="text-muted"><?php echo $mez; ?></p>
+                          </div>
+                          
+                          <div class="col-md-3 col-12 b-r">
+                            <strong>Tipo generación de Orden</strong>
+                            <br>
+                            <p class="text-muted"><?php echo $ordenGeracionTipo; ?></p>
                           </div>
                           <div class="col-md-3 col-12 b-r">
                             <strong>Forma de Pago</strong>
