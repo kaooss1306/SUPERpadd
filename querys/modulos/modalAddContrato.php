@@ -29,17 +29,15 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-6 mb-3">
-              <label for="idProducto" class="form-label">Seleccione un Producto</label>
-              <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-box"></i></span>
-                <select class="form-select" id="idProducto" name="idProducto" required>
-                  <?php foreach ($productosMap as $producto): ?>
-                    <option value='<?php echo $producto[0]['Id_Producto']; ?>'><?php echo $producto[0]['NombreDelProducto']; ?></option>
-                  <?php endforeach; ?>
-                </select>
-              </div>
-            </div>
+          <div class="col-md-6 mb-3">
+  <label for="idProducto" class="form-label">Seleccione un Producto</label>
+  <div class="input-group">
+    <span class="input-group-text"><i class="bi bi-box"></i></span>
+    <select class="form-select" id="idProducto" name="idProducto" required>
+      <option value="">Seleccione un producto</option>
+    </select>
+  </div>
+</div>
             <div class="col-md-6 mb-3">
               <label for="idProveedor" class="form-label">Seleccione un Proveedor</label>
               <div class="input-group">
@@ -57,7 +55,7 @@
               <label for="idMedio" class="form-label">Seleccione un Medio</label>
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-broadcast"></i></span>
-                <select class="form-select" id="idMedio" name="idMedio" required>
+                <select class="form-select" id="idMedio" name="IdMedios" required>
                   <?php foreach ($mediosMap as $medio): ?>
                     <option value="<?php echo $medio['id']; ?>"><?php echo $medio['NombredelMedio']; ?></option>
                   <?php endforeach; ?>
@@ -68,7 +66,7 @@
               <label for="idFormaDePago" class="form-label">Seleccione una Forma de Pago</label>
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-credit-card"></i></span>
-                <select class="form-select" id="idFormaDePago" name="idFormaDePago" required>
+                <select class="form-select" id="idFormaDePago" name="id_FormadePago" required>
                   <?php foreach ($pagosMap as $pago): ?>
                     <option value="<?php echo $pago['id']; ?>"><?php echo $pago['NombreFormadePago']; ?></option>
                   <?php endforeach; ?>
@@ -77,11 +75,11 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-12 mb-3">
+            <div class="col-md-6 mb-3">
               <label for="estado" class="form-label">Estado del Contrato Nuevo</label>
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-toggle-on"></i></span>
-                <select class="form-select" id="estado" name="estado" required>
+                <select class="form-select" id="estado" name="Estado" required>
                   <option value="1">Activo</option>
                   <option value="0">Inactivo</option>
                 </select>
@@ -97,3 +95,4 @@
     </div>
   </div>
 </div>
+<script src="assets/js/addContrato.js"></script>
