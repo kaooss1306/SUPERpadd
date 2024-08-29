@@ -7,6 +7,7 @@ include 'querys/qtema.php';
 
 include 'componentes/header.php';
 include 'componentes/sidebar.php';
+
 ?>
 <div class="main-content">
     <section class="section">
@@ -15,7 +16,11 @@ include 'componentes/sidebar.php';
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Listado de Temas</h4>
+                            <div class="card-header milinea">
+                            <div class="titulox"><h4>Listado de Temas</h4></div>
+                            <div class="agregar"><button type="button" class="btn btn-primary micono" data-bs-toggle="modal" data-bs-target="#agregartema"  ><i class="fas fa-plus-circle"></i> Agregar Tema</button>
+                            </div>
+                        </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -24,13 +29,14 @@ include 'componentes/sidebar.php';
                                         <tr>
                                             <th>ID</th>
                                             <th>Nombre Tema</th>
+                                            <th>Medio</th>
                                             <th>Duración</th>
                                             <th>Codigo Mega Time</th>
                                             <th>Calidad</th>
                                             <th>Cooperado</th>
                                             <th>Rubro</th>
                                             <th>Campaña</th>
-                                            <th>Medio</th>
+                                            
                                             <th>Color</th>
                                             <th>Acciones</th>
                                         </tr>
@@ -40,13 +46,14 @@ include 'componentes/sidebar.php';
                                         <tr>
                                             <td><?php echo $tema['id_tema']; ?></td>
                                             <td><?php echo $tema['NombreTema']; ?></td>
+                                            <td><?php echo $mediosMap[$tema['id_medio']]['NombredelMedio'] ?? ''; ?></td>
                                             <td><?php echo $tema['Duracion']; ?></td>
                                             <td><?php echo $tema['CodigoMegatime']; ?></td>
+                                            
                                             <td><?php echo $calidadsMap[$tema['id_Calidad']]['NombreCalidad'] ?? ''; ?></td>
-                                            <td><?php echo $coperadosMap[$tema['id_Cooperado']]['NombreCooperado'] ?? ''; ?></td>
-                                            <td><?php echo $rubrosMap[$tema['id_Rubro']]['NombreRubro'] ?? ''; ?></td>
-                                            <td><?php echo $campaignsMap[$tema['Id_campana']]['NombreCampania'] ?? ''; ?></td>
-                                            <td><?php echo $mediosMap[$tema['id_medio']]['NombredelMedio'] ?? ''; ?></td>
+                                            <td><?php echo $tema['cooperado']; ?></td>
+                                            <td><?php echo $tema['rubro']; ?></td>
+                                            <td><?php echo !empty($campaignsMap[$tema['Id_campana']]['NombreCampania']) ? htmlspecialchars($campaignsMap[$tema['Id_campana']]['NombreCampania']) : 'No hay campaña vinculada'; ?></td>
                                             <td><?php echo $tema['color']; ?></td>
                                             <td><a href="#" class="btn btn-primary">Detail</a></td>
                                         </tr>
@@ -61,5 +68,197 @@ include 'componentes/sidebar.php';
         </div>
     </section>
 </div>
+<div class="modal fade" id="agregartema" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <!-- Alerta para mostrar el resultado de la actualización -->
+                <div id="updateAlert" class="alert" style="display:none;" role="alert"></div>
+
+                <form id="formularioTema">
+                    <!-- Campos del formulario -->
+                    <div>
+                        <h3 class="titulo-registro mb-3">Agregar Tema</h3>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                  
+                                    <!-- Select de Medios -->
+                                    <label class="labelforms" for="id_medio">Medios</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                            </div>
+                                            <select class="form-control" name="id_medio">
+                                                <?php if (!empty($mediosMap)): ?>
+                                                    <?php foreach ($mediosMap as $id => $medio): ?>
+                                                        <option value="<?php echo htmlspecialchars($id); ?>">
+                                                            <?php echo htmlspecialchars($medio['NombredelMedio']); ?>
+                                                        </option>
+                                                    <?php endforeach; ?>
+                                                <?php else: ?>
+                                                    <option value="">No hay medios disponibles</option>
+                                                <?php endif; ?>
+                                            </select>
+                                        </div>
+                                    <label class="labelforms" for="codigo">Nombre de Tema</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                        </div>
+                                        <input class="form-control" placeholder="Nombre de Tema" name="NombreTema">
+                                    </div>
+
+                                    <!-- Campos Dinámicos Ocultos -->
+
+                                    <div class="input-group" id="group-duracion" style="display:none;">
+                                    <label class="labelforms" for="codigo">Duración</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                        </div>
+                                        <input class="form-control" placeholder="Duración" name="Duracion">
+                                    </div>            
+                                    </div>  
+                                    <div class="input-group" id="group-color" style="display:none;">
+                                    <label class="labelforms" for="codigo">Color</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                        </div>
+                                        <input class="form-control" placeholder="Color" name="color">
+                                    </div>            
+                                    </div> 
+                                    <div class="input-group" id="group-codigo_megatime" style="display:none;">
+                                    <label class="labelforms" for="codigo">Codigo Megatime</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                        </div>
+                                        <input class="form-control" placeholder="Codigo Megatime" name="CodigoMegatime">
+                                    </div>            
+                                    </div>   
+                                    
+                                    <div class="input-group" id="group-calidad" style="display:none;">
+                                    <label class="labelforms" for="calidad">Calidad</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                        </div>
+                                        <select class="form-control" name="id_Calidad">
+                                            <?php if (!empty($calidadsMap)): ?>
+                                                <?php foreach ($calidadsMap as $id => $calidad): ?>
+                                                    <option value="<?php echo htmlspecialchars($id); ?>">
+                                                        <?php echo htmlspecialchars($calidad['NombreCalidad']); ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            <?php else: ?>
+                                                <option value="">No hay opciones disponibles</option>
+                                            <?php endif; ?>
+                                        </select>
+                                    </div>      
+                                    </div>       
+
+                                    <div class="input-group" id="group-cooperado" style="display:none;">
+                                     
+                                    <label class="labelforms" for="codigo">Cooperado</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                        </div>
+                                        <select class="form-control" name="cooperado">
+                                            <option value="Sí">Sí</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </div>        
+                                    </div>   
+
+                                    <div class="input-group" id="group-rubro" style="display:none;">
+                                    <label class="labelforms" for="codigo">Rubro</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                        </div>
+                                        <input class="form-control" placeholder="Rubro" name="rubro">
+                                    </div>             
+                                    </div>               
+                        <!-- FIN Dinámicos Ocultos -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <div class="d-flex justify-content-end mt-3">
+                        <button class="btn btn-primary btn-lg rounded-pill" type="submit" id="agregarTemax">
+                            <span class="btn-txt">Guardar Tema</span>
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display:none;"></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Script para Mostrar/Ocultar Campos según el Medio Seleccionado -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Datos de medios proporcionados por PHP
+    const mediosData = <?php echo json_encode($mediosMap); ?>;
+    
+    // Seleccionar el elemento del formulario
+    const mediosSelect = document.querySelector('select[name="id_medio"]');
+    const duracionField = document.getElementById('group-duracion');
+    const codigoMegatimeField = document.getElementById('group-codigo_megatime');
+    const colorField = document.getElementById('group-color');
+    const calidadField = document.getElementById('group-calidad');
+    const cooperadoField = document.getElementById('group-cooperado');
+    const rubroField = document.getElementById('group-rubro');
+    // Añadir otros campos si es necesario...
+
+    function updateFields() {
+        const selectedMedioId = mediosSelect.value;
+        const selectedMedio = mediosData[selectedMedioId];
+
+        // Ocultar todos los campos primero
+        duracionField.style.display = 'none';
+        codigoMegatimeField.style.display = 'none';
+        colorField.style.display = 'none';
+        calidadField.style.display = 'none';
+        cooperadoField.style.display = 'none';
+        rubroField.style.display = 'none';
+        // Ocultar otros campos si es necesario...
+
+        // Mostrar solo los campos correspondientes al medio seleccionado
+        if (selectedMedio) {
+            if (selectedMedio.duracion) {
+                duracionField.style.display = 'block';
+            }
+            if (selectedMedio.codigo_megatime) {
+                codigoMegatimeField.style.display = 'block';
+            }
+            if (selectedMedio.color) {
+                colorField.style.display = 'block';
+            }
+            if (selectedMedio.id_Calidad) {
+                calidadField.style.display = 'block';
+            }
+            if (selectedMedio.cooperado) {
+                cooperadoField.style.display = 'block';
+            }
+            if (selectedMedio.rubro) {
+                rubroField.style.display = 'block';
+            }
+            // Mostrar otros campos según los valores booleanos...
+        }
+    }
+
+    // Ejecutar la lógica al cargar la página
+    updateFields();
+
+    // Manejar el evento de cambio en el campo de selección
+    mediosSelect.addEventListener('change', updateFields);
+});
+</script>
+<script src="assets/js/agregarTema.js"></script>
 <?php include 'componentes/settings.php'; ?>
 <?php include 'componentes/footer.php'; ?>
