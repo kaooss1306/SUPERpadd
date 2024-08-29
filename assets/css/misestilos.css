@@ -364,3 +364,9 @@ body{
 .card-header.milinea.dos {
   padding: 12px 5px !important;
 }
+.fc-button-group {
+  display: none !important;
+}
+.fc-today-button.fc-button.fc-state-default.fc-corner-left.fc-corner-right.fc-state-disabled {
+  display: none !important;
+}
