@@ -104,7 +104,7 @@ include 'componentes/sidebar.php';
       </div>
 
 <script src="assets/js/toggleContratos.js"></script>
-<script src="assets/js/editContrato.js"></script>
+
       <?php include 'componentes/settings.php'; ?>
       <?php include 'querys/modulos/modalAddContrato.php'; ?>
       <?php include 'querys/modulos/modalEditContrato.php'; ?>

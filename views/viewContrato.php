@@ -105,7 +105,7 @@ include '../componentes/sidebar.php';
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class="py-4">
+                            <div class="py-1">
                                 <p class="clearfix">
                                     <span class="float-start">
                                         Nombre Contrato
@@ -184,7 +184,7 @@ include '../componentes/sidebar.php';
                           <div class="col-md-3 col-12 b-r">
                             <strong>Producto</strong>
                             <br>
-                            <p class="text-muted"><?php echo $nombreProducto; ?></p>
+                            <p class="text-muted"><?php echo $contrato['nombreProducto']; ?></p>
                           </div>
                           <div class="col-md-3 col-12 b-r">
                             <strong>Medio</strong>
