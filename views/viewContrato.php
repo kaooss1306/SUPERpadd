@@ -10,6 +10,12 @@ if (!$idContrato) {
     die("No se proporcionó un ID de cliente válido.");
 }
 
+$contrato = isset($contratosMap[$idContrato]) ? $contratosMap[$idContrato] : null;
+
+if (!$contrato) {
+    die("No se encontró el contrato especificado.");
+}
+
 // Obtener datos del contrato específico
 $url = "https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Contratos?id=eq.$idContrato&select=*";
 
@@ -30,6 +36,7 @@ include '../componentes/header.php';
 include '../componentes/sidebar.php';
 
 ?>
+
       <!-- Main Content -->
       <div class="main-content">
       
@@ -93,8 +100,8 @@ include '../componentes/sidebar.php';
                 <div class="card">
                         <div class="card-header">
                             <div class="cabeza">
-                             <h4>Detalles del Contrato</h4> 
-                             <button type="button" class="btn btn-danger micono" data-bs-toggle="modal" data-bs-target="#actualizarclienteView" data-id-cliente="23" onclick="loadClienteDataView(this)"><svg class="svg-inline--fa fa-pencil" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="pencil" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1 0 32c0 8.8 7.2 16 16 16l32 0zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"></path></svg><!-- <i class="fas fa-pencil-alt"></i> Font Awesome fontawesome.com --> Editar datos</button>
+                             <h4>Detalles Valores</h4> 
+                             <button type="button" class="btn btn-danger micono" data-bs-toggle="modal" data-bs-target="#modalEditContrato" data-contrato-id="<?php echo $contrato['id']; ?>"><i class="fas fa-pencil-alt"></i> Editar datos</button>
                             </div>
                         </div>
                         <div class="card-body">
@@ -108,46 +115,34 @@ include '../componentes/sidebar.php';
                                 </p>
                                 <p class="clearfix">
                                     <span class="float-start">
-                                        Nombre de Fantasía
+                                        Valor Neto
                                     </span>
                                     <span class="float-right text-muted">
-                                        PREMIUM VIP</span>
+                                    <?php echo '$' . number_format($contrato['ValorNeto'], 0, ',', '.'); ?></span>
                                 </p>
                                 <p class="clearfix">
                                     <span class="float-start">
-                                        Razón Social
+                                        Valor Bruto
                                     </span>
                                     <span class="float-right text-muted">
-                                        PREMIUM VIP NUEVA</span>
+                                    <?php echo '$' . number_format($contrato['ValorBruto'], 0, ',', '.'); ?></span>
                                 </p>
                                 <p class="clearfix">
                                     <span class="float-start">
-                                        Tipo de Cliente
+                                        Descuento
                                     </span>
                                     <span class="float-right text-muted">
-                                        Directo</span>
+                                    <?php echo '$' . number_format($contrato['Descuento1'], 0, ',', '.'); ?></span>
                                 </p>
                                 <p class="clearfix">
                                     <span class="float-start">
-                                        RUT
+                                        Valor Total
                                     </span>
                                     <span class="float-right text-muted">
-                                        7798080-6</span>
+                                    <?php echo '$' . number_format($contrato['ValorTotal'], 0, ',', '.'); ?></span>
                                 </p>
-                                <p class="clearfix">
-                                    <span class="float-start">
-                                        Representante Legal
-                                    </span>
-                                    <span class="float-right text-muted">
-                                        Miguel Cepeda Ceballos</span>
-                                </p>
-                                <p class="clearfix">
-                                    <span class="float-start">
-                                        RUT Representante Legal
-                                    </span>
-                                    <span class="float-right text-muted">
-                                        7798080-6</span>
-                                </p>
+                              
+                              
                                
                              
                                
@@ -245,7 +240,11 @@ include '../componentes/sidebar.php';
     ?></p>
                           </div>
                         </div>
-                      
+                        <div class="col-md-12 col-12 b-r">
+                            <strong>Observaciones</strong>
+                            <br>
+                            <p class="text-muted"><?php echo $contrato['Observaciones']; ?></p>
+                          </div>
                       </div>
 
 
@@ -411,7 +410,361 @@ fas fa-barcode"></i></span>
           </div>
         </div>
 
-
+        
 <?php include '../componentes/settings.php'; ?>
-<script src="../../../assets/js/updateMedio.js"></script>
+<?php include '../querys/modulos/modalEditContrato.php';?>
 <?php include '../componentes/footer.php'; ?>
+
+<script>
+
+// Asegurarse de que este código se ejecute solo una vez
+(function() {
+    if (window.hasRun) return;
+    window.hasRun = true;
+
+    const SUPABASE_URL = 'https://ekyjxzjwhxotpdfzcpfq.supabase.co';
+    const SUPABASE_API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc';
+
+    // Función para obtener los datos del formulario
+    function getFormData() {
+        const form = document.getElementById('form-edit-contrato');
+        const formData = new FormData(form);
+        const dataObject = {};
+        formData.forEach((value, key) => {
+            if (key === 'Estado') {
+                dataObject[key] = value === "1";
+            } else if (['id', 'IdCliente', 'IdProveedor', 'id_FormadePago', 'IdMedios', 'id_Mes', 'id_Anio', 'IdTipoDePublicidad', 'id_GeneraracionOrdenTipo', 'num_contrato'].includes(key)) {
+                dataObject[key] = value !== "" ? parseInt(value, 10) : null;
+            } else if (['ValorNeto', 'ValorBruto', 'Descuento1', 'ValorTotal'].includes(key)) {
+                dataObject[key] = value !== "" ? parseFloat(value) : null;
+            } else if (key === 'idProducto') {
+                dataObject['nombreProducto'] = value;
+            } else {
+                dataObject[key] = value;
+            }
+        });
+        console.log('Datos del formulario:', dataObject);
+        return dataObject;
+    }
+
+    // Función para validar el formulario
+    function validateForm() {
+        const fechaInicio = new Date(document.getElementById('editFechaInicio').value);
+        const fechaTermino = new Date(document.getElementById('editFechaTermino').value);
+        
+        if (fechaTermino < fechaInicio) {
+            Swal.fire({
+                title: 'Error',
+                text: 'La fecha de término no puede ser anterior a la fecha de inicio',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+            return false;
+        }
+
+        const camposNumericos = ['editValorNeto', 'editValorBruto', 'editDescuento1', 'editValorTotal'];
+        for (const campo of camposNumericos) {
+            const valor = document.getElementById(campo).value;
+            if (valor !== "" && (isNaN(parseFloat(valor)) || parseFloat(valor) < 0)) {
+                Swal.fire({
+                    title: 'Error',
+                    text: `El campo ${campo.replace('edit', '')} debe ser un número positivo o estar vacío`,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // Función para enviar el formulario con PATCH
+    async function submitForm(event) {
+        event.preventDefault();
+        if (!validateForm()) return;
+
+        const formData = getFormData();
+        const contratoId = formData.id;
+        if (!contratoId) {
+            await Swal.fire({
+                title: 'Error',
+                text: 'No se pudo identificar el ID del contrato. Por favor, inténtelo nuevamente.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+            return;
+        }
+        
+        delete formData.id;
+
+        // Eliminar propiedades con valor null o undefined
+        Object.keys(formData).forEach(key => 
+            (formData[key] === null || formData[key] === undefined) && delete formData[key]
+        );
+
+        try {
+            const response = await fetch(`${SUPABASE_URL}/rest/v1/Contratos?id=eq.${contratoId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'apikey': SUPABASE_API_KEY,
+                    'Authorization': `Bearer ${SUPABASE_API_KEY}`
+                },
+                body: JSON.stringify(formData)
+            });
+
+            if (response.ok) {
+                let modal = bootstrap.Modal.getInstance(document.getElementById('modalEditContrato'));
+                modal.hide();
+                await Swal.fire({
+                    title: '¡Éxito!',
+                    text: 'El contrato se ha actualizado correctamente.',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+                window.location.reload();
+            } else {
+                const errorData = await response.json();
+                console.error("Error:", errorData);
+                await Swal.fire({
+                    title: 'Error',
+                    text: 'Ha ocurrido un error al actualizar el contrato. Por favor, inténtelo nuevamente.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            await Swal.fire({
+                title: 'Error',
+                text: 'Ha ocurrido un error inesperado. Por favor, inténtelo nuevamente.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        }
+    }
+
+    // Función para cargar los datos del contrato en el formulario
+    async function loadContratoData(contratoId) {
+        console.log('Cargando contrato con ID:', contratoId);
+        try {
+            const response = await fetch(`${SUPABASE_URL}/rest/v1/Contratos?id=eq.${contratoId}&select=*`, {
+                headers: {
+                    'apikey': SUPABASE_API_KEY,
+                    'Authorization': `Bearer ${SUPABASE_API_KEY}`
+                }
+            });
+            if (!response.ok) throw new Error('Error al obtener los datos del contrato');
+            const data = await response.json();
+            if (data.length === 0) throw new Error('No se encontró el contrato');
+            
+            const contrato = data[0];
+            console.log('Datos del contrato:', contrato);
+
+            // Llenar el formulario con los datos del contrato
+            document.getElementById('editIdContrato').value = contrato.id;
+            document.getElementById('editNombreContrato').value = contrato.NombreContrato || '';
+            document.getElementById('editIdCliente').value = contrato.IdCliente || '';
+            document.getElementById('editIdProveedor').value = contrato.IdProveedor || '';
+            document.getElementById('editIdMedios').value = contrato.IdMedios || '';
+            document.getElementById('editIdFormaDePago').value = contrato.id_FormadePago || '';
+            document.getElementById('editFechaInicio').value = contrato.FechaInicio || '';
+            document.getElementById('editFechaTermino').value = contrato.FechaTermino || '';
+            document.getElementById('editIdMes').value = contrato.id_Mes || '';
+            document.getElementById('editIdAnio').value = contrato.id_Anio || '';
+            document.getElementById('editIdTipoDePublicidad').value = contrato.IdTipoDePublicidad || '';
+            document.getElementById('editIdGeneracionOrdenTipo').value = contrato.id_GeneraracionOrdenTipo || '';
+            document.getElementById('editValorNeto').value = contrato.ValorNeto || '';
+            document.getElementById('editValorBruto').value = contrato.ValorBruto || '';
+            document.getElementById('editDescuento1').value = contrato.Descuento1 || '';
+            document.getElementById('editValorTotal').value = contrato.ValorTotal || '';
+            document.getElementById('editObservaciones').value = contrato.Observaciones || '';
+            document.getElementById('editEstado').value = contrato.Estado ? '1' : '0';
+            document.getElementById('editNumContrato').value = contrato.num_contrato || '';
+
+            // Cargar productos del cliente
+            await cargarProductoCliente(contrato.IdCliente);
+            document.getElementById('editIdProducto').value = contrato.nombreProducto || '';
+
+            // Cargar medios del proveedor
+            await filtrarMediosProveedor(contrato.IdProveedor);
+        } catch (error) {
+            console.error('Error al cargar los datos del contrato:', error);
+            await Swal.fire({
+                title: 'Error',
+                text: 'No se pudieron cargar los datos del contrato. Por favor, inténtelo nuevamente.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        }
+    }
+
+    // Función para cargar productos de un cliente
+    async function cargarProductoCliente(idCliente) {
+        const selectProducto = document.getElementById('editIdProducto');
+        selectProducto.innerHTML = '<option value="">Cargando productos del cliente...</option>';
+
+        if (!idCliente) {
+            selectProducto.innerHTML = '<option value="">Seleccione un cliente primero</option>';
+            return;
+        }
+
+        try {
+            const response = await fetch(`${SUPABASE_URL}/rest/v1/Productos?Id_Cliente=eq.${idCliente}&select=*`, {
+                headers: {
+                    'apikey': SUPABASE_API_KEY,
+                    'Authorization': `Bearer ${SUPABASE_API_KEY}`
+                }
+            });
+            if (!response.ok) throw new Error('Error al obtener los productos');
+            const productos = await response.json();
+            
+            selectProducto.innerHTML = '';
+            if (productos.length > 0) {
+                productos.forEach(producto => {
+                    const option = document.createElement('option');
+                    option.value = producto.NombreDelProducto;
+                    option.textContent = producto.NombreDelProducto;
+                    selectProducto.appendChild(option);
+                });
+            } else {
+                selectProducto.innerHTML = '<option value="">No hay productos para este cliente</option>';
+            }
+        } catch (error) {
+            console.error('Error al cargar productos:', error);
+            selectProducto.innerHTML = '<option value="">Error al cargar productos</option>';
+        }
+    }
+
+    // Función para filtrar medios de un proveedor
+    async function filtrarMediosProveedor(idProveedor) {
+        const selectMedio = document.getElementById('editIdMedios');
+        selectMedio.innerHTML = '<option value="">Cargando medios del proveedor...</option>';
+        selectMedio.disabled = true;
+
+        if (!idProveedor) {
+            selectMedio.innerHTML = '<option value="">Seleccione un proveedor primero</option>';
+            selectMedio.disabled = false;
+            return;
+        }
+
+        try {
+            const responseRelaciones = await fetch(`${SUPABASE_URL}/rest/v1/proveedor_medios?id_proveedor=eq.${idProveedor}&select=id_medio`, {
+                headers: {
+                    'apikey': SUPABASE_API_KEY,
+                    'Authorization': `Bearer ${SUPABASE_API_KEY}`
+                }
+            });
+            if (!responseRelaciones.ok) throw new Error('Error al obtener las relaciones proveedor-medio');
+            const relaciones = await responseRelaciones.json();
+
+            if (relaciones.length > 0) {
+                const idMedios = relaciones.map(rel => rel.id_medio);
+                const responseMedios = await fetch(`${SUPABASE_URL}/rest/v1/Medios?id=in.(${idMedios.join(',')})&select=*`, {
+                    headers: {
+                        'apikey': SUPABASE_API_KEY,
+                        'Authorization': `Bearer ${SUPABASE_API_KEY}`
+                    }
+                });
+                if (!responseMedios.ok) throw new Error('Error al obtener los medios');
+                const medios = await responseMedios.json();
+
+                selectMedio.innerHTML = '';
+                medios.forEach(medio => {
+                    const option = document.createElement('option');
+                    option.value = medio.id;
+                    option.textContent = medio.NombredelMedio;
+                    selectMedio.appendChild(option);
+                });
+            } else {
+                selectMedio.innerHTML = '<option value="">No hay medios disponibles para este proveedor</option>';
+            }
+        } catch (error) {
+            console.error('Error al cargar medios:', error);
+            selectMedio.innerHTML = '<option value="">Error al cargar medios</option>';
+        } finally {
+            selectMedio.disabled = false;
+        }
+    }
+
+    // Función para calcular el Valor Bruto y Total
+    function calcularValores() {
+        const valorNeto = parseFloat(document.getElementById('editValorNeto').value) || 0;
+        const valorBruto = Math.round(valorNeto * 1.19);
+        const descuento = parseFloat(document.getElementById('editDescuento1').value) || 0;
+        const valorTotal = Math.max(0, valorBruto - descuento);
+
+        document.getElementById('editValorBruto').value = valorBruto;
+        document.getElementById('editValorTotal').value = valorTotal;
+    }
+
+    // Función para obtener el siguiente número de contrato
+    function getNextContractNumber() {
+        fetch(`${SUPABASE_URL}/rest/v1/Contratos?select=num_contrato&order=num_contrato.desc&limit=1`, {
+            headers: {
+                "apikey": SUPABASE_API_KEY,
+                "Authorization": `Bearer ${SUPABASE_API_KEY}`
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            let nextNumber = 1;
+            if (data.length > 0 && data[0].num_contrato) {
+                nextNumber = parseInt(data[0].num_contrato) + 1;
+            }
+            document.getElementById('editNumContrato').value = nextNumber;
+        })
+        .catch(error => {
+            console.error("Error al obtener el siguiente número de contrato:", error);
+            document.getElementById('editNumContrato').value = 1; // Valor por defecto en caso de error
+        });
+    }
+    // Inicializar los manejadores de eventos cuando se abre el modal
+    const modal = document.getElementById('modalEditContrato');
+    if (modal) {
+        modal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const contratoId = button.getAttribute('data-contrato-id');
+            console.log('ID del contrato a editar:', contratoId);
+            loadContratoData(contratoId);
+        });
+    }
+
+    // Agregar el event listener al botón de editar contrato
+    const btnEditContrato = document.getElementById('btn-edit-contrato');
+    if (btnEditContrato) {
+        btnEditContrato.addEventListener('click', submitForm);
+    }
+
+    // Agregar event listeners para el cálculo automático
+    document.getElementById('editValorNeto').addEventListener('input', calcularValores);
+    document.getElementById('editDescuento1').addEventListener('input', calcularValores);
+
+    // Event listener para cargar productos cuando cambia el cliente
+    const selectCliente = document.getElementById('editIdCliente');
+    if (selectCliente) {
+        selectCliente.addEventListener('change', function() {
+            cargarProductoCliente(this.value);
+        });
+    }
+
+    // Event listener para filtrar medios cuando cambia el proveedor
+    const selectProveedor = document.getElementById('editIdProveedor');
+    if (selectProveedor) {
+        selectProveedor.addEventListener('change', function() {
+            filtrarMediosProveedor(this.value);
+        });
+    }
+
+    // Llamar a getNextContractNumber cuando se abre el modal de edición
+    // (solo si el campo está vacío, para no sobrescribir contratos existentes)
+    modal.addEventListener('show.bs.modal', function () {
+        const numContratoField = document.getElementById('editNumContrato');
+        if (!numContratoField.value) {
+            getNextContractNumber();
+        }
+    });
+
+})();
+</script>
