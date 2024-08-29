@@ -5,6 +5,10 @@ session_start();
 include 'querys/qcontratos.php';
 include 'componentes/header.php';
 include 'componentes/sidebar.php';
+
+
+
+
 ?>
 <!-- Main Content -->
       <div class="main-content">
@@ -77,7 +81,7 @@ include 'componentes/sidebar.php';
     </div></td>
     <td>
       <a class="btn btn-primary micono" href="views/viewContrato.php?id=<?php echo $contrato['id']; ?>" data-toggle="tooltip" title="Ver Contrato"><i class="fas fa-eye "></i></a>
-      <button type="button" class="btn btn-success micono" data-bs-toggle="modal" data-bs-target="#actualizarcontrato" data-idcontrato="<?php echo $contrato['id']; ?>"><i class="fas fa-pencil-alt"></i></button>
+      <button type="button" class="btn btn-success micono" data-bs-toggle="modal" data-bs-target="#modalEditContrato" data-contrato-id="<?php echo $contrato['id']; ?>"><i class="fas fa-pencil-alt"></i></button>
 
 
                                             
@@ -100,7 +104,9 @@ include 'componentes/sidebar.php';
       </div>
 
 <script src="assets/js/toggleContratos.js"></script>
+<script src="assets/js/editContrato.js"></script>
       <?php include 'componentes/settings.php'; ?>
       <?php include 'querys/modulos/modalAddContrato.php'; ?>
+      <?php include 'querys/modulos/modalEditContrato.php'; ?>
       <?php include 'componentes/footer.php'; ?>
       
