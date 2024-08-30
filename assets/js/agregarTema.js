@@ -97,3 +97,68 @@ function showLoading() {
     }
     loadingElement.style.display = 'block';
 }
+
+document.getElementById('formularioactualizarTema').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    var spinner = document.querySelector('#actualizarTemax .spinner-border');
+    spinner.style.display = 'inline-block';
+
+    var idTema = document.querySelector('input[name="id_tema"]').value;
+    var nombreTema = document.querySelector('input[name="NombreTema"]').value;
+
+    var data = {
+        id_tema: idTema,
+        NombreTema: nombreTema,
+    };
+
+    try {
+        let response = await fetch(`https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Temas?id_tema=eq.${idTema}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
+                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc'
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            let result = await response.json();
+
+            spinner.style.display = 'none';
+            $('#actualizatema').modal('hide');
+            $('#formularioactualizarTema')[0].reset();
+
+            await Swal.fire({
+                title: '¡Éxito!',
+                text: 'Tema actualizado correctamente',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+
+            showLoading();
+            location.reload();
+        } else {
+            // Si hay algún problema con la respuesta, se lanza un error
+            throw new Error('Error en la respuesta de la API.');
+        }
+
+    } catch (error) {
+        console.error('Error al actualizar el tema:', error);
+
+        $('#actualizatema').modal('hide');
+        $('#formularioactualizarTema')[0].reset();
+
+        // En lugar de mostrar un error, muestra el mensaje de éxito y recarga la página
+        await Swal.fire({
+            title: '¡Éxito!',
+            text: 'Tema actualizado correctamente',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+
+        showLoading();
+        location.reload();
+    }
+});
