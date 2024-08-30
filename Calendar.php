@@ -11,33 +11,11 @@ include 'componentes/header.php';
 include 'querys/qcontratos.php';
 include 'componentes/sidebar.php';
 
-// Asegúrate de que $mesesMap y $aniosMap estén disponibles
-// Si no lo están, inicialízalos con datos de prueba
+// Verificar si $mesesMap y $aniosMap están disponibles
 if (!isset($mesesMap) || !isset($aniosMap)) {
-    $mesesMap = [
-        1 => ['Id' => 1, 'Nombre' => 'Enero'],
-        2 => ['Id' => 2, 'Nombre' => 'Febrero'],
-        3 => ['Id' => 3, 'Nombre' => 'Marzo'],
-        4 => ['Id' => 4, 'Nombre' => 'Abril'],
-        5 => ['Id' => 5, 'Nombre' => 'Mayo'],
-        6 => ['Id' => 6, 'Nombre' => 'Junio'],
-        7 => ['Id' => 7, 'Nombre' => 'Julio'],
-        8 => ['Id' => 8, 'Nombre' => 'Agosto'],
-        9 => ['Id' => 9, 'Nombre' => 'Septiembre'],
-        10 => ['Id' => 10, 'Nombre' => 'Octubre'],
-        11 => ['Id' => 11, 'Nombre' => 'Noviembre'],
-        12 => ['Id' => 12, 'Nombre' => 'Diciembre']
-    ];
-    $aniosMap = [
-        1 => ['id' => 1, 'years' => 2024],
-        2 => ['id' => 2, 'years' => 2025],
-        3 => ['id' => 3, 'years' => 2026]
-    ];
+    die("Error: No se pudieron obtener los datos de meses y años.");
 }
 
-// Credenciales de Supabase (asegúrate de proteger estas credenciales adecuadamente)
-//$supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc';
-//$supabaseBearerToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9zZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc';
 ?>
 
 <style>
@@ -191,43 +169,62 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function enviarDatos() {
-    const datos = recopilarDatos();
-    console.log('Datos a enviar:', JSON.stringify(datos));
+        const datos = recopilarDatos();
+        console.log('Datos a enviar:', JSON.stringify(datos));
 
-    fetch('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/json', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
-            'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
-            'Prefer': 'return=minimal'
-        },
-        body: JSON.stringify(datos)
-    })
-    .then(response => {
-        console.log('Respuesta completa:', response);
-        if (!response.ok) {
-            return response.text().then(text => {
-                throw new Error(`HTTP error! status: ${response.status}, message: ${text}`);
+        fetch('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/json', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
+                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
+                'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify(datos)
+        })
+        .then(response => {
+            console.log('Respuesta completa:', response);
+            if (!response.ok) {
+                return response.text().then(text => {
+                    throw new Error(`HTTP error! status: ${response.status}, message: ${text}`);
+                });
+            }
+            return response.text();
+        })
+        .then(data => {
+            console.log('Respuesta del servidor:', data);
+            if (data === '' || data === '{}') {
+                console.log('Datos guardados con éxito');
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: 'Los datos se han guardado correctamente.',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.reload(); // Recarga la página
+                    }
+                });
+            } else {
+                console.log('Respuesta inesperada del servidor');
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Respuesta inesperada del servidor. Por favor, verifica los logs.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error al guardar los datos:', error);
+            Swal.fire({
+                title: 'Error',
+                text: 'Error al guardar los datos: ' + error.message,
+                icon: 'error',
+                confirmButtonText: 'OK'
             });
-        }
-        return response.text();
-    })
-    .then(data => {
-        console.log('Respuesta del servidor:', data);
-        if (data === '' || data === '{}') {
-            console.log('Datos guardados con éxito');
-            alert('Datos guardados correctamente');
-        } else {
-            console.log('Respuesta inesperada del servidor');
-            alert('Respuesta inesperada del servidor. Por favor, verifica los logs.');
-        }
-    })
-    .catch(error => {
-        console.error('Error al guardar los datos:', error);
-        alert('Error al guardar los datos: ' + error.message);
-    });
-}
+        });
+    }
 
     mesSelector.addEventListener('change', actualizarCalendario);
     anioSelector.addEventListener('change', actualizarCalendario);
@@ -241,4 +238,3 @@ document.addEventListener('DOMContentLoaded', function() {
 <?php include 'componentes/settings.php'; ?>
 <script src="<?php echo $ruta; ?>assets/js/app.min.js"></script>
 <?php include 'componentes/footer.php'; ?>
-
