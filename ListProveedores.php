@@ -201,6 +201,7 @@ include 'componentes/sidebar.php';
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
+                                    
                                     <label class="labelforms" for="codigo">Nombre Identificador</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
