@@ -55,7 +55,7 @@ include 'componentes/sidebar.php';
                                             <td><?php echo $tema['rubro']; ?></td>
                                             <td><?php echo !empty($campaignsMap[$tema['Id_campana']]['NombreCampania']) ? htmlspecialchars($campaignsMap[$tema['Id_campana']]['NombreCampania']) : 'No hay campaña vinculada'; ?></td>
                                             <td><?php echo $tema['color']; ?></td>
-                                            <td><a href="#" class="btn btn-primary">Detail</a></td>
+                                            <td><a class="btn btn-success micono"  data-bs-toggle="modal" data-bs-target="#actualizatema" data-nombretema="<?php echo $tema['NombreTema']; ?>"  data-idtema="<?php echo $tema['id_tema']; ?>" onclick="loadTema(this)" ><i class="fas fa-pencil-alt"></i></a></td>
                                         </tr>
                                         <?php endforeach; ?>
                                     </tbody>
@@ -68,6 +68,52 @@ include 'componentes/sidebar.php';
         </div>
     </section>
 </div>
+
+
+<div class="modal fade" id="actualizatema" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <!-- Alerta para mostrar el resultado de la actualización -->
+                <div id="updateAlert" class="alert" style="display:none;" role="alert"></div>
+
+                <form id="formularioactualizarTema">
+                    <!-- Campos del formulario -->
+                    <div>
+                        <h3 class="titulo-registro mb-3">Agregar Tema</h3>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                <input class="form-control"  name="id_tema">
+                              
+                                    <label class="labelforms" for="codigo">Nombre de Tema</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                        </div>
+                                        <input class="form-control" placeholder="Nombre de Tema" name="NombreTema">
+                                    </div>
+
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <div class="d-flex justify-content-end mt-3">
+                        <button class="btn btn-primary btn-lg rounded-pill" type="submit" id="actualizarTemax">
+                            <span class="btn-txt">Guardar Tema</span>
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display:none;"></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <div class="modal fade" id="agregartema" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -201,6 +247,20 @@ include 'componentes/sidebar.php';
 </div>
 <!-- Script para Mostrar/Ocultar Campos según el Medio Seleccionado -->
 <script>
+    function loadTema(button) {
+    // Obtener el ID del tema desde el atributo data-idproveedor del botón
+    var idTema = button.getAttribute('data-idtema');
+    
+    // Obtener los demás datos del botón (si los tienes)
+    var nombreTema = button.getAttribute('data-nombretema');
+    
+    // Cargar los datos en los campos del formulario del modal
+    document.querySelector('#formularioactualizarTema input[name="id_tema"]').value = idTema;
+    document.querySelector('#formularioactualizarTema input[name="NombreTema"]').value = nombreTema;
+
+    // Mostrar el modal (opcional, ya que el data-bs-toggle lo maneja)
+   
+}
 document.addEventListener('DOMContentLoaded', function() {
     // Datos de medios proporcionados por PHP
     const mediosData = <?php echo json_encode($mediosMap); ?>;

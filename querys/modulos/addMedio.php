@@ -55,7 +55,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $codigo = $_POST['codigo'] ?? '';
     $idClasificacion = $_POST['Id_Clasificacion'] ?? '';
 
-    error_log("Datos procesados: nombre=$nombreDelMedio, codigo=$codigo, clasificacion=$idClasificacion");
+    // Valores de los checkboxes (pueden ser 'on' o no estar presentes)
+    $duracion = isset($_POST['duracion']) ? true : false;
+    $codigo_megatime = isset($_POST['codigo_megatime']) ? true : false;
+    $color = isset($_POST['color']) ? true : false;
+    $calidad = isset($_POST['calidad']) ? true : false;
+    $cooperado = isset($_POST['cooperado']) ? true : false;
+    $rubro = isset($_POST['rubro']) ? true : false;
+
+    error_log("Datos procesados: nombre=$nombreDelMedio, codigo=$codigo, clasificacion=$idClasificacion, duracion=$duracion, codigo_megatime=$codigo_megatime, color=$color, calidad=$calidad, cooperado=$cooperado, rubro=$rubro");
 
     // Validación básica
     if (empty($nombreDelMedio) || empty($codigo) || empty($idClasificacion)) {
@@ -66,7 +74,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $datosNuevoMedio = [
         'NombredelMedio' => $nombreDelMedio,
         'codigo' => $codigo,
-        'Id_Clasificacion' => $idClasificacion
+        'Id_Clasificacion' => $idClasificacion,
+        'duracion' => $duracion,
+        'codigo_megatime' => $codigo_megatime,
+        'color' => $color,
+        'calidad' => $calidad,
+        'cooperado' => $cooperado,
+        'rubro' => $rubro
     ];
 
     $url = SUPABASE_URL . "/rest/v1/Medios";

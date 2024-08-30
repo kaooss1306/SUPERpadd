@@ -52,19 +52,32 @@ header('Content-Type: application/json');
 
 error_log("Método de solicitud: " . $_SERVER["REQUEST_METHOD"]);
 error_log("Datos POST recibidos: " . print_r($_POST, true));
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id = $_POST['id'] ?? '';
     $nombreDelMedio = $_POST['NombredelMedio'] ?? '';
     $codigo = $_POST['codigo'] ?? '';
     $idClasificacion = $_POST['Id_Clasificacion'] ?? '';
+    
+    // Obtener los valores de los checkboxes
+    $duracion = isset($_POST['duracion']) ? true : false;
+    $codigo_megatime = isset($_POST['codigo_megatime']) ? true : false;
+    $color = isset($_POST['color']) ? true : false;
+    $calidad = isset($_POST['calidad']) ? true : false;
+    $cooperado = isset($_POST['cooperado']) ? true : false;
+    $rubro = isset($_POST['rubro']) ? true : false;
 
-    error_log("Datos procesados: id=$id, nombre=$nombreDelMedio, codigo=$codigo, clasificacion=$idClasificacion");
+    error_log("Datos procesados: id=$id, nombre=$nombreDelMedio, codigo=$codigo, clasificacion=$idClasificacion, duracion=$duracion, codigo_megatime=$codigo_megatime, color=$color, calidad=$calidad, cooperado=$cooperado, rubro=$rubro");
 
     $datosActualizados = [
         'NombredelMedio' => $nombreDelMedio,
         'codigo' => $codigo,
-        'Id_Clasificacion' => $idClasificacion
+        'Id_Clasificacion' => $idClasificacion,
+        'duracion' => $duracion,
+        'codigo_megatime' => $codigo_megatime,
+        'color' => $color,
+        'calidad' => $calidad,
+        'cooperado' => $cooperado,
+        'rubro' => $rubro
     ];
 
     $url = SUPABASE_URL . "/rest/v1/Medios?id=eq.$id";
