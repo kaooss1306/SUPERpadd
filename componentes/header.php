@@ -47,7 +47,7 @@ $current_file = basename($_SERVER['PHP_SELF']);
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/fontawesome.min.css">
 
-  
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 
   <link rel="stylesheet" href="<?php echo $ruta; ?>assets/css/style.css">
   <link rel="stylesheet" href="<?php echo $ruta; ?>assets/css/components.css">

@@ -77,8 +77,8 @@ foreach ($contratos as $contrato) {
         'idCliente' => $contrato['IdCliente']
     ];
 }
-include 'componentes/header.php';
-include 'componentes/sidebar.php';
+include '../../componentes/header.php';
+include '../../componentes/sidebar.php';
 ?>
 <style>
 
@@ -123,79 +123,7 @@ include 'componentes/sidebar.php';
 </style>
 <div class="main-content">
     <section class="section">
-        <div class="section-body">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            
-                            <div class="card-header milinea">
-                            <div class="titulox"><h4>Listado de Planes</h4></div>
-                            <div class="agregar"><a  href="querys/modulos/addPlan.php" class="btn btn-primary micono"  ><i class="fas fa-plus-circle"></i> Agregar Plan</a>
-                            </div>
-                        </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-striped" id="table-1">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Nombre Contrato</th>
-                                            <th>Cliente</th>
-                                            <th>Nombre plan</th>
-                                            <th>Mes</th>
-                                            <th>Año</th>
-                                            <th>Estado</th>
-                                            <th>Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                <?php foreach ($planes as $plan): ?>
-<tr>
-    <td><?php echo $plan['id_planes_publicidad']; ?></td>
-    <td><?php echo isset($contratosMap[$plan['id_contrato']]) ? $contratosMap[$plan['id_contrato']]['NombreContrato'] : 'N/A'; ?></td>
-    <td><?php echo isset($contratosMap[$plan['id_contrato']]) ? $clientesMap[$plan['id_contrato']]['nombreCliente'] : 'N/A'; ?></td>
-    <td><?php echo $plan['NombrePlan']; ?></td>
-    <td><?php echo isset($mesesMap[$plan['id_Mes']]) ? $mesesMap[$plan['id_Mes']]['Nombre'] : 'N/A'; ?></td>
-    <td><?php echo isset($anosMap[$plan['id_Anio']]) ? $anosMap[$plan['id_Anio']]['years'] : 'N/A'; ?></td>
-    <td>
-    <div class="alineado">
-    <label class="custom-switch mt-2" data-toggle="tooltip" 
-           title="<?php echo $plan['estado'] == 1 ? 'Desactivar plan' : 'Activar plan'; ?>">
-        <input type="checkbox" name="custom-switch-checkbox-<?php echo $plan['id_planes_publicidad']; ?>" 
-               class="custom-switch-input estado-switch" 
-               data-id="<?php echo $plan['id_planes_publicidad']; ?>"
-               data-tipo="plan"
-               <?php echo $plan['estado'] == 1 ? 'checked' : ''; ?>>
-        <span class="custom-switch-indicator"></span>
-    </label>
-</div>
-</td>
-<td><a href="#" data-toggle="tooltip" title="Ver Cliente"><i class="fas fa-eye btn btn-primary micono"></i></a> <a href="#" data-toggle="tooltip" title="Editar Cliente"><i class="fas fa-pencil-alt btn btn-success micono"></i></a> <a href="#" data-toggle="tooltip" title="Eliminar Cliente"><i class="fas fa-trash-alt btn btn-danger micono"></i></a></td>
-                                       
-</tr>
-<?php endforeach; ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-</div>
-
-
-<div class="modal fade" id="agregarplan" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-body">
-                <!-- Alerta para mostrar el resultado de la actualización -->
-                <div id="updateAlert" class="alert" style="display:none;" role="alert"></div>
-
-                <form id="formularioTema">
+    <form id="formularioTema">
                     <!-- Campos del formulario -->
                     <div>
                         <h3 class="titulo-registro mb-3">Agregar Tema</h3>
@@ -276,15 +204,14 @@ include 'componentes/sidebar.php';
             
                     <div class="d-flex justify-content-end mt-3">
                         <button class="btn btn-primary btn-lg rounded-pill" type="submit" id="agregarTemax">
-                            <span class="btn-txt">Guardar Tema</span>
+                            <span class="btn-txt">Guardar Plan</span>
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display:none;"></span>
                         </button>
                     </div>
                 </form>
-            </div>
-        </div>
-    </div>
+    </section>
 </div>
+
 
 <script>
 const clientesMap = <?php echo json_encode($clientesMap); ?>;
@@ -414,7 +341,7 @@ document.addEventListener('click', function(event) {
 </script>
 
 
-<?php include 'componentes/settings.php'; ?>
+<?php include '../../componentes/settings.php'; ?>
 
 
-<?php include 'componentes/footer.php'; ?>
+<?php include '../../componentes/footer.php'; ?>
