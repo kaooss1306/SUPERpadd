@@ -78,106 +78,6 @@ include 'componentes/sidebar.php';
     </section>
 </div>
 
-
-<!-- Modal HTML -->
-<!-- Modal HTML -->
-<!-- Modal HTML -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="formModal">EDITAR MEDIO</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <!-- Alerta para mostrar el resultado de la actualización -->
-                <div id="updateAlert" class="alert" style="display:none;" role="alert"></div>
-                
-                <form id="updateMedioForm">
-                    <input type="hidden" name="id" id="id">
-
-                    <div class="form-group">
-                        <label for="NombredelMedio">Nombre del Medio</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-caret-square-right"></i></span>
-                            </div>
-                            <input type="text" class="form-control" id="NombredelMedio" name="NombredelMedio">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="codigo">Código</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-barcode"></i></span>
-                            </div>
-                            <input type="text" class="form-control" id="codigo" name="codigo">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="Id_Clasificacion">Clasificación</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-indent"></i></span>
-                            </div>
-                            <select class="form-control" id="Id_Clasificacion" name="Id_Clasificacion">
-                                <?php foreach ($clasifiacionmedios as $clasificacion): ?>
-                                    <option value="<?php echo $clasificacion['id_clasificacion_medios']; ?>">
-                                        <?php echo htmlspecialchars($clasificacion['NombreClasificacion']); ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Checkboxes -->
-                    <div class="row">
-                        <div class="col">
-                            <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" id="duracion" name="duracion">
-                                <label class="form-check-label" for="duracion">Duración</label>
-                            </div>
-                            <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" id="codigo_megatime" name="codigo_megatime">
-                                <label class="form-check-label" for="codigo_megatime">Código Megatime</label>
-                            </div>
-                            <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" id="color" name="color">
-                                <label class="form-check-label" for="color">Color</label>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" id="calidad" name="calidad">
-                                <label class="form-check-label" for="calidad">Calidad</label>
-                            </div>
-                            <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" id="cooperado" name="cooperado">
-                                <label class="form-check-label" for="cooperado">Cooperado</label>
-                            </div>
-                            <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" id="rubro" name="rubro">
-                                <label class="form-check-label" for="rubro">Rubro</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-//modal de add Medio
-
-
 <div class="modal fade" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -269,6 +169,105 @@ include 'componentes/sidebar.php';
 </div>
 
 
+<!-- Modal HTML -->
+<!-- Modal HTML -->
+<!-- Modal HTML -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="formModal">EDITAR MEDIO</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Alerta para mostrar el resultado de la actualización -->
+                <div id="updateAlert" class="alert" style="display:none;" role="alert"></div>
+                
+                <form id="updateMedioForm">
+                    <input type="hidden" name="id" id="id">
+
+                    <div class="form-group">
+                        <label for="NombredelMedio">Nombre del Medio</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-caret-square-right"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="NombredelMedio2" name="NombredelMedio2">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="codigo2">Código</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-barcode"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="codigo2" name="codigo2">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Id_Clasificacion2">Clasificación</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-indent"></i></span>
+                            </div>
+                            <select class="form-control" id="Id_Clasificacion2" name="Id_Clasificacion2">
+                                <?php foreach ($clasifiacionmedios as $clasificacion): ?>
+                                    <option value="<?php echo $clasificacion['id_clasificacion_medios']; ?>">
+                                        <?php echo htmlspecialchars($clasificacion['NombreClasificacion']); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Checkboxes -->
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="duracion2" name="duracion2">
+                                <label class="form-check-label" for="duracion2">Duración</label>
+                            </div>
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="codigo_megatime2" name="codigo_megatime2">
+                                <label class="form-check-label" for="codigo_megatime2">Código Megatime</label>
+                            </div>
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="color2" name="color2">
+                                <label class="form-check-label" for="color2">Color</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="calidad2" name="calidad2">
+                                <label class="form-check-label" for="calidad2">Calidad</label>
+                            </div>
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="cooperado2" name="cooperado2">
+                                <label class="form-check-label" for="cooperado2">Cooperado</label>
+                            </div>
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="rubro2" name="rubro2">
+                                <label class="form-check-label" for="rubro2">Rubro</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+//modal de add Medio
+
+
+
 
 
 
@@ -293,17 +292,17 @@ function loadMedio(button) {
 
             // Llenar los campos del formulario del modal
             document.querySelector('#updateMedioForm input[name="id"]').value = medio.id;
-            document.querySelector('#updateMedioForm input[name="NombredelMedio"]').value = medio.NombredelMedio;
-            document.querySelector('#updateMedioForm input[name="codigo"]').value = medio.codigo;
-            document.querySelector('#updateMedioForm select[name="Id_Clasificacion"]').value = medio.Id_Clasificacion;
+            document.querySelector('#updateMedioForm input[name="NombredelMedio2"]').value = medio.NombredelMedio;
+            document.querySelector('#updateMedioForm input[name="codigo2"]').value = medio.codigo;
+            document.querySelector('#updateMedioForm select[name="Id_Clasificacion2"]').value = medio.Id_Clasificacion;
 
             // Configurar checkboxes
-            document.querySelector('#updateMedioForm input[name="duracion"]').checked = medio.duracion;
-            document.querySelector('#updateMedioForm input[name="codigo_megatime"]').checked = medio.codigo_megatime;
-            document.querySelector('#updateMedioForm input[name="color"]').checked = medio.color;
-            document.querySelector('#updateMedioForm input[name="calidad"]').checked = medio.calidad;
-            document.querySelector('#updateMedioForm input[name="cooperado"]').checked = medio.cooperado;
-            document.querySelector('#updateMedioForm input[name="rubro"]').checked = medio.rubro;
+            document.querySelector('#updateMedioForm input[name="duracion2"]').checked = medio.duracion;
+            document.querySelector('#updateMedioForm input[name="codigo_megatime2"]').checked = medio.codigo_megatime;
+            document.querySelector('#updateMedioForm input[name="color2"]').checked = medio.color;
+            document.querySelector('#updateMedioForm input[name="calidad2"]').checked = medio.calidad;
+            document.querySelector('#updateMedioForm input[name="cooperado2"]').checked = medio.cooperado;
+            document.querySelector('#updateMedioForm input[name="rubro2"]').checked = medio.rubro;
 
             // Mostrar el modal
             $('#exampleModal').modal('show');
