@@ -7,111 +7,252 @@ include '../../componentes/header.php';
 include '../../componentes/sidebar.php';
 
 ?>
+<div class="main-content">
 
-<style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 10px; font-size: 14px; }
-        .order-form { border: 1px solid #000; padding: 20px; max-width: 1000px; margin: auto; }
-        .header { background-color: #f0f0f0; padding: 10px; text-align: center; }
-        .header p { margin: 0; }
-        .header h1 { margin: 10px 0; font-size: 28px; }
-        .subheader { display: flex; justify-content: space-between; font-weight: bold; margin: 10px 0; }
-        .subheader .internet { color: blue; }
-        .anula { color: red; text-align: center; font-weight: bold; margin: 10px 0; font-size: 16px; }
-        .client-provider { display: flex; justify-content: space-between; }
-        .client, .provider { width: 48%; }
-        .box { border: 1px solid #000; padding: 5px; margin-top: 10px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 12px; }
-        th, td { border: 1px solid #000; padding: 5px; text-align: center; }
-        .days-header { font-size: 10px; }
-        .days-content { font-size: 12px; }
-        .totals { text-align: right; margin-top: 20px; font-size: 14px; }
-        .footer { text-align: right; margin-top: 30px; font-size: 14px; color: blue; }
-        .label { font-weight: bold; display: inline-block; width: 120px; }
-    </style>
-</head>
-<body>
-    <div class="order-form">
-        <div class="header">
-            <p>38.818.666-6</p>
-            <p>(0000000000)</p>
-            <h1>ORDEN DE PUBLICIDAD 1</h1>
-        </div>
-        <div class="subheader">
-            <span class="internet">INTERNET</span>
-            <span>ABRIL / 2024</span>
-        </div>
-        <p class="anula">ANULA Y REEMPLAZA ORDEN N°0019602</p>
-        
-        <div class="client-provider">
-            <div class="client">
-                <p><span class="label">CLIENTE:</span> RAZÓN SOCIAL PRUEBA</p>
-                <p><span class="label">RUT:</span> 38.818.666-6</p>
-                <p><span class="label">DIRECCIÓN:</span> CALLE FALSA S/N</p>
-                <p><span class="label">COMUNA:</span> ARICA</p>
-                <p><span class="label">PRODUCTO:</span> PRODUCTO PRUEBA 2</p>
-                <p><span class="label">AÑO:</span> 2024</p>
-                <p><span class="label">MES:</span> ABRIL</p>
-                <p><span class="label">N°DE CONTRATO:</span> CONTRATO PRUEBA</p>
-                <p><span class="label">FORMA DE PAGO:</span> CONTADO</p>
-                <p><span class="label">TIPO ITEM:</span> AUSPICIO</p>
-            </div>
-            <div class="provider">
-                <p><span class="label">PROVEEDOR:</span> PROVEEDOR DE PRUEBA</p>
-                <p><span class="label">RUT:</span> 56.963.301-K</p>
-                <p><span class="label">SOPORTE:</span> <span style="color: blue;">PROVEEDOR DE PRUEBA</span></p>
-                <p><span class="label">DIRECCIÓN:</span> CALLE RIELES 1820</p>
-                <p><span class="label">COMUNA:</span> CHIMBARONGO</p>
-                <p><span class="label">CAMPAÑA:</span> CAMPAÑA PRUEBA</p>
-                <p><span class="label">PLAN DE MEDIOS:</span> PLAN PRUEBA 2</p>
-                <div class="box">
-                    <p>DESCUENTOS DE CTTO:0.00 0.00 0.00</p>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="<?php echo $ruta; ?>dashboard">Home</a></li>
+        <li class="breadcrumb-item"><a href="<?php echo $ruta; ?>ListCampaign.php">Ver Campañas</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Orden</li>
+    </ol>
+</nav>
+<section class="section">
+    <div class="section-body">
+        <div class="row mt-sm-4">
+            <div class="col-12 col-md-12 col-lg-12">
+                <div class="card">
+                <div class="card-header milinea">
+                            <div class="titulox">
+                                <h4>Información de Orden</h4>
+                            </div>
+                            <div class="agregar"><a class="btn btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#modalAgregarCampania"><i class="fas fa-plus-circle"></i> Editar Orden</a></div>
+                        </div>
+                    <div class="card-body">
+                        <div class="author-box-center">
+                        <div class="contentable">
+<table class="espaciador" width="100%" border="0">
+  <tr>
+    <td width="33%">38.818.666-6</td>
+    <td class="titulot" width="33%"><div align="center">ORDEN DE PUBLICIDAD </div></td>
+    <td class="titulot2" width="34%">INTERNET - ABRIL 2024 </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="titulot3">Anula y reemplaza orden n&deg;0019602</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+
+    <td><strong>CLIENTE:</strong> RAZON SOCIAL PRUEBA<br>
+    <strong>RUT:</strong> 38.818.666-6<br>
+    <strong>DIRECCIÓN:</strong> CALLE FALSA S/N<br>
+    <strong>COMUNA:</strong> ARICA<br>
+    <strong>PRODUCTO:</strong> PRUEBA 2<br>
+    <strong>AÑO:</strong> 2024<br>
+    <strong>MES:</strong> ABRIL<br>
+    <strong>N° CONTRATO:</strong> 0012<br>
+    <strong>FORMA DE PAGO:</strong> CONTADO<br>
+    <strong>TIPO ITEM:</strong> PRUEBA</td>
+
+
+    <td style="text-align:center;"><strong>CAMPAÑA:</strong> CAMPAÑA DE PRUEBA<br>
+    <strong>PLAN DE MEDIOS:</strong> PLAN PRUEBA 2<br>
+    <div class="thebordex">
+    <strong>DESCUENTOS:</strong> ACA VALOR <br>
+</div>
+</td>
+
+
+    <td valign="top">
+    <strong>PROVEEDOR:</strong> PROVEEDOR DE PRUEBA<br>
+    <strong>RUT:</strong> 56.963.301-K<br>
+    <strong>SOPORTE:</strong> PROVEEDOR DE PRUEBA<br>
+    <strong>DIRECCIÓN:</strong> CALLE NUEVA 345<br>
+    <strong>COMUNA:</strong> CHIMBARONGO<br><br><br>
+    <div class="conborde">AGENCIA DE MEDIOS<br />
+    <strong>AGENCIA CREATIVA:</strong> AGENCIA DE PRUEBAS  </div>
+</td>
+  </tr>
+</table>
+<table width="100%" border="0">
+  <tr>
+    <td width="26%"><div class="formatotabla">
+      <table width="100%" border="1">
+        <tr>
+          <td><div align="center">FORMATO</div></td>
+          <td><div align="center">DETALLE</div></td>
+        </tr>
+        <tr>
+          <td><div align="center">TEMA: CARRUSEL </div></td>
+          <td><div align="center">- </div></td>
+        </tr>
+      </table>
+    </div></td>
+    <td width="45%"><div class="formatotabla">
+      <table width="100%" border="1">
+        <tr>
+          <td>LISTAR D&Iacute;AS </td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+        </tr>
+      </table>
+    </div></td>
+    <td width="29%">
+        <table width="100%" class="bordered-table">
+      <tr>
+        <td>Avisos </td>
+        <td>Bruto</td>
+        <td>Descto</td>
+        <td>Recargo</td>
+        <td>Tarifa</td>
+        <td>NETO </td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>2.117.847</td>
+        <td>0</td>
+        <td>0</td>
+        <td>2.117.847</td>
+        <td>1.800.000</td>
+      </tr>
+      
+    </table></td>
+  </tr>
+  <tr style="border:0px solid; ">
+    <td colspan="2">&nbsp;</td>
+    <td><table style="margin-top:30px;" width="100%" border="0">
+      <tr>
+        <td width="14%">&nbsp;</td>
+        <td width="43%"><strong>TOTAL NETO</strong> </td>
+        <td width="43%">$1.800.000</td>
+        </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><strong>IVA 19%</strong> </td>
+        <td>$342.000</td>
+        </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><strong>TOTAL ORDEN</strong> </td>
+        <td>$2.142.000</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+      <tr>
+
+        <td>&nbsp;</td>
+        <td colspan="2">
+        <br>    
+        <div class="thename">Miguel Llanos</div>
+        <div class="themailx"> miguel@prueba.cl</div>
+</td>
+
+        </tr>
+    </table></td>
+  </tr>
+</table>
+</div>
+
+                        </div>
+                    </div>
                 </div>
-                <div class="box">
-                    <p>Agencia de medios</p>
-                    <p>AGENCIA CREATIVA: AGENCIA DE PRUEBAS</p>
-                </div>
-            </div>
-        </div>
-        
-        <table>
-            <tr>
-                <th rowspan="2">Formato</th>
-                <th rowspan="2">Detalle</th>
-                <th class="days-header" colspan="30">1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30</th>
-                <th rowspan="2">Total Avl</th>
-                <th rowspan="2">Tarifa Bruto</th>
-                <th rowspan="2">Dcto1</th>
-                <th rowspan="2">Recargo</th>
-                <th rowspan="2">Tarifa Negociada</th>
-                <th rowspan="2">Total NETO</th>
-            </tr>
-            <tr>
-                <th class="days-header">Lu Ma Mi Ju Vi Sa Do Lu Ma Mi Ju Vi Sa Do Lu Ma Mi Ju Vi Sa Do Lu Ma Mi Ju Vi Sa Do Lu Ma</th>
-            </tr>
-            <tr>
-                <td>TEMA: CARRUSEL INFORMATIVO</td>
-                <td></td>
-                <td class="days-content">1 2 3 - 2 1 2 2 - - - - - - 2 2 - - - - - - - - - - - - - -</td>
-                <td>1 1</td>
-                <td>2.117.847</td>
-                <td>0.0000</td>
-                <td>0.0000</td>
-                <td>2.117.847</td>
-                <td>1.800.000</td>
-            </tr>
-        </table>
-        
-        <div class="totals">
-            <p><strong>TOTAL NETO $</strong> 1.800.000</p>
-            <p><strong>IVA 19%</strong> 342.000</p>
-            <p><strong>TOTAL ORDEN($)</strong> 2.142.000</p>
-        </div>
-        
-        <div class="footer">
-            <p>MATIAS FUENTES</p>
-            <p>matias.fuentes.2112@gmail.com</p>
+
+
         </div>
     </div>
+</section>
+<div class="settingSidebar">
+    <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
+    </a>
+    <div class="settingSidebar-body ps-container ps-theme-default">
+        <div class=" fade show active">
+            <div class="setting-panel-header">Setting Panel
+            </div>
+            <div class="p-15 border-bottom">
+                <h6 class="font-medium m-b-10">Select Layout</h6>
+                <div class="selectgroup layout-color w-50">
+                    <label class="selectgroup-item">
+                        <input type="radio" name="value" value="1" class="selectgroup-input-radio select-layout" checked>
+                        <span class="selectgroup-button">Light</span>
+                    </label>
+                    <label class="selectgroup-item">
+                        <input type="radio" name="value" value="2" class="selectgroup-input-radio select-layout">
+                        <span class="selectgroup-button">Dark</span>
+                    </label>
+                </div>
+            </div>
+            <div class="p-15 border-bottom">
+                <h6 class="font-medium m-b-10">Sidebar Color</h6>
+                <div class="selectgroup selectgroup-pills sidebar-color">
+                    <label class="selectgroup-item">
+                        <input type="radio" name="icon-input" value="1" class="selectgroup-input select-sidebar">
+                        <span class="selectgroup-button selectgroup-button-icon" data-bs-toggle="tooltip" data-original-title="Light Sidebar"><i class="fas fa-sun"></i></span>
+                    </label>
+                    <label class="selectgroup-item">
+                        <input type="radio" name="icon-input" value="2" class="selectgroup-input select-sidebar" checked>
+                        <span class="selectgroup-button selectgroup-button-icon" data-bs-toggle="tooltip" data-original-title="Dark Sidebar"><i class="fas fa-moon"></i></span>
+                    </label>
+                </div>
+            </div>
+            <div class="p-15 border-bottom">
+                <h6 class="font-medium m-b-10">Color Theme</h6>
+                <div class="theme-setting-options">
+                    <ul class="choose-theme list-unstyled mb-0">
+                        <li title="white" class="active">
+                            <div class="white"></div>
+                        </li>
+                        <li title="cyan">
+                            <div class="cyan"></div>
+                        </li>
+                        <li title="black">
+                            <div class="black"></div>
+                        </li>
+                        <li title="purple">
+                            <div class="purple"></div>
+                        </li>
+                        <li title="orange">
+                            <div class="orange"></div>
+                        </li>
+                        <li title="green">
+                            <div class="green"></div>
+                        </li>
+                        <li title="red">
+                            <div class="red"></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="p-15 border-bottom">
+                <div class="theme-setting-options">
+                    <label class="m-b-0">
+                        <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" id="mini_sidebar_setting">
+                        <span class="custom-switch-indicator"></span>
+                        <span class="control-label p-l-10">Mini Sidebar</span>
+                    </label>
+                </div>
+            </div>
+            <div class="p-15 border-bottom">
+                <div class="theme-setting-options">
+                    <label class="m-b-0">
+                        <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" id="sticky_header_setting">
+                        <span class="custom-switch-indicator"></span>
+                        <span class="control-label p-l-10">Sticky Header</span>
+                    </label>
+                </div>
+            </div>
+            <div class="mt-4 mb-4 p-3 align-center rt-sidebar-last-ele">
+                <a href="#" class="btn btn-icon icon-left btn-primary btn-restore-theme">
+                    <i class="fas fa-undo"></i> Restore Default
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
 
     <?php include '../../componentes/settings.php'; ?>
 

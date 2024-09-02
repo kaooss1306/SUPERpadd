@@ -370,3 +370,38 @@ body{
 .fc-today-button.fc-button.fc-state-default.fc-corner-left.fc-corner-right.fc-state-disabled {
   display: none !important;
 }
+.titulot {
+  font-size: 39px;
+}
+.titulot3 {
+  text-align: center;
+  color: red;
+  font-size: 20px;
+  font-weight: bold;
+}
+.titulot2 {
+  color: blue;
+  font-size: 20px;
+  font-weight: bold;
+}
+.espaciador {
+  margin-bottom: 35px;
+}
+.thebordex {
+  border: 1px solid;
+  margin: 20px 40px;
+  padding: 15px;
+}
+.thename {
+  color: blue;
+  font-size: 18px;
+  font-weight: bold;
+}
+.themailx {
+  font-size: 17px;
+  font-weight: bold;
+}
+.bordered-table td {
+  border: 1px solid black;
+  padding: 5px;
+}
