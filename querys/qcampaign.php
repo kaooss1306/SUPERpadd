@@ -32,7 +32,21 @@ $soportes  = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Sopor
 
 $anios = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Anios?select=*');
 
+$agencias = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Agencias?select=*');
 
+$productos = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Productos?select=*');
+
+$temas = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Temas?select=*');
+
+$planes = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/PlanesPublicidad?select=*');
+
+$anio = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Anios?select=*');
+
+$medios = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Medios?select=*');
+
+$ordenesCompra = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/OrdenDeCompra?select=*');
+
+$Anios = array_column($anio, 'years', 'id');
 // Crear un mapa completo de cliente
 $clientesMap = [];
 foreach ($clientes as $cliente) {
@@ -54,3 +68,43 @@ $aniosMap = [];
 foreach ($anios as $anio) {
     $aniosMap[$anio['id']] = $anio;
 }
+
+$agenciasMap = [];
+foreach ($agencias as $agencia) {
+    $agenciasMap[$agencia['id']] = $agencia;
+}
+
+$productosMap = [];
+
+foreach ($productos as $producto) {
+    $productosMap[$producto['id']] = $producto;
+}
+
+
+$temasMap = [];
+foreach ($temas as $tema) {
+    $temasMap[$tema['id_tema']] = $tema;
+}
+
+$planesMap = [];
+foreach ($planes as $plan) {
+    $planesMap[$plan['id_planes_publicidad']] = $plan;
+}
+
+$anioMap = [];
+
+foreach ($anios as $anio) {
+    $anioMap[$anio['id']] = $anio;
+}
+
+$mediosMap = [];
+
+foreach ($medios as $medio) {
+    $mediosMap[$medio['id']] = $medio;
+}
+
+$ordenesCompraMap = [];
+foreach ($ordenesCompra as $oc) {
+    $ordenesCompraMap[$oc['id_orden_compra']] = $oc;
+}
+
