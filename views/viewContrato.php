@@ -416,7 +416,6 @@ fas fa-barcode"></i></span>
 <?php include '../componentes/footer.php'; ?>
 
 <script>
-
 // Asegurarse de que este código se ejecute solo una vez
 (function() {
     if (window.hasRun) return;
@@ -424,6 +423,39 @@ fas fa-barcode"></i></span>
 
     const SUPABASE_URL = 'https://ekyjxzjwhxotpdfzcpfq.supabase.co';
     const SUPABASE_API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc';
+
+    // Función para mostrar la pantalla de carga
+    function showLoading() {
+        const loadingOverlay = document.createElement('div');
+        loadingOverlay.id = 'loadingOverlay';
+        loadingOverlay.style.position = 'fixed';
+        loadingOverlay.style.top = '0';
+        loadingOverlay.style.left = '0';
+        loadingOverlay.style.width = '100%';
+        loadingOverlay.style.height = '100%';
+        loadingOverlay.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
+        loadingOverlay.style.display = 'flex';
+        loadingOverlay.style.justifyContent = 'center';
+        loadingOverlay.style.alignItems = 'center';
+        loadingOverlay.style.zIndex = '9999';
+
+        const loadingImage = document.createElement('img');
+        loadingImage.src = "/assets/img/loading.gif";
+        loadingImage.alt = "Cargando...";
+        loadingImage.style.width = '220px';
+        loadingImage.style.height = '135px';
+
+        loadingOverlay.appendChild(loadingImage);
+        document.body.appendChild(loadingOverlay);
+    }
+
+    // Función para ocultar la pantalla de carga
+    function hideLoading() {
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        if (loadingOverlay) {
+            loadingOverlay.remove();
+        }
+    }
 
     // Función para obtener los datos del formulario
     function getFormData() {
@@ -523,6 +555,7 @@ fas fa-barcode"></i></span>
                     icon: 'success',
                     confirmButtonText: 'OK'
                 });
+                showLoading(); // Mostrar la pantalla de carga después del Sweet Alert
                 window.location.reload();
             } else {
                 const errorData = await response.json();
@@ -690,7 +723,7 @@ fas fa-barcode"></i></span>
 
     // Función para calcular el Valor Bruto y Total
     function calcularValores() {
-        const valorNeto = parseFloat(document.getElementById('editValorNeto').value) || 0;
+      const valorNeto = parseFloat(document.getElementById('editValorNeto').value) || 0;
         const valorBruto = Math.round(valorNeto * 1.19);
         const descuento = parseFloat(document.getElementById('editDescuento1').value) || 0;
         const valorTotal = Math.max(0, valorBruto - descuento);
@@ -720,6 +753,7 @@ fas fa-barcode"></i></span>
             document.getElementById('editNumContrato').value = 1; // Valor por defecto en caso de error
         });
     }
+
     // Inicializar los manejadores de eventos cuando se abre el modal
     const modal = document.getElementById('modalEditContrato');
     if (modal) {
@@ -764,6 +798,11 @@ fas fa-barcode"></i></span>
         if (!numContratoField.value) {
             getNextContractNumber();
         }
+    });
+
+    // Agregar un event listener para cuando la página haya terminado de cargar
+    window.addEventListener('load', function() {
+        hideLoading();
     });
 
 })();

@@ -15,16 +15,16 @@ include 'componentes/sidebar.php';
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-header">
+                       
                             <div class="card-header milinea">
                             <div class="titulox"><h4>Listado de Temas</h4></div>
                             <div class="agregar"><button type="button" class="btn btn-primary micono" data-bs-toggle="modal" data-bs-target="#agregartema"  ><i class="fas fa-plus-circle"></i> Agregar Tema</button>
                             </div>
-                        </div>
+                        
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-striped" id="table-1">
+                                <table class="table table-striped" id="tableExportadora">
                                     <thead>
                                         <tr>
                                             <th>ID</th>

@@ -60,6 +60,39 @@
         return true;
     }
 
+    // Función para mostrar la pantalla de carga
+    function showLoading() {
+        const loadingOverlay = document.createElement('div');
+        loadingOverlay.id = 'loadingOverlay';
+        loadingOverlay.style.position = 'fixed';
+        loadingOverlay.style.top = '0';
+        loadingOverlay.style.left = '0';
+        loadingOverlay.style.width = '100%';
+        loadingOverlay.style.height = '100%';
+        loadingOverlay.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
+        loadingOverlay.style.display = 'flex';
+        loadingOverlay.style.justifyContent = 'center';
+        loadingOverlay.style.alignItems = 'center';
+        loadingOverlay.style.zIndex = '9999';
+
+        const loadingImage = document.createElement('img');
+        loadingImage.src = "/assets/img/loading.gif";
+        loadingImage.alt = "Cargando...";
+        loadingImage.style.width = '220px';
+        loadingImage.style.height = '135px';
+
+        loadingOverlay.appendChild(loadingImage);
+        document.body.appendChild(loadingOverlay);
+    }
+
+    // Función para ocultar la pantalla de carga
+    function hideLoading() {
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        if (loadingOverlay) {
+            loadingOverlay.remove();
+        }
+    }
+
     // Función para enviar el formulario con PATCH
     async function submitForm(event) {
         event.preventDefault();
@@ -104,6 +137,11 @@
                     icon: 'success',
                     confirmButtonText: 'OK'
                 });
+                
+                // Mostrar la pantalla de carga
+                showLoading();
+                
+                // Recargar la página
                 window.location.reload();
             } else {
                 const errorData = await response.json();
@@ -268,8 +306,7 @@
             selectMedio.disabled = false;
         }
     }
-
-    // Función para calcular el Valor Bruto y Total
+    // Función para calcular el Valor Bruto y Total (continuación)
     function calcularValores() {
         const valorNeto = parseFloat(document.getElementById('editValorNeto').value) || 0;
         const valorBruto = Math.round(valorNeto * 1.19);
@@ -301,6 +338,7 @@
             document.getElementById('editNumContrato').value = 1; // Valor por defecto en caso de error
         });
     }
+
     // Inicializar los manejadores de eventos cuando se abre el modal
     const modal = document.getElementById('modalEditContrato');
     if (modal) {
@@ -345,6 +383,11 @@
         if (!numContratoField.value) {
             getNextContractNumber();
         }
+    });
+
+    // Agregar un event listener para cuando la página haya terminado de cargar
+    window.addEventListener('load', function() {
+        hideLoading();
     });
 
 })();

@@ -29,7 +29,7 @@
                 <li><a class="nav-link" href="<?php echo $ruta; ?>ListCampaign.php">Campañas</a></li>
                 <li><a class="nav-link" href="<?php echo $ruta; ?>ListTemas.php">Temas</a></li>
                 <li><a class="nav-link" href="<?php echo $ruta; ?>ListPlanes.php">Planes de Medios</a></li>
-                <li><a class="nav-link" href="<?php echo $ruta; ?>ListOrdenes.php">Órdenes de Compra</a></li>
+                <li><a class="nav-link" href="<?php echo $ruta; ?>ListOrdenes.php">Órdenes de Publicidad</a></li>
               </ul>
             </li>
             <li class="dropdown">
