@@ -130,19 +130,7 @@ include '../componentes/sidebar.php';
 
                                     </span>
                                 </p>
-                                <p class="clearfix">
-                                    <span class="float-start">
-                                        Planes
-                                    </span>
-                                    <span class="float-right text-muted">
-
-                                        <?php
-                                        $plan = $planesMap[$datosCampania['Id_Planes_Publicidad'] ?? '']['NombrePlan'];
-                                        echo $plan
-                                        ?>
-
-                                    </span>
-                                </p>
+                         
 
                                 <p class="clearfix">
                                     <span class="float-start">
