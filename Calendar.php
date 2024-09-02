@@ -100,8 +100,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const diasContainer = document.getElementById('diasContainer');
     const submitButton = document.getElementById('submitButton');
 
-    console.log('Selectores:', mesSelector, anioSelector);
-    console.log('Contenedor de días:', diasContainer);
 
     if (!mesSelector || !anioSelector || !diasContainer || !submitButton) {
         console.error('No se pudieron encontrar todos los elementos necesarios');
@@ -111,35 +109,41 @@ document.addEventListener('DOMContentLoaded', function() {
     const mesesMap = <?php echo json_encode($mesesMap); ?>;
     const aniosMap = <?php echo json_encode($aniosMap); ?>;
 
-    function actualizarCalendario() {
-        const mesId = parseInt(mesSelector.value);
-        const anioId = parseInt(anioSelector.value);
+    function inicializarCalendario() {
+    const matrizCalendario = calendarMap2[idCalendar] || [];
 
-        console.log('Mes seleccionado:', mesId, mesesMap[mesId]);
-        console.log('Año seleccionado:', anioId, aniosMap[anioId]);
+    if (matrizCalendario.length > 0) {
+        // Tomar el primer elemento de la matriz para el mes y año por defecto
+        const primerElemento = matrizCalendario[0];
+        const mes = primerElemento.mes;
+        const anio = primerElemento.anio;
 
-        const mes = parseInt(mesesMap[mesId]['Id']);
-        const anio = parseInt(aniosMap[anioId]['years']);
+        console.log('Inicializando con mes y año:', mes, anio);
 
-        console.log('Mes y año para cálculos:', mes, anio);
+        // Buscar el Id correspondiente en los mapas de meses y años
+        const mesId = Object.keys(mesesMap).find(key => parseInt(mesesMap[key].Id) === mes);
+        const anioId = Object.keys(aniosMap).find(key => parseInt(aniosMap[key].years) === anio);
 
-        const diasEnMes = new Date(anio, mes, 0).getDate();
-        console.log('Días en el mes:', diasEnMes);
+        console.log('Mes Id:', mesId, 'Año Id:', anioId);
 
-        diasContainer.innerHTML = '';
+        if (mesId !== undefined && anioId !== undefined) {
+            // Establecer los valores seleccionados en los selectores
+            mesSelector.value = mesId;
+            anioSelector.value = anioId;
 
-        for (let dia = 1; dia <= diasEnMes; dia++) {
-            const diaElement = document.createElement('div');
-            diaElement.className = 'dia';
-            diaElement.innerHTML = `
-                <div class="dia-numero">${dia}</div>
-                <input type="number" id="input-${anio}-${mes}-${dia}" />
-            `;
-            diasContainer.appendChild(diaElement);
+            console.log('Mes y año seleccionados automáticamente:', mesSelector.value, anioSelector.value);
+
+            // Actualizar el calendario con estos valores
+            actualizarCalendario();
+        } else {
+            console.error('No se pudo encontrar el mes y/o año en los mapas.');
         }
-
-        console.log('Calendario actualizado');
+    } else {
+        console.error('Matriz de calendario vacía para el ID:', idCalendar);
     }
+}
+
+    
 
     function recopilarDatos() {
         const mesId = parseInt(mesSelector.value);
@@ -229,9 +233,8 @@ document.addEventListener('DOMContentLoaded', function() {
     mesSelector.addEventListener('change', actualizarCalendario);
     anioSelector.addEventListener('change', actualizarCalendario);
     submitButton.addEventListener('click', enviarDatos);
-
-    console.log('Inicializando calendario');
-    actualizarCalendario();
+    inicializarCalendario();
+  
 });
 </script>
 

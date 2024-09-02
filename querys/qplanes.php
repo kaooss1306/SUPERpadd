@@ -28,6 +28,7 @@ $clientes = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Client
 $contratos = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Contratos?select=*');
 $planes = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/PlanesPublicidad?select=*');
 $anios = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Anios?select=*');
+$anios2 = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Anios?select=*');
 $meses = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Meses?select=*');
 $productos = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Productos?select=*');
 $soportes = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Soportes?select=*');
@@ -36,6 +37,16 @@ $clientes = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Client
 $contratos = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Contratos?select=*');
 $campania_temas = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/campania_temas?select=*');
 $temas = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Temas?select=*');
+$jsonData = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/json?select=*');
+$calendarMap2 = [];
+
+
+
+
+foreach ($jsonData as $calendar) {
+    // Aquí asumimos que `id_calendar` es único y usamos su valor como clave en nuestro mapa
+    $calendarMap2[$calendar['id_calendar']] = $calendar['matrizCalendario'];
+}
 $campaniaTemasMap = [];
 foreach ($campania_temas as $relacion) {
     $campaniaTemasMap[$relacion['id_campania']][] = $relacion['id_temas'];
@@ -52,14 +63,6 @@ foreach ($temas as $tema) {
 
 
 
-$mesesMap = [];
-foreach ($meses as $mes) {
-    $mesesMap[$mes['Id']] = $mes;
-}
-$anosMap = [];
-foreach ($anos as $anio) {
-    $anosMap[$anio['id']] = $anio;
-}
 $soportesMap = [];
 foreach ($soportes as $soporte) {
     $soportesMap[] = [
@@ -111,4 +114,28 @@ foreach ($campaigns as $campaign) {
         'nombreCampania' => $campaign['NombreCampania'],
         'idCliente' => $campaign['id_Cliente']
     ];
+}
+$productosMap2 = [];
+foreach ($productos as $producto) {
+    $productosMap2[$producto['id']] = $producto['NombreDelProducto'];
+}
+$clientesMap2 = [];
+foreach ($clientes as $cliente) {
+    $clientesMap2[$cliente['id_cliente']] = $cliente['nombreCliente'];
+}
+$contratosMap2 = [];
+foreach ($contratos as $contrato) {
+    $contratosMap2[$contrato['id']] = $contrato['NombreContrato'];
+}
+$soportesMap2 = [];
+foreach ($soportes as $soporte) {
+    $soportesMap2[$soporte['id_soporte']] = $soporte['nombreIdentficiador'];
+}
+$campaignsMap2 = [];
+foreach ($campaigns as $campaign) {
+    $campaignsMap2[$campaign['id_campania']] = $campaign['NombreCampania'];
+}
+$temasMap2 = [];
+foreach ($temas as $tema) {
+    $temasMap2[$tema['id_tema']] = $tema['NombreTema'];
 }
