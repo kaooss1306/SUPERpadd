@@ -116,6 +116,12 @@ include '../../componentes/sidebar.php';
 
 </style>
 <div class="main-content">
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="<?php echo $ruta; ?>dashboard">Home</a></li>
+      <li class="breadcrumb-item"><a href="<?php echo $ruta; ?>ListPlanes.php">Ver Planes</a></li>
+    </ol>
+  </nav>
     <section class="section">
         <div style="background: white;
     width: 80% !important;
@@ -139,7 +145,7 @@ include '../../componentes/sidebar.php';
                                             </div>
                                             <input class="form-control" type="text" id="search-client" placeholder="Buscar cliente...">
                                             <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-                                            <input  id="selected-client-id" name="selected-client-id" >
+                                            <input type="hidden" id="selected-client-id" name="selected-client-id" >
                                         </div>
                                         <ul id="client-list" class="client-dropdown">
                                             <!-- Aquí se mostrarán las opciones filtradas -->
@@ -234,9 +240,9 @@ include '../../componentes/sidebar.php';
                                                 <input class="form-control" type="text" id="search-temas" placeholder="Buscar temas...">
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
                                                 <input type="hidden"  id="selected-temas-id" name="selected-temas-id">
-                                                <input   id="selected-temas-codigo" name="selected-temas-codigo">
-                                                <input   id="selected-id-medio" name="selected-id-medio">
-                                                <input   id="selected-id-clasificacion" name="selected-id-clasificacion">
+                                                <input  type="hidden" id="selected-temas-codigo" name="selected-temas-codigo">
+                                                <input type="hidden"  id="selected-id-medio" name="selected-id-medio">
+                                                <input  type="hidden" id="selected-id-clasificacion" name="selected-id-clasificacion">
                                             </div>
                                             <ul id="temas-list" class="client-dropdown">
                                                 <!-- Aquí se mostrarán las opciones filtradas -->
@@ -710,7 +716,8 @@ document.addEventListener('DOMContentLoaded', function() {
             id_campania: document.getElementById('selected-campania-id').value,
             id_temas: document.getElementById('selected-temas-id').value,
             fr_factura: document.getElementById('forma-facturacion').value,
-            id_calendar: id_calendar // Usa el id_calendar obtenido
+            id_calendar: id_calendar, // Usa el id_calendar obtenido
+            estado: '1'
         };
 
         return fetch('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/PlanesPublicidad', {
@@ -779,6 +786,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return response.text();
     })
     .then(data => {
+        
         console.log('Tercera inserción exitosa:', data);
         Swal.fire({
             title: '¡Éxito!',
@@ -804,6 +812,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
    
 });
+
 async function obtenerUltimoIdPlanesPublicidad() {
     try {
         let response = await fetch("https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/PlanesPublicidad?select=id_planes_publicidad&order=id_planes_publicidad.desc&limit=1", {
@@ -828,6 +837,21 @@ async function obtenerUltimoIdPlanesPublicidad() {
         console.error("Error en la solicitud:", error);
         throw error;
     }
+}
+
+function showLoading() {
+    let loadingElement = document.getElementById('custom-loading');
+    if (!loadingElement) {
+        loadingElement = document.createElement('div');
+        loadingElement.id = 'custom-loading';
+        loadingElement.innerHTML = `
+            <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); display: flex; justify-content: center; align-items: center; z-index: 9999;">
+                <img src="/assets/img/loading.gif" alt="Cargando..." style="width: 220px; height: 135px;">
+            </div>
+        `;
+        document.body.appendChild(loadingElement);
+    }
+    loadingElement.style.display = 'block';
 }
 </script>
 

@@ -38,10 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id_planes_publicidad']))
         exit;
     }
 
-    // A partir de aquí, puedes utilizar la variable $plan para acceder a los datos del plan seleccionado
-    echo '<pre>';
-    print_r($plan);
-    echo '</pre>';
+   
 } else {
     echo "ID del plan no proporcionado.";
 }
@@ -185,6 +182,13 @@ include '../../componentes/sidebar.php';
 
 </style>
 <div class="main-content">
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="<?php echo $ruta; ?>dashboard">Home</a></li>
+      <li class="breadcrumb-item"><a href="<?php echo $ruta; ?>ListPlanes.php">Ver Planes</a></li>
+      <li class="breadcrumb-item active" aria-current="page"><?php echo $plan['NombrePlan']; ?></li>
+    </ol>
+  </nav>
     <section class="section">
         <div style="background: white;
     width: 80% !important;
@@ -209,7 +213,7 @@ include '../../componentes/sidebar.php';
                                             <input class="form-control" type="text" value="<?php echo htmlspecialchars($nombreCliente); ?>" id="search-client" placeholder="Buscar cliente...">
                                             <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
                                             <input  type="hidden"  id="selected-client-id" value="<?php echo $id_cliente; ?>" name="selected-client-id" >
-                                            <input   id="selected-calendar-id" value="<?php echo $plan['id_calendar']; ?>" name="selected-calendar-id" >
+                                            <input type="hidden"  id="selected-calendar-id" value="<?php echo $plan['id_calendar']; ?>" name="selected-calendar-id" >
                                             <input type="hidden" id="selected-plan-id" value="<?php echo $id_planes_publicidad; ?>" name="selected-plan-id" >
                                             
                                         </div>
@@ -236,7 +240,7 @@ include '../../componentes/sidebar.php';
                                                 </div>
                                                 <input class="form-control" type="text" id="search-product" value="<?php echo htmlspecialchars($nombreProducto); ?>" placeholder="Buscar producto...">
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-                                                <input   id="selected-product-id" name="selected-product-id" value="<?php echo $plan['id_producto']; ?>" >
+                                                <input type="hidden"  id="selected-product-id" name="selected-product-id" value="<?php echo $plan['id_producto']; ?>" >
                                             </div>
                                             <ul id="product-list" class="client-dropdown">
                                                 <!-- Aquí se mostrarán las opciones filtradas -->

@@ -138,6 +138,12 @@ include 'componentes/sidebar.php';
 
 </style>
 <div class="main-content">
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="<?php echo $ruta; ?>dashboard">Home</a></li>
+      <li class="breadcrumb-item"><a href="<?php echo $ruta; ?>ListPlanes.php">Ver Planes</a></li>
+    </ol>
+  </nav>
     <section class="section">
         <div class="section-body">
             <div class="row">
@@ -145,7 +151,7 @@ include 'componentes/sidebar.php';
                     <div class="card">
                         <div class="card-header">
                             
-                            <div class="card-header milinea">
+                            <div style="    padding: 10px 5px;" class="card-header milinea">
                             <div class="titulox"><h4>Listado de Planes</h4></div>
                             <div class="agregar"><a  href="querys/modulos/addPlan.php" class="btn btn-primary micono"  ><i class="fas fa-plus-circle"></i> Agregar Plan</a>
                             </div>
@@ -153,7 +159,7 @@ include 'componentes/sidebar.php';
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-striped" id="table-1">
+                                <table class="table table-striped" id="tableExportadora">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
@@ -456,7 +462,7 @@ document.addEventListener('click', function(event) {
 
 </script>
 
-
+<script src="assets/js/togglePlanes.js"></script>
 <?php include 'componentes/settings.php'; ?>
 
 
