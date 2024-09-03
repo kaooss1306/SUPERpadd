@@ -180,7 +180,9 @@ include '../../componentes/sidebar.php';
                                                                 <input class="form-control" type="text" id="search-contrato" placeholder="Buscar contrato...">
                                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
                                                                 <input type="hidden"  id="selected-contrato-id" name="selected-contrato-id">
-                                                                <input type="hidden"   id="selected-proveedor-id" name="selected-proveedor-id">
+                                                                <input   type="hidden"  id="selected-proveedor-id" name="selected-proveedor-id">
+                                                                <input  type="hidden"  id="selected-num-contrato" name="selected-num-contrato">
+                                                                <input type="hidden" id="selected-agencia-id" name="selected-agencia-id">
                                                             </div>
                                                             <ul id="contrato-list" class="client-dropdown">
                                                                 <!-- Aquí se mostrarán las opciones filtradas -->
@@ -232,6 +234,9 @@ include '../../componentes/sidebar.php';
                                                 <input class="form-control" type="text" id="search-temas" placeholder="Buscar temas...">
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
                                                 <input type="hidden"  id="selected-temas-id" name="selected-temas-id">
+                                                <input   id="selected-temas-codigo" name="selected-temas-codigo">
+                                                <input   id="selected-id-medio" name="selected-id-medio">
+                                                <input   id="selected-id-clasificacion" name="selected-id-clasificacion">
                                             </div>
                                             <ul id="temas-list" class="client-dropdown">
                                                 <!-- Aquí se mostrarán las opciones filtradas -->
@@ -289,7 +294,44 @@ include '../../componentes/sidebar.php';
                 </div>
     </section>
 </div>
+<script>
+    // Función para hacer la solicitud al endpoint y obtener el Id_Clasificacion
+    function fetchIdClasificacion(id_medio) {
+        const url = `https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Medios?id_medio=eq.${id_medio}&select=*`;
 
+        return fetch(url, {
+            headers: {
+                'Content-Type': 'application/json',
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.length > 0) {
+                return data[0].Id_Clasificacion;
+            } else {
+                console.error('No se encontró el id_medio.');
+                return null;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            return null;
+        });
+    }
+
+    // Escucha el cambio en el input 'selected-id-medio'
+    document.getElementById('selected-id-medio').addEventListener('change', async function() {
+        const id_medio = this.value;
+        if (id_medio) {
+            const id_clasificacion = await fetchIdClasificacion(id_medio);
+            if (id_clasificacion !== null) {
+                document.getElementById('selected-id-clasificacion').value = id_clasificacion;
+            }
+        }
+    });
+</script>
 
 <script>
 const clientesMap = <?php echo json_encode($clientesMap); ?>;
@@ -321,7 +363,7 @@ function setupSearch(searchId, listId, dataMap, textProperty, filterProperty = n
 
         if (filteredItems.length > 0) {
             list.innerHTML = filteredItems.map(item =>
-                `<li data-id="${item.id}" data-proveedor-id="${item.idProveedor || ''}">${item[textProperty]}</li>`
+                `<li data-id="${item.id}" data-agencia-id="${item.IdAgencias || ''}" data-proveedor-id="${item.idProveedor || ''}" data-num-contrato="${item.num_contrato || ''}">${item[textProperty]}</li>`
             ).join('');
             list.style.display = 'block';
         } else {
@@ -375,11 +417,15 @@ function setupSearch(searchId, listId, dataMap, textProperty, filterProperty = n
             searchInput.value = event.target.textContent;
             const selectedId = event.target.getAttribute('data-id');
             const selectedProveedorId = event.target.getAttribute('data-proveedor-id');
-
+            const selectedNumContrato = event.target.getAttribute('data-num-contrato');
+            const selectedIdAgencia = event.target.getAttribute('data-agencia-id');
+            
             document.getElementById(`selected-${searchId.replace('search-', '')}-id`).value = selectedId;
             
             if (searchId === 'search-contrato') {
                 document.getElementById('selected-proveedor-id').value = selectedProveedorId;
+                document.getElementById('selected-num-contrato').value = selectedNumContrato;
+                document.getElementById('selected-agencia-id').value = selectedIdAgencia;
                 updateSoporteList(selectedProveedorId);
             }
 
@@ -408,16 +454,78 @@ function updateSoporteList(idProveedor) {
     }
 }
 
+async function fetchIdClasificacion(id_medio) {
+    const url = `https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Medios?id=eq.${id_medio}&select=*`;
+
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
+           }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        if (data.length > 0) {
+            return data[0].Id_Clasificacion;
+        } else {
+            console.error('No se encontró el id_medio.');
+            return null;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+}
+
 function updateTemasList(idCampania) {
     const list = document.getElementById('temas-list');
     const temasRelacionadosIds = campaniaTemasMap[idCampania] || [];
+
+    console.log("temasMap:", temasMap);
+    console.log("temasRelacionadosIds:", temasRelacionadosIds);
+
     const filteredTemas = temasMap.filter(tema => temasRelacionadosIds.includes(tema.id));
+    console.log("filteredTemas:", filteredTemas);
 
     if (filteredTemas.length > 0) {
         list.innerHTML = filteredTemas.map(tema =>
-            `<li data-id="${tema.id}">${tema.nombreTema}</li>`
+            `<li data-id="${tema.id}" data-id-medio="${tema.id_medio}" data-codigomegatime="${tema.CodigoMegatime}">${tema.nombreTema}</li>`
         ).join('');
+        console.log("HTML generado:", list.innerHTML);
+
         list.style.display = 'block';
+
+        // Agregar evento click a cada li para setear el CodigoMegatime y el Id_Clasificacion
+        const temasItems = list.querySelectorAll('li');
+        temasItems.forEach(item => {
+            item.addEventListener('click', async function() {
+                const codigoMegatime = this.getAttribute('data-codigomegatime');
+                const medioid = this.getAttribute('data-id-medio');
+                console.log('Código Megatime seleccionado:', codigoMegatime);
+
+                // Obtener el Id_Clasificacion basado en id_medio
+                const idClasificacion = await fetchIdClasificacion(medioid);
+
+                const inputCodigo = document.getElementById('selected-temas-codigo');
+                const inputCodigo2 = document.getElementById('selected-id-medio');
+                const inputClasificacion = document.getElementById('selected-id-clasificacion');
+
+                if (inputCodigo && inputCodigo2 && inputClasificacion) {
+                    inputCodigo.value = codigoMegatime;
+                    inputCodigo2.value = medioid;
+                    inputClasificacion.value = idClasificacion; // Setea el Id_Clasificacion
+                } else {
+                    console.error('No se encontraron los inputs.');
+                }
+            });
+        });
     } else {
         list.innerHTML = '<li>No se encuentran temas para esta campaña.</li>';
         list.style.display = 'block';
@@ -561,7 +669,7 @@ document.addEventListener('DOMContentLoaded', function() {
     actualizarCalendario();
 
 
-function enviarDatos() {
+    function enviarDatos() {
     const datos = recopilarDatos();  // Asegúrate de que recopilarDatos() devuelva los datos correctos para la tabla "json"
     console.log('Datos a enviar:', JSON.stringify(datos));
 
@@ -611,6 +719,7 @@ function enviarDatos() {
                 'Content-Type': 'application/json',
                 'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
                 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
+                'Prefer': 'return=representation'
             },
             body: JSON.stringify(datosPlan)
         });
@@ -622,10 +731,55 @@ function enviarDatos() {
                 throw new Error(`HTTP error! status: ${response.status}, message: ${text}`);
             });
         }
+        return response.json();
+    })
+    .then(data => {
+
+        
+        console.log('Respuesta del servidor2:', data);
+        const id_planes_publicidad = data[0].id_planes_publicidad;
+        const id_calendar = data[0].id_calendar;
+        // Ahora, realiza la tercera inserción en la tabla "OrdenesDePublicidad"
+        const datosOrden = { 
+            
+            id_cliente: document.getElementById('selected-client-id').value,
+            num_contrato: document.getElementById('selected-contrato-id').value,
+            id_proveedor: document.getElementById('selected-proveedor-id').value,
+            id_soporte: document.getElementById('selected-soporte-id').value,
+            id_tema: document.getElementById('selected-temas-id').value,
+            id_plan: id_planes_publicidad,
+            id_calendar: id_calendar,
+            Megatime: document.getElementById('selected-temas-codigo').value,
+            id_agencia: document.getElementById('selected-agencia-id').value,
+            id_clasificacion: document.getElementById('selected-id-clasificacion').value
+            
+      
+            
+           
+             // Usa el id_calendar obtenido
+         }; // Copia los datos de datosPlan, puedes modificar lo necesario después
+
+        return fetch('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/OrdenesDePublicidad', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
+                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
+            },
+            body: JSON.stringify(datosOrden)
+        });
+    })
+    .then(response => {
+        console.log('Respuesta completa de la tercera inserción:', response);
+        if (!response.ok) {
+            return response.text().then(text => {
+                throw new Error(`HTTP error! status: ${response.status}, message: ${text}`);
+            });
+        }
         return response.text();
     })
     .then(data => {
-        console.log('Segunda inserción exitosa:', data);
+        console.log('Tercera inserción exitosa:', data);
         Swal.fire({
             title: '¡Éxito!',
             text: 'Los datos se han guardado correctamente.',
@@ -633,7 +787,7 @@ function enviarDatos() {
             confirmButtonText: 'OK'
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.reload(); // Recarga la página
+                window.location.href = '/ListPlanes.php';
             }
         });
     })
@@ -650,6 +804,31 @@ function enviarDatos() {
 
    
 });
+async function obtenerUltimoIdPlanesPublicidad() {
+    try {
+        let response = await fetch("https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/PlanesPublicidad?select=id_planes_publicidad&order=id_planes_publicidad.desc&limit=1", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9zZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
+                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9zZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc"
+            }
+        });
+
+        if (response.ok) {
+            const planesPublicidad = await response.json();
+            const ultimoRegistro = planesPublicidad[0];
+            const ultimoId = ultimoRegistro ? ultimoRegistro.id_planes_publicidad : null;
+            return ultimoId;
+        } else {
+            console.error("Error al obtener el último ID de PlanesPublicidad:", await response.text());
+            throw new Error("Error al obtener el último ID de PlanesPublicidad");
+        }
+    } catch (error) {
+        console.error("Error en la solicitud:", error);
+        throw error;
+    }
+}
 </script>
 
 
