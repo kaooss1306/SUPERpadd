@@ -11,18 +11,51 @@ document.addEventListener('DOMContentLoaded', function() {
     const inputValorTotal = document.getElementById('ValorTotal');
     const inputNumContrato = document.getElementById('num_contrato');
 
-    if (btnAddContrato) {
-        btnAddContrato.addEventListener('click', function(event) {
-            event.preventDefault();
-            if (formAddContrato.checkValidity()) {
-                submitForm();
-            } else {
-                formAddContrato.reportValidity();
-            }
-        });
-    } else {
-        console.error("Error: No se pudo encontrar el botón de añadir contrato");
+ // Función para mostrar la pantalla de carga
+ function showLoading() {
+    const loadingOverlay = document.createElement('div');
+    loadingOverlay.id = 'loadingOverlay';
+    loadingOverlay.style.position = 'fixed';
+    loadingOverlay.style.top = '0';
+    loadingOverlay.style.left = '0';
+    loadingOverlay.style.width = '100%';
+    loadingOverlay.style.height = '100%';
+    loadingOverlay.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
+    loadingOverlay.style.display = 'flex';
+    loadingOverlay.style.justifyContent = 'center';
+    loadingOverlay.style.alignItems = 'center';
+    loadingOverlay.style.zIndex = '9999';
+
+    const loadingImage = document.createElement('img');
+    loadingImage.src = "/assets/img/loading.gif";
+    loadingImage.alt = "Cargando...";
+    loadingImage.style.width = '220px';
+    loadingImage.style.height = '135px';
+
+    loadingOverlay.appendChild(loadingImage);
+    document.body.appendChild(loadingOverlay);
+}
+
+// Función para ocultar la pantalla de carga
+function hideLoading() {
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    if (loadingOverlay) {
+        loadingOverlay.remove();
     }
+}
+
+if (btnAddContrato) {
+    btnAddContrato.addEventListener('click', function(event) {
+        event.preventDefault();
+        if (formAddContrato.checkValidity()) {
+            submitForm();
+        } else {
+            formAddContrato.reportValidity();
+        }
+    });
+} else {
+    console.error("Error: No se pudo encontrar el botón de añadir contrato");
+}
 
     // Agregar un event listener para cuando se abra el modal
     $('#modalAddContrato').on('show.bs.modal', function (e) {
@@ -246,6 +279,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         confirmButtonText: 'OK'
                     }).then((result) => {
                         if (result.isConfirmed) {
+                            showLoading(); // Mostrar pantalla de carga antes de recargar
                             window.location.reload();
                         }
                     });
@@ -269,4 +303,8 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+      // Agregar un event listener para cuando la página haya terminado de cargar
+      window.addEventListener('load', function() {
+        hideLoading();
+    });
 });
