@@ -38,6 +38,8 @@ $proveedores = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Pro
 
 $clasificaciones= makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Clasificacion?select=*');
 
+$ordenesPublicidad = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/OrdenesDePublicidad?select=*');
+
 $planesMap = [];
 foreach ($planes as $plane) {
     $planesMap[$plane['id_planes_publicidad']] = $plane;
@@ -65,4 +67,8 @@ foreach ($proveedores as $proveedor) {
 $clasificacionesMap = [];
 foreach ($clasificaciones as $clasificacion) {
         $clasificacionesMap[$clasificacion['id']] = $clasificacion;
+}
+$ordenesPublicidadMap = [];
+foreach ($ordenesPublicidad as $ordenPublicidad) {
+        $ordenesPublicidadMap[$ordenPublicidad['id_ordenes_de_comprar']] = $ordenPublicidad;
 }

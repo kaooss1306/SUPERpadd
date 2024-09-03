@@ -30,10 +30,14 @@
     $formatoComision = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/formatoComision?select=*');
     $tipoMoneda = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/TipoMoneda?select=*');
     $proveedores = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Proveedores?select=*');   
+    $calendar = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/json?select=*');   
     // Crear arrays asociativos para búsqueda rápida
     $tiposClienteMap = array_column($tiposCliente, 'nombreTipoCliente', 'id_tyipoCliente');
     $regionesMap = array_column($regiones, 'nombreRegion', 'id');
     $comunasMap = array_column($comunas, 'nombreComuna', 'id_comuna');
+
+    $productos = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Productos?select=*');
+   
 
     $clientesMap = [];
 foreach ($clientes as $cliente) {
@@ -60,5 +64,12 @@ $tipoMonedaMap = [];
 foreach ($tipoMoneda as $tipozMoneda) {
     $tipoMonedaMap[$tipozMoneda['id_moneda']] = $tipozMoneda;
 }
-
+$productosMap2 = [];
+foreach ($productos as $producto) {
+    $productosMap2[$producto['id']] = $producto['NombreDelProducto'];
+}
+$calendarMap = [];
+foreach ($calendar as $calendario) {
+    $calendarMap[$calendario['id_calendar']] = $calendario['matrizCalendario'];
+}
 

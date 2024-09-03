@@ -2,12 +2,14 @@
 // Iniciar la sesión
 session_start();
 
-// Función para hacer peticiones cURL
-include 'querys/qordenes.php';
+// Incluir archivos necesarios
+require_once 'querys/qordenes.php';
+require_once 'componentes/header.php';
+require_once 'componentes/sidebar.php';
 
-include 'componentes/header.php';
-include 'componentes/sidebar.php';
+// Asegúrate de que las variables $ordenes, $contratos, $planesMap, $proveedoresMap, $temasMap, $soportesMap, y $clasificacionesMap estén definidas en qordenes.php
 ?>
+
 <div class="main-content">
     <section class="section">
         <div class="section-body">
@@ -24,7 +26,7 @@ include 'componentes/sidebar.php';
                                         <tr>
                                             <th>N° Orden</th>
                                             <th>Copia</th>
-                                            <th>N° Contrato </th>
+                                            <th>N° Contrato</th>
                                             <th>Proveedor</th>
                                             <th>Cod Megatime</th>
                                             <th>Tema</th>
@@ -34,27 +36,29 @@ include 'componentes/sidebar.php';
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php foreach ($ordenes as $orden): ?>
+                                        <?php foreach ($ordenesPublicidad as $orden): ?>
                                         <tr>
-                                            <td><?php echo $orden['id_ordenes_de_comprar']; ?></td>
-                                            <td><?php echo "copia" ?></td>
+                                            <td><?php echo htmlspecialchars($orden['id_ordenes_de_comprar']); ?></td>
+                                            <td>0</td>
                                             <td>
-                                                <?php
-                                                 foreach ($contratos as $contrato) {
-                                                     if ($planesMap[$orden['id_planes']]['id_contrato'] == $contrato['id']) {
-                                                         echo $contrato['num_contrato'];
-                                                     }
-                                                 }
-                                              
-                                                ?>
+                                            <?php echo htmlspecialchars($contratosMap[$orden['num_contrato']]['num_contrato'] ?? ''); ?>
                                             </td>
-                                            <td><?php echo $proveedoresMap[$orden['id_proveedor']]['nombreProveedor'] ?? ''; ?></td>
-                                            <td><?php echo $orden['Codigo']; ?></td>
+                                            <td><?php echo htmlspecialchars($proveedoresMap[$orden['id_proveedor']]['nombreProveedor'] ?? ''); ?></td>
+                                            <td><?php echo htmlspecialchars($orden['Megatime']); ?></td>
+                                            <td><?php echo htmlspecialchars($temasMap[$orden['id_tema']]['NombreTema'] ?? ''); ?></td>
+                                            <td><?php echo htmlspecialchars($soportesMap[$orden['id_soporte']]['nombreIdentficiador'] ?? ''); ?></td>
+                                            <td><?php echo htmlspecialchars($clasificacionesMap[$orden['id_clasificacion']]['NombreClasificacion'] ?? ''); ?></td>
+                                           
+                                            <td>
+                                                    <a class="btn btn-primary micono" href="querys/modulos/orden.php?id_orden=<?php echo $orden['id_ordenes_de_comprar']; ?>" data-toggle="tooltip" title="Ver Orden">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                    <a class="btn btn-success micono" data-bs-toggle="modal" data-bs-target="#modalEditPlanPublicidad"
+                                                        onclick="cargarDatosFormulario(<?php echo $orden['id_ordenes_de_comprar']; ?>);">
+                                                        <i class="fas fa-pencil-alt"></i>
+                                                    </a>
+                                                </td>
                                           
-                                            <td><?php echo $temasMap[$orden['id_tema']]['NombreTema'] ?? ''; ?></td>
-                                            <td><?php echo $soportesMap[$orden['id_soporte']]['nombre_soporte'] ?? ''; ?></td>
-                                            <td><?php echo $clasificacionesMap[$orden['id_clasificacion']]['NombreClasificacion'] ?? ''; ?></td>
-                                            <td><a href="#" class="btn btn-primary">Detail</a></td>
                                         </tr>
                                         <?php endforeach; ?>
                                     </tbody>
@@ -67,5 +71,8 @@ include 'componentes/sidebar.php';
         </div>
     </section>
 </div>
-<?php include 'componentes/settings.php'; ?>
-<?php include 'componentes/footer.php'; ?>
+
+<?php 
+require_once 'componentes/settings.php';
+require_once 'componentes/footer.php';
+?>

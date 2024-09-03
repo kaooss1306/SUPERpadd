@@ -1,10 +1,57 @@
-
 <?php
 // Iniciar sesión
 session_start();
 
+//include '../../querys/qcontratos.php';
+include '../../querys/qclientes.php';
 include '../../componentes/header.php';
 include '../../componentes/sidebar.php';
+
+
+// Obtener el ID de la orden de la URL
+$idOrdenPlan = isset($_GET['id_orden']) ? $_GET['id_orden'] : null;
+
+$url = "https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/OrdenesDePublicidad?id_ordenes_de_comprar=eq.$idOrdenPlan&select=*";
+$planPublicidad = makeRequest($url);
+$datosPublicidad = $planPublicidad[0] ?? [];
+
+$idCliente = $datosPublicidad['id_cliente'] ?? '';
+
+$url2 = "https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/PlanesPublicidad?id_cliente=eq.$idCliente&select=*";
+$productoPublicidad = makeRequest($url2);
+$datosProductos = $productoPublicidad[0] ?? [];
+
+$url4 = "https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Contratos?IdCliente=eq.$idCliente&select=*";
+$contrato = makeRequest($url4);
+$datosContrato = $contrato[0] ?? [];
+
+
+$idCampania = $datosProductos['id_campania'] ?? null;
+$url3 = "https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Campania?id_campania=eq.$idCampania&select=*";
+$campania = makeRequest($url3);
+$datosCampania = $campania[0] ?? [];
+
+
+$cliente = $clientesMap[$idCliente] ?? [];
+$idComuna = $cliente['id_comuna'] ?? '';
+$idRegion = $cliente['id_region'] ?? '';
+$nombreComuna = $comunasMap[$idComuna] ?? 'N/A';
+$nombreRegion = $regionesMap[$idRegion] ?? 'N/A';
+
+// Corregir la obtención del nombre del producto
+$id_producto = $datosProductos['id_producto'] ?? null;
+$nombreProducto = $productosMap2[$id_producto] ?? "Nombre no disponible";
+
+// Si $productosMap2[$id_producto] es un array, intentamos obtener el nombre del producto
+if (is_array($nombreProducto)) {
+    $nombreProducto = $nombreProducto['NombreDelProducto'] ?? $nombreProducto['nombre'] ?? "Nombre no disponible";
+}
+
+$nombresMeses = [
+  1 => 'Enero', 2 => 'Febrero', 3 => 'Marzo', 4 => 'Abril',
+  5 => 'Mayo', 6 => 'Junio', 7 => 'Julio', 8 => 'Agosto',
+  9 => 'Septiembre', 10 => 'Octubre', 11 => 'Noviembre', 12 => 'Diciembre'
+];
 
 ?>
 <div class="main-content">
@@ -12,8 +59,8 @@ include '../../componentes/sidebar.php';
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="<?php echo $ruta; ?>dashboard">Home</a></li>
-        <li class="breadcrumb-item"><a href="<?php echo $ruta; ?>ListCampaign.php">Ver Campañas</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Orden</li>
+        <li class="breadcrumb-item"><a href="<?php echo $ruta; ?>ListOrdenes.php">Ver Ordenes de Publicidad</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Orden de Publicidad - <?php echo $clientesMap[$datosPublicidad['id_cliente'] ?? '']['nombreCliente'];?></li>
     </ol>
 </nav>
 <section class="section">
@@ -23,41 +70,63 @@ include '../../componentes/sidebar.php';
                 <div class="card">
                 <div class="card-header milinea">
                             <div class="titulox">
-                                <h4>Información de Orden</h4>
+                                <h4>Información de la orden de Publicidad</h4>
                             </div>
-                            <div class="agregar"><a class="btn btn-danger" data-bs-toggle="modal"
-                                    data-bs-target="#modalAgregarCampania"><i class="fas fa-plus-circle"></i> Editar Orden</a></div>
+                            <div class="agregar">
+                            <button id="generatePdfButton"><i class="fas fa-file-pdf"></i> Generar PDF</button>
+                            </div>
                         </div>
                     <div class="card-body">
                         <div class="author-box-center">
                         <div class="contentable">
 <table class="espaciador" width="100%" border="0">
   <tr>
-    <td width="33%">38.818.666-6</td>
+    <td class="azul" width="33%">RUT <?php $rutOrden = $clientesMap[$datosPublicidad['id_cliente'] ?? '']['RUT'];
+                                        echo $rutOrden;
+    ?></td>
     <td class="titulot" width="33%"><div align="center">ORDEN DE PUBLICIDAD </div></td>
-    <td class="titulot2" width="34%">INTERNET - ABRIL 2024 </td>
+    <td class="titulot2" width="34%">INTERNET - <?php 
+$idCalendar = $datosPublicidad['id_calendar'] ?? '';
+$mesNumero = $calendarMap[$idCalendar][0]['mes'] ?? 'No disponible';
+$mesNombre = is_numeric($mesNumero) ? ($nombresMeses[(int)$mesNumero] ?? 'No disponible') : 'No disponible';
+echo htmlspecialchars($mesNombre);
+?> <?php 
+    $idCalendar = $datosPublicidad['id_calendar'] ?? '';
+    $matrizCalendario = $calendarMap[$idCalendar][0]['anio'] ?? 'No disponible';
+    echo htmlspecialchars($matrizCalendario);
+    ?> </td>
   </tr>
   <tr>
     <td>&nbsp;</td>
-    <td class="titulot3">Anula y reemplaza orden n&deg;0019602</td>
+    <td class="titulot3">Anula y reemplaza orden n° 0019602</td>
     <td>&nbsp;</td>
   </tr>
   <tr>
 
-    <td><strong>CLIENTE:</strong> RAZON SOCIAL PRUEBA<br>
-    <strong>RUT:</strong> 38.818.666-6<br>
-    <strong>DIRECCIÓN:</strong> CALLE FALSA S/N<br>
-    <strong>COMUNA:</strong> ARICA<br>
-    <strong>PRODUCTO:</strong> PRUEBA 2<br>
-    <strong>AÑO:</strong> 2024<br>
-    <strong>MES:</strong> ABRIL<br>
-    <strong>N° CONTRATO:</strong> 0012<br>
+    <td><strong>CLIENTE:</strong> <?php echo $clientesMap[$datosPublicidad['id_cliente'] ?? '']['nombreCliente'];?><br>
+    <strong>RUT:</strong> <?php echo $clientesMap[$datosPublicidad['id_cliente'] ?? '']['RUT'];?><br>
+    <strong>DIRECCIÓN:</strong> <?php echo $clientesMap[$datosPublicidad['id_cliente'] ?? '']['direccionEmpresa'];?><br>
+    <strong>COMUNA:</strong> <?php echo $nombreComuna; ?><br>
+    <strong>PRODUCTO:</strong> <?php echo htmlspecialchars($nombreProducto); ?><br>
+    <strong>AÑO:</strong> <?php 
+    $idCalendar = $datosPublicidad['id_calendar'] ?? '';
+    $matrizCalendario = $calendarMap[$idCalendar][0]['anio'] ?? 'No disponible';
+    echo htmlspecialchars($matrizCalendario);
+    ?><br>
+    <strong>MES:</strong> <?php 
+$idCalendar = $datosPublicidad['id_calendar'] ?? '';
+$mesNumero = $calendarMap[$idCalendar][0]['mes'] ?? 'No disponible';
+$mesNombre = is_numeric($mesNumero) ? ($nombresMeses[(int)$mesNumero] ?? 'No disponible') : 'No disponible';
+echo htmlspecialchars($mesNombre);
+?><br>
+    <strong>N° CONTRATO:</strong> <?php echo $datosContrato['num_contrato'] ?? 'No disponible'; ?><br>
     <strong>FORMA DE PAGO:</strong> CONTADO<br>
     <strong>TIPO ITEM:</strong> PRUEBA</td>
 
 
-    <td style="text-align:center;"><strong>CAMPAÑA:</strong> CAMPAÑA DE PRUEBA<br>
-    <strong>PLAN DE MEDIOS:</strong> PLAN PRUEBA 2<br>
+    <td style="text-align:center;"><strong>CAMPAÑA:</strong> <?php echo $datosCampania['NombreCampania'] ?? 'Nombre no disponible'; ?><br>
+    
+    <strong>PLAN DE MEDIOS:</strong> <?php echo $datosProductos['NombrePlan'] ?? 'Nombre no disponible'; ?><br>
     <div class="thebordex">
     <strong>DESCUENTOS:</strong> ACA VALOR <br>
 </div>
@@ -77,7 +146,7 @@ include '../../componentes/sidebar.php';
 </table>
 <table width="100%" border="0">
   <tr>
-    <td width="26%"><div class="formatotabla">
+    <td width="26%"><div class="formatotabla bordered-table">
       <table width="100%" border="1">
         <tr>
           <td><div align="center">FORMATO</div></td>
@@ -89,10 +158,10 @@ include '../../componentes/sidebar.php';
         </tr>
       </table>
     </div></td>
-    <td width="45%"><div class="formatotabla">
+    <td width="45%"><div class="formatotabla bordered-table">
       <table width="100%" border="1">
         <tr>
-          <td>LISTAR D&Iacute;AS </td>
+          <td>LISTAR DÍAS </td>
         </tr>
         <tr>
           <td>&nbsp;</td>
@@ -121,7 +190,9 @@ include '../../componentes/sidebar.php';
     </table></td>
   </tr>
   <tr style="border:0px solid; ">
-    <td colspan="2">&nbsp;</td>
+    <td colspan="2">
+     <div class="observa">Observaciones</div>
+    </td>
     <td><table style="margin-top:30px;" width="100%" border="0">
       <tr>
         <td width="14%">&nbsp;</td>
@@ -253,7 +324,62 @@ include '../../componentes/sidebar.php';
 
 </div>
 </div>
+<script>
+function generatePDF() {
+    // Crear una nueva instancia de jsPDF en orientación horizontal
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({
+        orientation: 'landscape',
+        unit: 'mm',
+        format: 'a4'
+    });
 
+    // Obtener el contenido del div
+    const content = document.querySelector('.contentable');
+
+    // Definir el padding en milímetros
+    const padding = 10; // Puedes ajustar este valor según necesites
+
+    // Usar html2canvas para convertir el contenido HTML a una imagen
+    html2canvas(content, {
+        scale: 4, // Aumenta la escala para mejorar la calidad
+        useCORS: true // Permite cargar imágenes de otros dominios si es necesario
+    }).then(canvas => {
+        const imgData = canvas.toDataURL('image/jpeg', 1.0);
+        
+        // Obtener las dimensiones de la página
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const pageHeight = doc.internal.pageSize.getHeight();
+        
+        // Calcular las dimensiones de la imagen para que ocupe toda la página menos el padding
+        const maxWidth = pageWidth - (2 * padding);
+        const maxHeight = pageHeight - (2 * padding);
+        
+        const widthRatio = maxWidth / canvas.width;
+        const heightRatio = maxHeight / canvas.height;
+        const ratio = Math.min(widthRatio, heightRatio);
+        
+        const imgWidth = canvas.width * ratio;
+        const imgHeight = canvas.height * ratio;
+        
+        // Centrar la imagen en la página, considerando el padding
+        const x = (pageWidth - imgWidth) / 2;
+        const y = (pageHeight - imgHeight) / 2;
+
+        // Añadir la imagen al PDF
+        doc.addImage(imgData, 'JPEG', x, y, imgWidth, imgHeight);
+
+        // Guardar el PDF
+        doc.save('orden_publicidad_horizontal_con_padding.pdf');
+    });
+}
+
+// Añadir el evento click al botón
+document.getElementById('generatePdfButton').addEventListener('click', generatePDF);
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <?php include '../../componentes/settings.php'; ?>
 
       <?php include '../../componentes/footer.php'; ?>
