@@ -255,7 +255,7 @@ include '../../componentes/sidebar.php';
                                                                 </div>
                                                                 <input class="form-control" type="text" id="search-contrato" value="<?php echo htmlspecialchars($nombreContrato); ?>" placeholder="Buscar contrato...">
                                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-                                                                <input type="hidden"  id="selected-contrato-id" name="selected-contrato-id" value="<?php echo $plan['id_producto']; ?>">
+                                                                <input type="hidden"  id="selected-contrato-id" name="selected-contrato-id" value="<?php echo $plan['id_contrato']; ?>">
                                                                 <input type="hidden"   id="selected-proveedor-id" name="selected-proveedor-id">
                                                             </div>
                                                             <ul id="contrato-list" class="client-dropdown">

@@ -80,11 +80,11 @@ include 'componentes/sidebar.php';
                 <form id="formularioactualizarTema">
                     <!-- Campos del formulario -->
                     <div>
-                        <h3 class="titulo-registro mb-3">Agregar Tema</h3>
+                        <h3 class="titulo-registro mb-3">Editar Tema</h3>
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
-                                <input class="form-control"  name="id_tema">
+                                <input type="hidden" class="form-control"  name="id_tema">
                               
                                     <label class="labelforms" for="codigo">Nombre de Tema</label>
                                     <div class="input-group">
