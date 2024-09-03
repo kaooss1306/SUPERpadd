@@ -98,7 +98,7 @@ echo htmlspecialchars($mesNombre);
   </tr>
   <tr>
     <td>&nbsp;</td>
-    <td class="titulot3">Anula y reemplaza orden n° 0019602</td>
+    <td class="titulot3"></td>
     <td>&nbsp;</td>
   </tr>
   <tr>
@@ -128,7 +128,7 @@ echo htmlspecialchars($mesNombre);
     
     <strong>PLAN DE MEDIOS:</strong> <?php echo $datosProductos['NombrePlan'] ?? 'Nombre no disponible'; ?><br>
     <div class="thebordex">
-    <strong>DESCUENTOS:</strong> ACA VALOR <br>
+    <strong>DESCUENTO:</strong> <?php echo '$' . number_format($datosContrato['Descuento1'], 0, ',', '.'); ?><br>
 </div>
 </td>
 
@@ -180,34 +180,52 @@ echo htmlspecialchars($mesNombre);
       </tr>
       <tr>
         <td>1</td>
-        <td>2.117.847</td>
+        <td><?php echo '$' . number_format($datosContrato['ValorBruto'], 0, ',', '.'); ?></td>
+        <td><?php echo '$' . number_format($datosContrato['Descuento1'], 0, ',', '.'); ?></td>
         <td>0</td>
-        <td>0</td>
-        <td>2.117.847</td>
-        <td>1.800.000</td>
+        <td><?php echo '$' . number_format($datosContrato['ValorBruto'], 0, ',', '.'); ?></td>
+        <td><?php echo '$' . number_format($datosContrato['ValorNeto'], 0, ',', '.'); ?></td>
       </tr>
       
     </table></td>
   </tr>
   <tr style="border:0px solid; ">
-    <td colspan="2">
-     <div class="observa">Observaciones</div>
+    <td colspan="2"><strong>Observaciones</strong>
+     <div class="observa"><?php echo $datosContrato['Observaciones'] ?></div>
     </td>
     <td><table style="margin-top:30px;" width="100%" border="0">
       <tr>
         <td width="14%">&nbsp;</td>
         <td width="43%"><strong>TOTAL NETO</strong> </td>
-        <td width="43%">$1.800.000</td>
+        <td width="43%"><?php echo '$' . number_format($datosContrato['ValorNeto'], 0, ',', '.'); ?></td>
         </tr>
       <tr>
         <td>&nbsp;</td>
         <td><strong>IVA 19%</strong> </td>
-        <td>$342.000</td>
+        <td>$<?php
+         $valorTotal = $datosContrato['ValorNeto'];
+         $valorNeto = $valorTotal / 1.19;
+         // Cálculo del IVA
+         $iva = $valorTotal - $valorNeto;
+         $ivaFormateado = number_format($iva, 0, ',', '.');
+         echo $ivaFormateado;
+        ?></td>
         </tr>
       <tr>
         <td>&nbsp;</td>
         <td><strong>TOTAL ORDEN</strong> </td>
-        <td>$2.142.000</td>
+        <td>$<?php
+       $iva = (float)str_replace(['$', '.'], '', $ivaFormateado);
+       $valorTotal2 = $valorTotal + $iva;
+       
+       // Formatear el valor total con separadores de miles
+       $valorTotalFormateado = number_format($valorTotal2, 0, ',', '.');
+       
+       // Mostrar el valor formateado
+       echo $valorTotalFormateado;
+?>
+
+        </td>
         </tr>
         <tr>
             <td></td>

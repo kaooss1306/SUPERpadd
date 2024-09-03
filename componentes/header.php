@@ -13,7 +13,7 @@ $nombre = $_SESSION['user_name'];
 
 
 
-$ruta = 'https://didactic-broccoli-x597q5jj79w92prxp-3000.app.github.dev/';
+$ruta = 'https://orange-garbanzo-x597q5jjgj94hvqx4-3000.app.github.dev/';
 
 
 
