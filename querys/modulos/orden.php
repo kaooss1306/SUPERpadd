@@ -32,6 +32,12 @@ $campania = makeRequest($url3);
 $datosCampania = $campania[0] ?? [];
 
 
+$contratos = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Contratos?select=*');
+$contratosMap = [];
+foreach ($contratos as $contrato) {
+    $contratosMap[$contrato['id']] = $contrato;
+}
+
 $cliente = $clientesMap[$idCliente] ?? [];
 $idComuna = $cliente['id_comuna'] ?? '';
 $idRegion = $cliente['id_region'] ?? '';
@@ -52,6 +58,9 @@ $nombresMeses = [
   5 => 'Mayo', 6 => 'Junio', 7 => 'Julio', 8 => 'Agosto',
   9 => 'Septiembre', 10 => 'Octubre', 11 => 'Noviembre', 12 => 'Diciembre'
 ];
+
+
+
 
 ?>
 <div class="main-content">
@@ -134,11 +143,36 @@ echo htmlspecialchars($mesNombre);
 
 
     <td valign="top">
-    <strong>PROVEEDOR:</strong> PROVEEDOR DE PRUEBA<br>
-    <strong>RUT:</strong> 56.963.301-K<br>
-    <strong>SOPORTE:</strong> PROVEEDOR DE PRUEBA<br>
-    <strong>DIRECCIÓN:</strong> CALLE NUEVA 345<br>
-    <strong>COMUNA:</strong> CHIMBARONGO<br><br><br>
+    <strong>PROVEEDOR:</strong> <?php 
+    $idProveedor = $datosPublicidad['id_proveedor'] ?? $datosContrato['id_proveedor'] ?? null;
+    echo $idProveedor ? ($proveedoresMap[$idProveedor]['nombreProveedor'] ?? 'Proveedor no encontrado') : 'ID de proveedor no disponible';
+?><br>
+    <strong>RUT:</strong> <?php 
+    $rutProveedor = $datosPublicidad['id_proveedor'] ?? $datosContrato['id_proveedor'] ?? null;
+    echo $rutProveedor ? ($proveedoresMap[$rutProveedor]['rutProveedor'] ?? 'Proveedor no encontrado') : 'ID de proveedor no disponible';
+?><br>
+    <strong>SOPORTE:</strong> <?php 
+        $idSoporte = $datosPublicidad['id_soporte'] ?? $datosContrato['id_soporte'] ?? null;
+        echo $idSoporte ? ($soportesMap[$idSoporte]['nombreIdentficiador'] ?? 'Soporte no encontrado') : 'ID de soporte no disponible';
+    ?><br>
+    <strong>DIRECCIÓN:</strong> <?php 
+    echo $idProveedor ? ($proveedoresMap[$idProveedor]['direccionFacturacion'] ?? 'Dirección no disponible') : 'ID de proveedor no disponible';
+?>
+    <br>
+    
+    <strong>COMUNA:</strong> <?php 
+    if ($idProveedor && isset($proveedoresMap[$idProveedor])) {
+        $idComuna = $proveedoresMap[$idProveedor]['id_comuna'] ?? null;
+        if ($idComuna && isset($comunasMap[$idComuna])) {
+            echo $comunasMap[$idComuna];
+        } else {
+            echo 'Comuna no encontrada';
+        }
+    } else {
+        echo 'Información del proveedor no disponible';
+    }
+?>
+    <br><br><br>
     <div class="conborde">AGENCIA DE MEDIOS<br />
     <strong>AGENCIA CREATIVA:</strong> AGENCIA DE PRUEBAS  </div>
 </td>
