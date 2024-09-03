@@ -34,8 +34,27 @@ $planes = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/PlanesPu
 $meses = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Meses?select=*');
 $anos = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Anios?select=*');
 $productos = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Productos?select=*');
+$jsonData = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/json?select=*');
+$calendarMap = [];
 
-
+foreach ($jsonData as $calendar) {
+    // Aquí asumimos que `id_calendar` es único y usamos su valor como clave en nuestro mapa
+    $calendarMap[$calendar['id_calendar']] = $calendar['matrizCalendario'];
+}
+$mesesNombres = [
+    1 => 'Enero',
+    2 => 'Febrero',
+    3 => 'Marzo',
+    4 => 'Abril',
+    5 => 'Mayo',
+    6 => 'Junio',
+    7 => 'Julio',
+    8 => 'Agosto',
+    9 => 'Septiembre',
+    10 => 'Octubre',
+    11 => 'Noviembre',
+    12 => 'Diciembre'
+];
 $mesesMap = [];
 foreach ($meses as $mes) {
     $mesesMap[$mes['Id']] = $mes;
@@ -46,10 +65,7 @@ foreach ($anos as $anio) {
 }
 $clientesMap = [];
 foreach ($clientes as $cliente) {
-    $clientesMap[] = [
-        'id' => $cliente['id_cliente'],
-        'nombreCliente' => $cliente['nombreCliente']
-    ];
+    $clientesMap[$cliente['id_cliente']] = $cliente['nombreCliente'];
 }
 $productosMap = [];
 foreach ($productos as $producto) {
@@ -71,12 +87,12 @@ foreach ($campaigns as $campaign) {
 
 $contratosMap = [];
 foreach ($contratos as $contrato) {
-    $contratosMap[] = [
-        'id' => $contrato['id'],
+    $contratosMap[$contrato['id']] = [
         'nombreContrato' => $contrato['NombreContrato'],
         'idCliente' => $contrato['IdCliente']
     ];
 }
+
 include 'componentes/header.php';
 include 'componentes/sidebar.php';
 ?>
@@ -154,11 +170,35 @@ include 'componentes/sidebar.php';
                                 <?php foreach ($planes as $plan): ?>
 <tr>
     <td><?php echo $plan['id_planes_publicidad']; ?></td>
-    <td><?php echo isset($contratosMap[$plan['id_contrato']]) ? $contratosMap[$plan['id_contrato']]['NombreContrato'] : 'N/A'; ?></td>
-    <td><?php echo isset($contratosMap[$plan['id_contrato']]) ? $clientesMap[$plan['id_contrato']]['nombreCliente'] : 'N/A'; ?></td>
+    <td><?php echo isset($contratosMap[$plan['id_contrato']]) ? $contratosMap[$plan['id_contrato']]['nombreContrato'] : 'N/A'; ?></td>
+
+    <td>
+    <?php 
+    $idCliente = $contratosMap[$plan['id_contrato']]['idCliente'];
+    echo isset($clientesMap[$idCliente]) ? $clientesMap[$idCliente] : 'N/A'; 
+    ?>
+</td>
     <td><?php echo $plan['NombrePlan']; ?></td>
-    <td><?php echo isset($mesesMap[$plan['id_Mes']]) ? $mesesMap[$plan['id_Mes']]['Nombre'] : 'N/A'; ?></td>
-    <td><?php echo isset($anosMap[$plan['id_Anio']]) ? $anosMap[$plan['id_Anio']]['years'] : 'N/A'; ?></td>
+    <?php
+    // Verificar si existe un id_calendar en el plan actual
+    if (isset($calendarMap[$plan['id_calendar']])) {
+        // Extraer la matriz de calendario
+        $matrizCalendario = $calendarMap[$plan['id_calendar']];
+
+        // Obtener el primer mes y año
+        $mesNumero = $matrizCalendario[0]['mes'];
+        $anio = $matrizCalendario[0]['anio'];
+
+        // Convertir el número de mes a nombre
+        $mes = isset($mesesNombres[$mesNumero]) ? $mesesNombres[$mesNumero] : 'N/A';
+    } else {
+        $mes = 'N/A';
+        $anio = 'N/A';
+    }
+    ?>
+    
+    <td><?php echo $mes; ?></td>
+    <td><?php echo $anio; ?></td>
     <td>
     <div class="alineado">
     <label class="custom-switch mt-2" data-toggle="tooltip" 
@@ -172,8 +212,11 @@ include 'componentes/sidebar.php';
     </label>
 </div>
 </td>
-<td><a href="#" data-toggle="tooltip" title="Ver Cliente"><i class="fas fa-eye btn btn-primary micono"></i></a> <a href="#" data-toggle="tooltip" title="Editar Cliente"><i class="fas fa-pencil-alt btn btn-success micono"></i></a> <a href="#" data-toggle="tooltip" title="Eliminar Cliente"><i class="fas fa-trash-alt btn btn-danger micono"></i></a></td>
-                                       
+<td>
+                                            <a class="btn btn-primary micono" href="views/viewProveedor.php?id_proveedor=<?php echo $proveedor['id_proveedor']; ?>" data-toggle="tooltip" title="Ver Proveedor"><i class="fas fa-eye "></i></a> 
+
+                                                <a class="btn btn-success micono" href="querys/modulos/editarplan.php?id_planes_publicidad=<?php echo $plan['id_planes_publicidad']; ?>"><i class="fas fa-pencil-alt"></i></a>
+                                            </td>                                   
 </tr>
 <?php endforeach; ?>
                                     </tbody>

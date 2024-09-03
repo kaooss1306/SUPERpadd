@@ -8,16 +8,85 @@ if (!isset($_SESSION['user']) || empty($_SESSION['user'])) {
 }
 $user_name = $_SESSION['user_name'];
 
-include 'componentes/header.php';
 include '../qplanes.php';
-include 'componentes/sidebar.php';
+
+
+if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id_planes_publicidad'])) {
+    // Obtener el ID del plan de la URL y convertirlo a entero
+    $id_planes_publicidad = (int) $_GET['id_planes_publicidad'];
+
+    // Obtener todos los planes desde Supabase
+  
+    // Verificar que $planes es un array y tiene datos
+    if (!is_array($planes) || empty($planes)) {
+        echo "No se obtuvieron datos de los planes.";
+        exit;
+    }
+
+    // Buscar el plan que coincida con el ID
+    $plan = null;
+    foreach ($planes as $item) {
+        if ((int) $item['id_planes_publicidad'] === (int) $id_planes_publicidad) {
+            $plan = $item;
+            break;
+        }
+    }
+
+    // Verifica si se encontró el plan
+    if ($plan === null) {
+        echo "No se encontró el plan publicitario.";
+        exit;
+    }
+
+    // A partir de aquí, puedes utilizar la variable $plan para acceder a los datos del plan seleccionado
+    echo '<pre>';
+    print_r($plan);
+    echo '</pre>';
+} else {
+    echo "ID del plan no proporcionado.";
+}
 
 // Verificar si $mesesMap y $aniosMap están disponibles
 if (!isset($mesesMap) || !isset($aniosMap)) {
     die("Error: No se pudieron obtener los datos de meses y años.");
 }
+$id_producto = $plan['id_producto'];
+$nombreProducto = isset($productosMap2[$id_producto]) ? $productosMap2[$id_producto] : "Nombre no disponible";
+$id_cliente = $plan['id_cliente'];
 
+// Obtener el nombre del cliente basado en el ID
+$nombreCliente = isset($clientesMap2[$id_cliente]) ? $clientesMap2[$id_cliente] : "Nombre no disponible";
+$id_contrato = $plan['id_contrato'];
 
+// Obtener el nombre del contrato basado en el ID
+$nombreContrato = isset($contratosMap2[$id_contrato]) ? $contratosMap2[$id_contrato] : "Nombre no disponible";
+$id_soporte = $plan['id_soporte'];
+
+// Obtener el nombre del soporte basado en el ID
+$nombreSoporte = isset($soportesMap2[$id_soporte]) ? $soportesMap2[$id_soporte] : "Nombre no disponible";
+$id_campania = $plan['id_campania'];
+
+// Obtener el nombre de la campaña basado en el ID
+$nombreCampania = isset($campaignsMap2[$id_campania]) ? $campaignsMap2[$id_campania] : "Nombre no disponible";
+$id_tema = $plan['id_temas'];
+
+// Obtener el nombre del tema basado en el ID
+$nombreTema = isset($temasMap2[$id_tema]) ? $temasMap2[$id_tema] : "Nombre no disponible";
+$selectedFrFactura = $plan['fr_factura'];
+$id_calendar = $plan['id_calendar'];
+$matrizCalendario = isset($calendarMap2[$id_calendar]) ? $calendarMap2[$id_calendar] : [];
+
+// Determinar el mes y año iniciales a partir de la matrizCalendario
+$mesInicial = isset($matrizCalendario[0]) ? $matrizCalendario[0]['mes'] : date('n');
+$anioInicial = isset($matrizCalendario[0]) ? $matrizCalendario[0]['anio'] : date('Y');
+$anioID = null; // Variable para almacenar el ID
+
+foreach ($anios2 as $anio) {
+    if ($anio['years'] == $anioInicial) {
+        $anioID = $anio['id'];
+        break; // Salir del bucle una vez encontrado
+    }
+}
 include '../../componentes/header.php';
 
 include '../../componentes/sidebar.php';
@@ -121,10 +190,10 @@ include '../../componentes/sidebar.php';
     width: 80% !important;
     margin: 0 auto;
     padding: 50px;">
-    <form id="formularioPlan">
+    <form id="formularioEditPlan">
                     <!-- Campos del formulario -->
                     <div>
-                        <h3 class="titulo-registro mb-3">Agregar Plan</h3>
+                        <h3 class="titulo-registro mb-3">Editar Plan</h3>
                         <div class="row">
                             <div class="col">
                         
@@ -137,9 +206,9 @@ include '../../componentes/sidebar.php';
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="bi bi-person"></i></span>
                                             </div>
-                                            <input class="form-control" type="text" id="search-client" placeholder="Buscar cliente...">
+                                            <input class="form-control" type="text" value="<?php echo htmlspecialchars($nombreCliente); ?>" id="search-client" placeholder="Buscar cliente...">
                                             <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-                                            <input  id="selected-client-id" name="selected-client-id" >
+                                            <input type="hidden" id="selected-client-id" value="<?php echo $id_cliente; ?>" name="selected-client-id" >
                                         </div>
                                         <ul id="client-list" class="client-dropdown">
                                             <!-- Aquí se mostrarán las opciones filtradas -->
@@ -151,9 +220,9 @@ include '../../componentes/sidebar.php';
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="bi bi-person"></i></span>
                                         </div>
-                                        <input class="form-control" placeholder="Nombre de Plan" name="nombrePlan">
+                                        <input class="form-control" placeholder="Nombre de Plan" name="nombrePlan" value="<?php echo $plan['NombrePlan']; ?>">
                                     </div>
-
+                                    
                                 <div class="row">
                                     <div class="col">
                                         <label class="labelforms" for="id_producto">Producto</label>
@@ -162,9 +231,9 @@ include '../../componentes/sidebar.php';
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="bi bi-person"></i></span>
                                                 </div>
-                                                <input class="form-control" type="text" id="search-product" placeholder="Buscar producto...">
+                                                <input class="form-control" type="text" id="search-product" value="<?php echo htmlspecialchars($nombreProducto); ?>" placeholder="Buscar producto...">
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-                                                <input type="hidden"  id="selected-product-id" name="selected-product-id">
+                                                <input type="hidden"  id="selected-product-id" name="selected-product-id" >
                                             </div>
                                             <ul id="product-list" class="client-dropdown">
                                                 <!-- Aquí se mostrarán las opciones filtradas -->
@@ -177,7 +246,7 @@ include '../../componentes/sidebar.php';
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text"><i class="bi bi-person"></i></span>
                                                                 </div>
-                                                                <input class="form-control" type="text" id="search-contrato" placeholder="Buscar contrato...">
+                                                                <input class="form-control" type="text" id="search-contrato" value="<?php echo htmlspecialchars($nombreContrato); ?>" placeholder="Buscar contrato...">
                                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
                                                                 <input type="hidden"  id="selected-contrato-id" name="selected-contrato-id">
                                                                 <input type="hidden"   id="selected-proveedor-id" name="selected-proveedor-id">
@@ -194,7 +263,7 @@ include '../../componentes/sidebar.php';
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="bi bi-person"></i></span>
                                                 </div>
-                                                <input class="form-control" type="text" id="search-soporte" placeholder="Buscar soporte...">
+                                                <input class="form-control" type="text" id="search-soporte" value="<?php echo htmlspecialchars($nombreSoporte); ?>" placeholder="Buscar soporte...">
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
                                                 <input  type="hidden"  id="selected-soporte-id" name="selected-soporte-id" value="">
                                             </div>
@@ -204,8 +273,7 @@ include '../../componentes/sidebar.php';
                                         </div>
                                         <label for="descripcion" class="labelforms">Detalle</label>
                                     <div class="custom-textarea-container">
-                                        <textarea id="descripcion" name="descripcion" class="form-control" rows="4" placeholder="Introduce la detalle aquí..."></textarea>
-                                    </div>
+                                    <textarea id="descripcion" name="descripcion" class="form-control" rows="4" placeholder="Introduce el detalle aquí..."><?php echo htmlspecialchars($plan['detalle']); ?></textarea>                                    </div>
                                         </div>
                                         <div class="col">
                                         <label class="labelforms" for="id_campania">Campaña</label>
@@ -214,7 +282,7 @@ include '../../componentes/sidebar.php';
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="bi bi-person"></i></span>
                                                 </div>
-                                                <input class="form-control" type="text" id="search-campania" placeholder="Buscar campaña...">
+                                                <input class="form-control" type="text" value="<?php echo htmlspecialchars($nombreCampania); ?>" id="search-campania" placeholder="Buscar campaña...">
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
                                                 <input  type="hidden"  id="selected-campania-id" name="selected-campania-id">
                                             </div>
@@ -229,7 +297,7 @@ include '../../componentes/sidebar.php';
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="bi bi-person"></i></span>
                                                 </div>
-                                                <input class="form-control" type="text" id="search-temas" placeholder="Buscar temas...">
+                                                <input class="form-control" type="text" id="search-temas" value="<?php echo htmlspecialchars($nombreTema); ?>" placeholder="Buscar temas...">
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
                                                 <input type="hidden"  id="selected-temas-id" name="selected-temas-id">
                                             </div>
@@ -242,12 +310,12 @@ include '../../componentes/sidebar.php';
                                             <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="bi bi-person"></i></span>
                                                 </div>
-                                            <select id="forma-facturacion" name="forma-facturacion" class="form-control">
-                                                <option value="" disabled selected>Selecciona una opción</option>
-                                                <option value="afecta">Afecta</option>
-                                                <option value="exenta">Exenta</option>
-                                                <option value="exportacion">Exportación</option>
-                                            </select>
+                                                <select id="forma-facturacion" name="forma-facturacion" class="form-control">
+    <option value="" disabled <?php echo ($selectedFrFactura === '') ? 'selected' : ''; ?>>Selecciona una opción</option>
+    <option value="afecta" <?php echo ($selectedFrFactura === 'afecta') ? 'selected' : ''; ?>>Afecta</option>
+    <option value="exenta" <?php echo ($selectedFrFactura === 'exenta') ? 'selected' : ''; ?>>Exenta</option>
+    <option value="exportacion" <?php echo ($selectedFrFactura === 'exportacion') ? 'selected' : ''; ?>>Exportación</option>
+</select>
                                         </div>
                                             </div>
                                         </div>
@@ -477,54 +545,88 @@ document.addEventListener('click', function(event) {
 });
 </script>
 <script>
+    const mesesMap = <?php echo json_encode($mesesMap); ?>;
+    const aniosMap = <?php echo json_encode($aniosMap); ?>;
+    const calendarMap2 = <?php echo json_encode($calendarMap2); ?>;
+    const idCalendar = <?php echo json_encode($plan['id_calendar']); ?>;
+    const iniciall = <?php echo json_encode($anioInicial); ?>
+    console.log('Meses Map:', mesesMap);
+    console.log('Años Map:', aniosMap);
+    console.log('Calendar Map2:', calendarMap2);
+    console.log('ID del Calendario:', idCalendar);
+</script>
+<script>
 document.addEventListener('DOMContentLoaded', function() {
-    const mesSelector = document.getElementById('mesSelector');
-    const anioSelector = document.getElementById('anioSelector');
-    const diasContainer = document.getElementById('diasContainer');
-    const submitButton = document.getElementById('submitButton');
+    var anioID = <?php echo json_encode($anioID); ?>;
+    console.log('El ID para el año es:', anioID);
+    mesSelector.value = <?php echo $mesInicial; ?>;
+anioSelector.value = <?php echo json_encode($anioID); ?>;
 
-    console.log('Selectores:', mesSelector, anioSelector);
-    console.log('Contenedor de días:', diasContainer);
+const diasContainer = document.getElementById('diasContainer');
+const submitButton = document.getElementById('submitButton');
 
-    if (!mesSelector || !anioSelector || !diasContainer || !submitButton) {
-        console.error('No se pudieron encontrar todos los elementos necesarios');
+if (!mesSelector || !anioSelector || !diasContainer || !submitButton) {
+    console.error('No se pudieron encontrar todos los elementos necesarios');
+    return;
+}
+
+const mesesMap = <?php echo json_encode($mesesMap); ?>;
+const aniosMap = <?php echo json_encode($aniosMap); ?>;
+const calendarMap2 = <?php echo json_encode($calendarMap2); ?>;
+const idCalendar = <?php echo json_encode($plan['id_calendar']); ?>;
+
+console.log('ID del Calendario:', idCalendar);
+console.log('Contenido de aniosMap:', aniosMap);
+
+function actualizarCalendario() {
+    const mesId = parseInt(mesSelector.value);
+    const anioId = parseInt(anioSelector.value);
+
+    console.log('Valor de anioSelector:', anioSelector.value, 'anioId:', anioId);
+    console.log('Mes seleccionado:', mesId, mesesMap[mesId]);
+    console.log('Año seleccionado:', anioId, aniosMap[anioId]);
+
+    if (isNaN(anioId)) {
+        console.error('El valor de anioId no es un número válido:', anioSelector.value);
         return;
     }
 
-    const mesesMap = <?php echo json_encode($mesesMap); ?>;
-    const aniosMap = <?php echo json_encode($aniosMap); ?>;
-
-    function actualizarCalendario() {
-        const mesId = parseInt(mesSelector.value);
-        const anioId = parseInt(anioSelector.value);
-
-        console.log('Mes seleccionado:', mesId, mesesMap[mesId]);
-        console.log('Año seleccionado:', anioId, aniosMap[anioId]);
-
-        const mes = parseInt(mesesMap[mesId]['Id']);
-        const anio = parseInt(aniosMap[anioId]['years']);
-
-        console.log('Mes y año para cálculos:', mes, anio);
-
-        const diasEnMes = new Date(anio, mes, 0).getDate();
-        console.log('Días en el mes:', diasEnMes);
-
-        diasContainer.innerHTML = '';
-
-        for (let dia = 1; dia <= diasEnMes; dia++) {
-            const diaElement = document.createElement('div');
-            diaElement.className = 'dia';
-            diaElement.innerHTML = `
-                <div class="dia-numero">${dia}</div>
-                <input type="number" id="input-${anio}-${mes}-${dia}" />
-            `;
-            diasContainer.appendChild(diaElement);
-        }
-
-        console.log('Calendario actualizado');
+    if (!aniosMap[anioId] || typeof aniosMap[anioId].years === 'undefined') {
+        console.error('No se encontró el año en aniosMap:', anioId);
+        return;
     }
 
-    function recopilarDatos() {
+    const mes = parseInt(mesesMap[mesId]['Id']);
+    const anio = parseInt(aniosMap[anioId]['years']);
+
+    console.log('Mes y año para cálculos:', mes, anio);
+
+    const diasEnMes = new Date(anio, mes, 0).getDate();
+    console.log('Días en el mes:', diasEnMes);
+
+    diasContainer.innerHTML = '';
+
+    const matrizCalendario = calendarMap2[idCalendar] || [];
+
+    for (let dia = 1; dia <= diasEnMes; dia++) {
+        const diaElement = document.createElement('div');
+        diaElement.className = 'dia';
+
+        // Busca si hay datos guardados para este día
+        const datosDia = matrizCalendario.find(item => item.dia === dia && item.mes === mes && item.anio === anio);
+        const cantidad = datosDia ? datosDia.cantidad : '';
+
+        diaElement.innerHTML = `
+            <div class="dia-numero">${dia}</div>
+            <input type="number" id="input-${anio}-${mes}-${dia}" value="${cantidad}" />
+        `;
+        diasContainer.appendChild(diaElement);
+    }
+
+    console.log('Calendario actualizado con los datos existentes.');
+}
+
+function recopilarDatos() {
     const mesId = parseInt(mesSelector.value);
     const anioId = parseInt(anioSelector.value);
     const mes = parseInt(mesesMap[mesId]['Id']);
@@ -533,7 +635,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Obtén el ID del cliente seleccionado
     const clienteId = parseInt(document.getElementById('selected-client-id').value);
- console.log(clienteId,"Holaaa");
+    console.log(clienteId, "Holaaa");
     const matrizCalendario = [];
 
     for (let dia = 1; dia <= diasEnMes; dia++) {
@@ -553,12 +655,13 @@ document.addEventListener('DOMContentLoaded', function() {
         matrizCalendario: matrizCalendario
     };
 }
-    mesSelector.addEventListener('change', actualizarCalendario);
-    anioSelector.addEventListener('change', actualizarCalendario);
-    submitButton.addEventListener('click', enviarDatos);
 
-    console.log('Inicializando calendario');
-    actualizarCalendario();
+mesSelector.addEventListener('change', actualizarCalendario);
+anioSelector.addEventListener('change', actualizarCalendario);
+submitButton.addEventListener('click', enviarDatos);
+
+console.log('Inicializando calendario');
+actualizarCalendario();
 
 
 function enviarDatos() {
