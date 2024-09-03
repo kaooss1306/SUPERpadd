@@ -14,7 +14,7 @@ $nombre = $_SESSION['user_name'];
 
 
 
-$ruta = 'https://improved-space-goldfish-jjw6rv7r4vxc5v9x-3000.app.github.dev/';
+$ruta = 'http://localhost:3000/';
 
 
 

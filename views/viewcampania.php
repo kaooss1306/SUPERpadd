@@ -58,6 +58,13 @@ include '../componentes/sidebar.php';
 
                                     <?php echo $datosCampania['NombreCampania']; ?>
                                 </div>
+                                <div class="author-box-job">
+                                    Fecha Creación
+                                </div>
+                                <div class="nombrex author-box-name">
+
+                                    <?php echo $datosCampania['fechaCreacion']; ?>
+                                </div>
 
                             </div>
                         </div>
