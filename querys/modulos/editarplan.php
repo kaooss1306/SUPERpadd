@@ -208,7 +208,10 @@ include '../../componentes/sidebar.php';
                                             </div>
                                             <input class="form-control" type="text" value="<?php echo htmlspecialchars($nombreCliente); ?>" id="search-client" placeholder="Buscar cliente...">
                                             <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-                                            <input type="hidden" id="selected-client-id" value="<?php echo $id_cliente; ?>" name="selected-client-id" >
+                                            <input  type="hidden"  id="selected-client-id" value="<?php echo $id_cliente; ?>" name="selected-client-id" >
+                                            <input   id="selected-calendar-id" value="<?php echo $plan['id_calendar']; ?>" name="selected-calendar-id" >
+                                            <input type="hidden" id="selected-plan-id" value="<?php echo $id_planes_publicidad; ?>" name="selected-plan-id" >
+                                            
                                         </div>
                                         <ul id="client-list" class="client-dropdown">
                                             <!-- Aquí se mostrarán las opciones filtradas -->
@@ -233,7 +236,7 @@ include '../../componentes/sidebar.php';
                                                 </div>
                                                 <input class="form-control" type="text" id="search-product" value="<?php echo htmlspecialchars($nombreProducto); ?>" placeholder="Buscar producto...">
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-                                                <input type="hidden"  id="selected-product-id" name="selected-product-id" >
+                                                <input   id="selected-product-id" name="selected-product-id" value="<?php echo $plan['id_producto']; ?>" >
                                             </div>
                                             <ul id="product-list" class="client-dropdown">
                                                 <!-- Aquí se mostrarán las opciones filtradas -->
@@ -248,7 +251,7 @@ include '../../componentes/sidebar.php';
                                                                 </div>
                                                                 <input class="form-control" type="text" id="search-contrato" value="<?php echo htmlspecialchars($nombreContrato); ?>" placeholder="Buscar contrato...">
                                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-                                                                <input type="hidden"  id="selected-contrato-id" name="selected-contrato-id">
+                                                                <input type="hidden"  id="selected-contrato-id" name="selected-contrato-id" value="<?php echo $plan['id_producto']; ?>">
                                                                 <input type="hidden"   id="selected-proveedor-id" name="selected-proveedor-id">
                                                             </div>
                                                             <ul id="contrato-list" class="client-dropdown">
@@ -265,7 +268,7 @@ include '../../componentes/sidebar.php';
                                                 </div>
                                                 <input class="form-control" type="text" id="search-soporte" value="<?php echo htmlspecialchars($nombreSoporte); ?>" placeholder="Buscar soporte...">
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-                                                <input  type="hidden"  id="selected-soporte-id" name="selected-soporte-id" value="">
+                                                <input  type="hidden"  id="selected-soporte-id" name="selected-soporte-id" value="<?php echo $plan['id_soporte']; ?>">
                                             </div>
                                             <ul id="soporte-list" class="client-dropdown">
                                                 <!-- Aquí se mostrarán las opciones filtradas -->
@@ -284,7 +287,7 @@ include '../../componentes/sidebar.php';
                                                 </div>
                                                 <input class="form-control" type="text" value="<?php echo htmlspecialchars($nombreCampania); ?>" id="search-campania" placeholder="Buscar campaña...">
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-                                                <input  type="hidden"  id="selected-campania-id" name="selected-campania-id">
+                                                <input  type="hidden"  id="selected-campania-id" name="selected-campania-id" value="<?php echo $plan['id_campania']; ?>">
                                             </div>
                                             <ul id="campania-list" class="client-dropdown">
                                                 <!-- Aquí se mostrarán las opciones filtradas -->
@@ -299,7 +302,7 @@ include '../../componentes/sidebar.php';
                                                 </div>
                                                 <input class="form-control" type="text" id="search-temas" value="<?php echo htmlspecialchars($nombreTema); ?>" placeholder="Buscar temas...">
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-                                                <input type="hidden"  id="selected-temas-id" name="selected-temas-id">
+                                                <input type="hidden" value="<?php echo $plan['id_temas']; ?>"  id="selected-temas-id" name="selected-temas-id">
                                             </div>
                                             <ul id="temas-list" class="client-dropdown">
                                                 <!-- Aquí se mostrarán las opciones filtradas -->
@@ -635,7 +638,8 @@ function recopilarDatos() {
 
     // Obtén el ID del cliente seleccionado
     const clienteId = parseInt(document.getElementById('selected-client-id').value);
-    console.log(clienteId, "Holaaa");
+    const id_calendar = parseInt(document.getElementById('selected-calendar-id').value); 
+
     const matrizCalendario = [];
 
     for (let dia = 1; dia <= diasEnMes; dia++) {
@@ -651,8 +655,10 @@ function recopilarDatos() {
     }
 
     return {
+        id_calendar: id_calendar,  // Incluye el id_calendar en los datos
         id_cliente: clienteId || 23, // Usa el ID del cliente seleccionado, o 23 como valor por defecto
-        matrizCalendario: matrizCalendario
+        matrizCalendario: matrizCalendario,
+   
     };
 }
 
@@ -663,38 +669,39 @@ submitButton.addEventListener('click', enviarDatos);
 console.log('Inicializando calendario');
 actualizarCalendario();
 
-
+const id_calendar = <?php echo json_encode($id_calendar); ?>;
+const id_planes_publicidad = <?php echo json_encode($id_planes_publicidad); ?>;
+console.log(id_planes_publicidad,"asdad" );
+console.log(id_calendar,"asdad2" );
 function enviarDatos() {
     const datos = recopilarDatos();  // Asegúrate de que recopilarDatos() devuelva los datos correctos para la tabla "json"
-    console.log('Datos a enviar:', JSON.stringify(datos));
+   // Usa el id_planes_publicidad ya existente
 
-    fetch('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/json', {
-        method: 'POST',
+
+    // Actualización del registro en la tabla "json"
+    fetch(`https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/json?id_calendar=eq.${id_calendar}`, {
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
             'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
             'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
-            'Prefer': 'return=representation' // Importante para obtener el id_calendar devuelto
+            'Prefer': 'return=representation'
         },
         body: JSON.stringify(datos)
     })
     .then(response => {
-        console.log('Respuesta completa:', response);
+        console.log('Respuesta completa de la actualización del calendario:', response);
         if (!response.ok) {
             return response.text().then(text => {
                 throw new Error(`HTTP error! status: ${response.status}, message: ${text}`);
             });
         }
-        return response.json(); // Asumimos que la respuesta es un JSON que contiene el id_calendar
+        return response.json();  // Asumimos que la respuesta es un JSON
     })
     .then(data => {
-        console.log('Respuesta del servidor:', data);
+        console.log('Respuesta del servidor al actualizar calendario:', data);
 
-        // Captura el id_calendar de la respuesta
-        const id_calendar = data[0].id_calendar;
-        console.log('ID Calendar obtenido:', id_calendar);
-
-        // Ahora que tienes el id_calendar, haz la segunda inserción
+        // Preparar los datos para la segunda actualización
         const datosPlan = {
             NombrePlan: document.querySelector('input[name="nombrePlan"]').value,
             id_cliente: document.getElementById('selected-client-id').value,
@@ -705,11 +712,13 @@ function enviarDatos() {
             id_campania: document.getElementById('selected-campania-id').value,
             id_temas: document.getElementById('selected-temas-id').value,
             fr_factura: document.getElementById('forma-facturacion').value,
-            id_calendar: id_calendar // Usa el id_calendar obtenido
+            id_calendar: id_calendar, // Usa el id_calendar existente
+            id_planes_publicidad: document.getElementById('selected-plan-id').value
         };
 
-        return fetch('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/PlanesPublicidad', {
-            method: 'POST',
+        // Actualización del registro en la tabla "PlanesPublicidad"
+        return fetch(`https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/PlanesPublicidad?id_planes_publicidad=eq.${id_planes_publicidad}`, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
@@ -719,7 +728,7 @@ function enviarDatos() {
         });
     })
     .then(response => {
-        console.log('Respuesta completa de la segunda inserción:', response);
+        console.log('Respuesta completa de la actualización del plan:', response);
         if (!response.ok) {
             return response.text().then(text => {
                 throw new Error(`HTTP error! status: ${response.status}, message: ${text}`);
@@ -728,10 +737,10 @@ function enviarDatos() {
         return response.text();
     })
     .then(data => {
-        console.log('Segunda inserción exitosa:', data);
+        console.log('Actualización del plan exitosa:', data);
         Swal.fire({
             title: '¡Éxito!',
-            text: 'Los datos se han guardado correctamente.',
+            text: 'Los datos se han actualizado correctamente.',
             icon: 'success',
             confirmButtonText: 'OK'
         }).then((result) => {
@@ -741,10 +750,10 @@ function enviarDatos() {
         });
     })
     .catch(error => {
-        console.error('Error al guardar los datos:', error);
+        console.error('Error al actualizar los datos:', error);
         Swal.fire({
             title: 'Error',
-            text: 'Error al guardar los datos: ' + error.message,
+            text: 'Error al actualizar los datos: ' + error.message,
             icon: 'error',
             confirmButtonText: 'OK'
         });

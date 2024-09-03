@@ -38,6 +38,9 @@ $contratos = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Contr
 $campania_temas = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/campania_temas?select=*');
 $temas = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Temas?select=*');
 $jsonData = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/json?select=*');
+$ordenpublicidad = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/OrdenesDePublicidad');
+$medios = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Medios?select=*');
+$clasimedios = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/ClasificacionMedios?select=*');
 $calendarMap2 = [];
 
 
@@ -51,12 +54,13 @@ $campaniaTemasMap = [];
 foreach ($campania_temas as $relacion) {
     $campaniaTemasMap[$relacion['id_campania']][] = $relacion['id_temas'];
 }
-
 $temasMap = [];
 foreach ($temas as $tema) {
     $temasMap[] = [
         'id' => $tema['id_tema'],
-        'nombreTema' => $tema['NombreTema']
+        'nombreTema' => $tema['NombreTema'],
+        'CodigoMegatime' => $tema['CodigoMegatime'],
+        'id_medio' => $tema['id_medio']
     ];
 }
 
@@ -88,7 +92,9 @@ foreach ($contratos as $contrato) {
         'id' => $contrato['id'],
         'nombreContrato' => $contrato['NombreContrato'],
         'idCliente' => $contrato['IdCliente'],
-        'idProveedor' => $contrato['IdProveedor'] // Se asegura que el IdProveedor esté aquí
+        'idProveedor' => $contrato['IdProveedor'], // Se asegura que el IdProveedor esté aquí
+        'num_contrato' => $contrato['num_contrato'],
+        'IdAgencias' => $contrato['IdAgencias']
     ];
 }   
 $clientesMap = [];
