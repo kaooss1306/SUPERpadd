@@ -1,9 +1,12 @@
 <div class="main-sidebar sidebar-style-2">
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
-            <a href="dashboard"> <img alt="image" src="https://www.origenmedios.cl/wp-content/uploads/2023/10/logo-origen-2023-sm2.png" class="header-logo" />
+            <a href="dashboard"> 
+              <img alt="image" src="https://www.origenmedios.cl/wp-content/uploads/2023/10/logo-origen-2023-sm2.png" class="header-logo" />
+              <span class="logo-name"> <img alt="image" src="https://www.origenmedios.cl/wp-content/uploads/2023/10/logo-origen-2023-sm2.png" class="header-logo" /></span>
             </a>
           </div>
+        
           <ul class="sidebar-menu">
             <li class="menu-header">MENÚ PADD</li>
             <li class="dropdown active">

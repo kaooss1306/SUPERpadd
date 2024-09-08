@@ -154,7 +154,7 @@ i.material-icons.tres {
   padding: 3px;
 }
 .crmtitulo {
-  padding-top: 4px !important;
+  padding-top: 4% !important;
   font-size: 18px !important;
   font-weight: bold !important;
   color: red !important;
@@ -424,4 +424,8 @@ body{
 .observa {
   border: 1px solid;
   padding: 15px;
+}
+.navbar .nav-link.nav-link-user .user-img-radious-style {
+  border-radius: 60px;
+  box-shadow: 2px 3px 6px 0 rgba(0,0,0,.2);
 }
