@@ -605,7 +605,7 @@ function actualizarCalendario() {
 
     const mes = parseInt(mesesMap[mesId]['Id']);
     const anio = parseInt(aniosMap[anioId]['years']);
-
+    const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
     console.log('Mes y año para cálculos:', mes, anio);
 
     const diasEnMes = new Date(anio, mes, 0).getDate();
@@ -616,6 +616,10 @@ function actualizarCalendario() {
     const matrizCalendario = calendarMap2[idCalendar] || [];
 
     for (let dia = 1; dia <= diasEnMes; dia++) {
+
+        const fecha = new Date(anio, mes - 1, dia);
+        const nombreDia = diasSemana[fecha.getDay()];
+
         const diaElement = document.createElement('div');
         diaElement.className = 'dia';
 
@@ -624,6 +628,7 @@ function actualizarCalendario() {
         const cantidad = datosDia ? datosDia.cantidad : '';
 
         diaElement.innerHTML = `
+         <div class="dia-nombre">${nombreDia}</div>
             <div class="dia-numero">${dia}</div>
             <input type="number" id="input-${anio}-${mes}-${dia}" value="${cantidad}" />
         `;

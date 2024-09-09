@@ -13,7 +13,9 @@ $avatar_usuario = $_SESSION['user']['Avatar'] ?? 'Usuario';
 
 $ruta = 'https://ubiquitous-sniffle-wr9pjrwwp7w5hgpqp-3000.app.github.dev/';
 
+ 
 $avatar_defecto = $ruta . 'assets/img/avatar.png';
+ 
 
 
 

@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Mostrar spinner de carga
         const spinner = submitButton.querySelector('.spinner-border');
         const buttonText = submitButton.querySelector('.btn-txt');
-
+    
         if (spinner && buttonText) {
             spinner.style.display = 'inline-block';
             buttonText.style.display = 'none';
@@ -22,56 +22,86 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Elementos de spinner o texto del botón no encontrados');
             return;
         }
-
-        // Obtener datos del formulario
-        const formData = new FormData(form);
-        const data = {};
-        formData.forEach((value, key) => {
-            if (value) { // Solo agregar campos con valores
-                data[key] = value;
-            }
-        });
-
-        console.log('Datos a enviar:', data); // Mostrar datos en la consola para verificar
-
+    
+        // Preparar los datos para la primera inserción (Temas)
+        const temaData = {
+            NombreTema: document.querySelector('input[name="NombreTema"]').value || null,
+            Duracion: document.querySelector('input[name="Duracion"]').value || null,
+            CodigoMegatime: document.querySelector('input[name="CodigoMegatime"]').value || null,
+            id_Calidad: document.querySelector('select[name="id_Calidad"]').value || null,
+            id_medio: document.querySelector('select[name="id_medio"]').value || null,
+            color: document.querySelector('input[name="color"]').value || null,
+            cooperado: document.querySelector('select[name="cooperado"]').value || null,
+            rubro: document.querySelector('input[name="rubro"]').value || null
+            // Agrega aquí cualquier otro campo necesario para la tabla "Temas"
+        };
+        console.log(temaData,"dataa");
+    
         try {
-            // Realizar la solicitud POST a Supabase
-            const response = await fetch('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Temas', {
+            // Primera inserción en "Temas"
+            const temaResponse = await fetch('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Temas', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc', // Reemplaza con tu API Key
-                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc' // Reemplaza con tu token de autorización
-              },
-                body: JSON.stringify(data)
+                'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
+                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
+                'Prefer': 'return=representation'     
+            },
+                body: JSON.stringify(temaData)
             });
-
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error('Error en la solicitud: ' + errorText);
+    
+            if (!temaResponse.ok) {
+                const errorText = await temaResponse.text();
+                throw new Error('Error en la solicitud de Tema: ' + errorText);
             }
-
-           
-
-            $('#agregartema').modal('hide');
+    
+            const temaInsertado = await temaResponse.json(); // Obtener datos del tema insertado
+            const idTema = temaInsertado[0].id_tema; // Obtener el id_tema insertado
+    
+            console.log('ID del tema insertado:', idTema);
+    
+            // Preparar los datos para la segunda inserción (campania_temas)
+            const campaniaTemaData = {
+                id_campania: document.querySelector('input[name="id_campania"]').value, // El id_campania
+                id_temas: idTema // Usar el id_tema obtenido
+            };
+    
+            // Segunda inserción en "campania_temas"
+            const campaniaTemaResponse = await fetch('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/campania_temas', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
+                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc'
+                },
+                body: JSON.stringify(campaniaTemaData)
+            });
+    
+            if (!campaniaTemaResponse.ok) {
+                const errorText = await campaniaTemaResponse.text();
+                throw new Error('Error en la solicitud de Campania_Temas: ' + errorText);
+            }
+    
+            // Ocultar modal, resetear formulario y mostrar notificación de éxito
+            $('#modalAgregarTema').modal('hide');
             $('#formularioTema')[0].reset();
-
+    
             await Swal.fire({
                 title: '¡Éxito!',
-                text: 'Tema agregado correctamente',
+                text: 'Tema agregado correctamente y asociado a la campaña',
                 icon: 'success',
                 confirmButtonText: 'OK'
             });
-            // Mostrar el GIF de carga
             showLoading();
+            // Recargar la página
             location.reload();
-            
+    
         } catch (error) {
             console.error('Error:', error);
-
+    
             // Mostrar mensaje de error
             alertDiv.className = 'alert alert-danger';
-            alertDiv.textContent = 'Hubo un error al agregar el tema.';
+            alertDiv.textContent = 'Hubo un error al agregar el tema o asociarlo a la campaña.';
             alertDiv.style.display = 'block';
         } finally {
             // Ocultar spinner y mostrar texto del botón nuevamente
