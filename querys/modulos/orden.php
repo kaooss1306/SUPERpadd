@@ -193,7 +193,7 @@ echo htmlspecialchars($mesNombre);
       </table>
     </div></td>
     <td width="45%"><div class="formatotabla bordered-table">
-    <?php
+<?php
 // Asumimos que ya tienes $calendarMap y $idCalendar definidos
 
 // Obtener la matriz del calendario para el ID específico

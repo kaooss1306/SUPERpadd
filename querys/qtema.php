@@ -29,11 +29,9 @@ $rubros = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Rubro?se
 $calidads = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Calidad?select=*');
 $coperados = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Cooperado?select=*');
 $temas = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Temas?select=*');
+$camptem = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Temas?select=*');
+$calidadsMap = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/campania_temas?select=*');
 
-$calidadsMap = [];
-foreach ($calidads as $calidad) {
-    $calidadsMap[$calidad['id']] = $calidad;
-}
 $coperadosMap = [];
 foreach ($coperados as $coperado) {
     $coperadosMap[$coperado['id_cooperado']] = $coperado;
@@ -46,10 +44,7 @@ $planesMap = [];
 foreach ($planes as $plane) {
     $planesMap[$plane['id_planes_publicidad']] = $plane;
 }
-$campaignsMap = [];
-foreach ($campaigns as $campaign) {
-    $campaignsMap[$campaign['id_campania']] = $campaign;
-}
+
 $mediosMap = [];
 foreach ($medios as $medio) {
     $mediosMap[$medio['id']] = $medio;
