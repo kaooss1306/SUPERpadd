@@ -193,14 +193,60 @@ echo htmlspecialchars($mesNombre);
       </table>
     </div></td>
     <td width="45%"><div class="formatotabla bordered-table">
-      <table width="100%" border="1">
-        <tr>
-          <td>LISTAR DÍAS </td>
-        </tr>
-        <tr>
-          <td>&nbsp;</td>
-        </tr>
-      </table>
+    <?php
+// Asumimos que ya tienes $calendarMap y $idCalendar definidos
+
+// Obtener la matriz del calendario para el ID específico
+$matrizCalendario = $calendarMap[$idCalendar] ?? [];
+
+// Procesar la matriz para tener un array indexado por día
+$cantidadesPorDia = [];
+foreach ($matrizCalendario as $entrada) {
+    $cantidadesPorDia[$entrada['dia']] = $entrada['cantidad'];
+}
+
+// Determinar el mes y año (usando el primer elemento de la matriz)
+$mes = $matrizCalendario[0]['mes'] ?? date('n');
+$anio = $matrizCalendario[0]['anio'] ?? date('Y');
+
+// Nombres abreviados de los días en español
+$nombresDias = ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'];
+
+// Obtener el número de días en el mes y el día de la semana en que comienza
+$numDias = date('t', mktime(0, 0, 0, $mes, 1, $anio));
+$primerDia = date('w', mktime(0, 0, 0, $mes, 1, $anio));
+
+// Generar la tabla HTML
+$html = '<table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse;">';
+
+// Fila de números de días
+$html .= '<tr>';
+for ($i = 1; $i <= $numDias; $i++) {
+    $html .= "<th>$i</th>";
+}
+$html .= '</tr>';
+
+// Fila de nombres de días
+$html .= '<tr>';
+for ($i = 0; $i < $numDias; $i++) {
+    $diaSemana = ($primerDia + $i) % 7;
+    $html .= "<td>{$nombresDias[$diaSemana]}</td>";
+}
+$html .= '</tr>';
+
+// Fila de cantidades
+$html .= '<tr>';
+for ($dia = 1; $dia <= $numDias; $dia++) {
+    $cantidad = $cantidadesPorDia[$dia] ?? '';
+    $html .= "<td>$cantidad</td>";
+}
+$html .= '</tr>';
+
+$html .= '</table>';
+
+// Imprimir la tabla
+echo $html;
+?>
     </div></td>
     <td width="29%">
         <table width="100%" class="bordered-table">

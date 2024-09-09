@@ -117,19 +117,7 @@ include '../componentes/sidebar.php';
                                         <?php echo $datosCampania['Presupuesto']; ?>
                                     </span>
                                 </p>
-                                <p class="clearfix">
-                                    <span class="float-start">
-                                        Temas
-                                    </span>
-                                    <span class="float-right text-muted">
-
-                                        <?php
-                                        $tema = $temasMap[$datosCampania['id_Temas'] ?? '']['NombreTema'];
-                                        echo $tema
-                                        ?>
-
-                                    </span>
-                                </p>
+                             
                          
 
                                 <p class="clearfix">
@@ -176,7 +164,9 @@ include '../componentes/sidebar.php';
                                                         <h4>Listado de temas</h4>
                                                     </div>
                                                     <div class="agregar">
-                                                        <a type="button" class="btn btn-primary micono" data-bs-toggle="modal" data-bs-target="#modalAgregarTema"><i class="fas fa-plus-circle"></i> Agregar Temas</a>
+                                                    <a type="button" class="btn btn-primary micono" data-bs-toggle="modal" data-bs-target="#modalAgregarTema" data-id-campania="<?php echo $datosCampania['id_campania']; ?>">
+    <i class="fas fa-plus-circle"></i> Agregar Temas
+</a>
 
                                                     </div>
                                                 </div>
@@ -358,6 +348,7 @@ include '../componentes/sidebar.php';
 
     </div>
 </div>
+
 <?php include './modalUpdateFactura.php'; ?>
 <?php include './modalAgregarFacturaCampania.php'; ?>
 <?php include './modalAgregarOC.php'; ?>

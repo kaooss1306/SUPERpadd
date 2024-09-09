@@ -607,36 +607,35 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const mesesMap = <?php echo json_encode($mesesMap); ?>;
     const aniosMap = <?php echo json_encode($aniosMap); ?>;
+    const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 
-    function actualizarCalendario() {
-        const mesId = parseInt(mesSelector.value);
-        const anioId = parseInt(anioSelector.value);
+ function actualizarCalendario() {
+    const mesId = parseInt(mesSelector.value);
+    const anioId = parseInt(anioSelector.value);
 
-        console.log('Mes seleccionado:', mesId, mesesMap[mesId]);
-        console.log('Año seleccionado:', anioId, aniosMap[anioId]);
+    const mes = parseInt(mesesMap[mesId]['Id']);
+    const anio = parseInt(aniosMap[anioId]['years']);
 
-        const mes = parseInt(mesesMap[mesId]['Id']);
-        const anio = parseInt(aniosMap[anioId]['years']);
+    const diasEnMes = new Date(anio, mes, 0).getDate();
+    
+    diasContainer.innerHTML = '';
 
-        console.log('Mes y año para cálculos:', mes, anio);
-
-        const diasEnMes = new Date(anio, mes, 0).getDate();
-        console.log('Días en el mes:', diasEnMes);
-
-        diasContainer.innerHTML = '';
-
-        for (let dia = 1; dia <= diasEnMes; dia++) {
-            const diaElement = document.createElement('div');
-            diaElement.className = 'dia';
-            diaElement.innerHTML = `
-                <div class="dia-numero">${dia}</div>
-                <input type="number" id="input-${anio}-${mes}-${dia}" />
-            `;
-            diasContainer.appendChild(diaElement);
-        }
-
-        console.log('Calendario actualizado');
+    for (let dia = 1; dia <= diasEnMes; dia++) {
+        const fecha = new Date(anio, mes - 1, dia);
+        const nombreDia = diasSemana[fecha.getDay()];
+        
+        const diaElement = document.createElement('div');
+        diaElement.className = 'dia';
+        diaElement.innerHTML = `
+            <div class="dia-nombre">${nombreDia}</div>
+            <div class="dia-numero">${dia}</div>
+            <input type="number" id="input-${anio}-${mes}-${dia}" />
+        `;
+        diasContainer.appendChild(diaElement);
     }
+
+    console.log('Calendario actualizado');
+}
 
     function recopilarDatos() {
     const mesId = parseInt(mesSelector.value);
