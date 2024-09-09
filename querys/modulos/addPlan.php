@@ -538,13 +538,29 @@ function updateTemasList(idCampania) {
     }
 }
 
+// Modificación del buscador de temas
+setupSearch('search-temas', 'temas-list', temasMap, 'nombreTema', null, function(item) {
+    const selectedCampaniaId = document.getElementById('selected-campania-id').value;
+    
+    if (!selectedCampaniaId) {
+      
+        return false; // Detener si no hay campaña seleccionada
+    }
+
+    const temasRelacionadosIds = campaniaTemasMap[selectedCampaniaId] || [];
+    
+    // Filtramos solo los temas relacionados con la campaña seleccionada
+    return temasRelacionadosIds.includes(item.id);
+});
+
+
 // Configuración de búsqueda para cada campo
 setupSearch('search-client', 'client-list', clientesMap, 'nombreCliente');
 setupSearch('search-product', 'product-list', productosMap, 'nombreProducto', 'idCliente');
 setupSearch('search-campania', 'campania-list', campaignsMap, 'nombreCampania', 'idCliente');
 setupSearch('search-contrato', 'contrato-list', contratosMap, 'nombreContrato', 'idCliente');
 setupSearch('search-soporte', 'soporte-list', soportesMap, 'nombreSoporte');
-setupSearch('search-temas', 'temas-list', temasMap, 'nombreTema');
+
 
 function clearSearch() {
     document.getElementById('search-product').value = '';
