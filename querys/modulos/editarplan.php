@@ -486,18 +486,65 @@ function updateSoporteList(idProveedor) {
 function updateTemasList(idCampania) {
     const list = document.getElementById('temas-list');
     const temasRelacionadosIds = campaniaTemasMap[idCampania] || [];
+
+    console.log("temasMap:", temasMap);
+    console.log("temasRelacionadosIds:", temasRelacionadosIds);
+
     const filteredTemas = temasMap.filter(tema => temasRelacionadosIds.includes(tema.id));
+    console.log("filteredTemas:", filteredTemas);
 
     if (filteredTemas.length > 0) {
         list.innerHTML = filteredTemas.map(tema =>
-            `<li data-id="${tema.id}">${tema.nombreTema}</li>`
+            `<li data-id="${tema.id}" data-id-medio="${tema.id_medio}" data-codigomegatime="${tema.CodigoMegatime}">${tema.nombreTema}</li>`
         ).join('');
+        console.log("HTML generado:", list.innerHTML);
+
         list.style.display = 'block';
+
+        // Agregar evento click a cada li para setear el CodigoMegatime y el Id_Clasificacion
+        const temasItems = list.querySelectorAll('li');
+        temasItems.forEach(item => {
+            item.addEventListener('click', async function() {
+                const codigoMegatime = this.getAttribute('data-codigomegatime');
+                const medioid = this.getAttribute('data-id-medio');
+                console.log('Código Megatime seleccionado:', codigoMegatime);
+
+                // Obtener el Id_Clasificacion basado en id_medio
+                const idClasificacion = await fetchIdClasificacion(medioid);
+
+                const inputCodigo = document.getElementById('selected-temas-codigo');
+                const inputCodigo2 = document.getElementById('selected-id-medio');
+                const inputClasificacion = document.getElementById('selected-id-clasificacion');
+
+                if (inputCodigo && inputCodigo2 && inputClasificacion) {
+                    inputCodigo.value = codigoMegatime;
+                    inputCodigo2.value = medioid;
+                    inputClasificacion.value = idClasificacion; // Setea el Id_Clasificacion
+                } else {
+                    console.error('No se encontraron los inputs.');
+                }
+            });
+        });
     } else {
         list.innerHTML = '<li>No se encuentran temas para esta campaña.</li>';
         list.style.display = 'block';
     }
 }
+
+// Modificación del buscador de temas
+setupSearch('search-temas', 'temas-list', temasMap, 'nombreTema', null, function(item) {
+    const selectedCampaniaId = document.getElementById('selected-campania-id').value;
+    
+    if (!selectedCampaniaId) {
+      
+        return false; // Detener si no hay campaña seleccionada
+    }
+
+    const temasRelacionadosIds = campaniaTemasMap[selectedCampaniaId] || [];
+    
+    // Filtramos solo los temas relacionados con la campaña seleccionada
+    return temasRelacionadosIds.includes(item.id);
+});
 
 // Configuración de búsqueda para cada campo
 setupSearch('search-client', 'client-list', clientesMap, 'nombreCliente');
@@ -505,7 +552,7 @@ setupSearch('search-product', 'product-list', productosMap, 'nombreProducto', 'i
 setupSearch('search-campania', 'campania-list', campaignsMap, 'nombreCampania', 'idCliente');
 setupSearch('search-contrato', 'contrato-list', contratosMap, 'nombreContrato', 'idCliente');
 setupSearch('search-soporte', 'soporte-list', soportesMap, 'nombreSoporte');
-setupSearch('search-temas', 'temas-list', temasMap, 'nombreTema');
+
 
 function clearSearch() {
     document.getElementById('search-product').value = '';
