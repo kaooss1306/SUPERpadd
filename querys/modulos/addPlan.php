@@ -247,7 +247,21 @@ include '../../componentes/sidebar.php';
                                             <ul id="temas-list" class="client-dropdown">
                                                 <!-- Aquí se mostrarán las opciones filtradas -->
                                             </ul>
-                                        </div>  
+                                        </div> 
+                                        <label class="labelforms" for="id_orden_compra">Orden de compra</label>
+<div class="custom-select-container">
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text"><i class="bi bi-person"></i></span>
+        </div>
+        <input class="form-control" type="text" id="search-orden" placeholder="Buscar Orden...">
+        <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
+        <input type="hidden" id="selected-orden-id" name="selected-orden-id">
+    </div>
+    <ul id="orden-list" class="client-dropdown">
+        <!-- Aquí se mostrarán las opciones filtradas -->
+    </ul>
+</div> 
                                         <label for="forma-facturacion" class="labelforms">Forma de facturación</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
@@ -347,7 +361,9 @@ const contratosMap = <?php echo json_encode($contratosMap); ?>;
 const soportesMap = <?php echo json_encode($soportesMap); ?>;
 const campaniaTemasMap = <?php echo json_encode($campaniaTemasMap); ?>;
 const temasMap = <?php echo json_encode($temasMap); ?>;
-
+const ordenMap = <?php echo json_encode($ordenMap); ?>; 
+const ordenMapArray = Object.values(ordenMap); // Convierte el objeto en un array
+console.log(ordenMap,"hola");
 function setupSearch(searchId, listId, dataMap, textProperty, filterProperty = null, extraFilterFunction = null) {
     const searchInput = document.getElementById(searchId);
     const list = document.getElementById(listId);
@@ -538,6 +554,61 @@ function updateTemasList(idCampania) {
     }
 }
 
+function updateOrdenList(idCampania) {
+    const list = document.getElementById('orden-list');
+    const ordenesRelacionadas = ordenMap.filter(orden => orden.id_campania == idCampania);
+
+    if (ordenesRelacionadas.length > 0) {
+        list.innerHTML = ordenesRelacionadas.map(orden =>
+            `<li data-id="${orden.id_orden_compra}">${orden.NombreOrden}</li>`
+        ).join('');
+        list.style.display = 'block';
+
+        // Agregar evento click a cada li para seleccionar la orden
+        const ordenItems = list.querySelectorAll('li');
+        ordenItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const selectedOrdenId = this.getAttribute('data-id');
+                const selectedOrdenName = this.textContent;
+
+                // Asignar los valores al input hidden y al campo de texto
+                document.getElementById('selected-orden-id').value = selectedOrdenId;
+                document.getElementById('search-orden').value = selectedOrdenName;
+
+                list.style.display = 'none';
+            });
+        });
+    } else {
+        list.innerHTML = '<li>No se encuentran órdenes para esta campaña.</li>';
+        list.style.display = 'block';
+    }
+}
+function updateTemasAndOrdenes(idCampania) {
+    updateTemasList(idCampania);  // Actualiza los temas
+    updateOrdenList(idCampania);  // Actualiza las órdenes
+}
+
+// Modificar la parte donde actualizas los temas para incluir la actualización de órdenes de compra
+document.getElementById('search-campania').addEventListener('change', function() {
+    const selectedCampaniaId = this.value;
+    updateTemasAndOrdenes(selectedCampaniaId);  // Llamamos a ambas funciones
+});
+
+// Configuración del buscador de órdenes de compra
+setupSearch('search-orden', 'orden-list', ordenMapArray, 'NombreOrden', null, function(item) {
+    const selectedCampaniaId = document.getElementById('selected-campania-id').value;
+
+    if (!selectedCampaniaId) {
+
+        return false;
+    }
+
+    // Filtrar órdenes basadas en la campaña seleccionada
+    return item.id_campania == selectedCampaniaId;
+});
+
+
+
 // Modificación del buscador de temas
 setupSearch('search-temas', 'temas-list', temasMap, 'nombreTema', null, function(item) {
     const selectedCampaniaId = document.getElementById('selected-campania-id').value;
@@ -579,6 +650,9 @@ function clearSearch() {
     document.getElementById('selected-temas-id').value = '';
     document.getElementById('temas-list').style.display = 'none';
     document.getElementById('selected-proveedor-id').value = '';
+    document.getElementById('search-orden').value = '';  // Limpiar el campo de órdenes
+    document.getElementById('selected-orden-id').value = '';  // Limpiar el id oculto de órdenes
+    document.getElementById('orden-list').style.display = 'none';
 
     document.querySelectorAll('.clear-btn').forEach(btn => btn.style.display = 'none');
 }
@@ -589,7 +663,8 @@ document.addEventListener('click', function(event) {
         document.getElementById('search-campania'),
         document.getElementById('search-contrato'),
         document.getElementById('search-soporte'),
-        document.getElementById('search-temas')
+        document.getElementById('search-temas'),
+        document.getElementById('search-orden') 
     ];
 
     const lists = [
@@ -597,7 +672,8 @@ document.addEventListener('click', function(event) {
         document.getElementById('campania-list'),
         document.getElementById('contrato-list'),
         document.getElementById('soporte-list'),
-        document.getElementById('temas-list')
+        document.getElementById('temas-list'),
+        document.getElementById('orden-list')
     ];
 
     if (!searchFields.some(field => field.contains(event.target)) &&

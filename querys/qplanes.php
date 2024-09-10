@@ -42,7 +42,12 @@ $ordenpublicidad = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1
 $medios = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Medios?select=*');
 $clasimedios = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/ClasificacionMedios?select=*');
 $calendarMap2 = [];
+$ordenes = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/OrdenDeCompra?select=*');
 
+$ordenMap = [];
+foreach ($ordenes as $orden) {
+    $ordenMap[$orden['id_orden_compra']] = $orden;
+}
 
 
 
