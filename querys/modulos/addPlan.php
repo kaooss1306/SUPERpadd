@@ -204,7 +204,7 @@ include '../../componentes/sidebar.php';
                                                 </div>
                                                 <input class="form-control" type="text" id="search-soporte" placeholder="Buscar soporte...">
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-                                                <input  type="hidden"  id="selected-soporte-id" name="selected-soporte-id" value="">
+                                                <input  type="hidden"   id="selected-soporte-id" name="selected-soporte-id" value="">
                                             </div>
                                             <ul id="soporte-list" class="client-dropdown">
                                                 <!-- Aquí se mostrarán las opciones filtradas -->
@@ -230,7 +230,20 @@ include '../../componentes/sidebar.php';
                                                 <!-- Aquí se mostrarán las opciones filtradas -->
                                             </ul>
                                         </div>
-                                        
+                                        <label class="labelforms" for="id_orden_compra">Orden de compra</label>
+<div class="custom-select-container">
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text"><i class="bi bi-file-earmark-text"></i></span>
+        </div>
+        <input class="form-control" type="text" id="search-orden" placeholder="Buscar Orden...">
+        <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
+        <input  id="selected-orden-id" name="selected-orden-id">
+    </div>
+    <ul id="orden-list" class="client-dropdown">
+        <!-- Aquí se mostrarán las opciones filtradas -->
+    </ul>
+</div> 
                                         <label class="labelforms" for="id_campania">Temas</label>
                                         <div class="custom-select-container">
                                             <div class="input-group">
@@ -248,20 +261,7 @@ include '../../componentes/sidebar.php';
                                                 <!-- Aquí se mostrarán las opciones filtradas -->
                                             </ul>
                                         </div> 
-                                        <label class="labelforms" for="id_orden_compra">Orden de compra</label>
-<div class="custom-select-container">
-    <div class="input-group">
-        <div class="input-group-prepend">
-            <span class="input-group-text"><i class="bi bi-file-earmark-text"></i></span>
-        </div>
-        <input class="form-control" type="text" id="search-orden" placeholder="Buscar Orden...">
-        <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-        <input  id="selected-orden-id" name="selected-orden-id">
-    </div>
-    <ul id="orden-list" class="client-dropdown">
-        <!-- Aquí se mostrarán las opciones filtradas -->
-    </ul>
-</div> 
+                             
                                         <label for="forma-facturacion" class="labelforms">Forma de facturación</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
@@ -374,31 +374,6 @@ function closeAllLists() {
         list.style.display = 'none';  // Oculta todas las listas
     });
 }
-function clearSelectedFields() {
-    console.log("Limpiando los campos de temas y órdenes...");
-
-    // Limpiar los valores de los inputs de temas y órdenes
-    const temasInput = document.getElementById('search-temas');
-    const ordenInput = document.getElementById('search-orden');
-    const temasIdInput = document.getElementById('selected-temas-id');
-    const ordenIdInput = document.getElementById('selected-orden-id');
-
-    // Asegurarnos de que los elementos existen antes de limpiarlos
-    if (temasInput) temasInput.value = ''; // Limpiar el campo de texto de temas
-    if (ordenInput) ordenInput.value = ''; // Limpiar el campo de texto de órdenes
-    if (temasIdInput) temasIdInput.value = ''; // Limpiar el ID oculto de temas
-    if (ordenIdInput) ordenIdInput.value = ''; // Limpiar el ID oculto de órdenes
-
-    // También podemos limpiar las listas si están abiertas
-    const temasList = document.getElementById('temas-list');
-    const ordenList = document.getElementById('orden-list');
-
-    if (temasList) temasList.style.display = 'none'; // Ocultar la lista de temas
-    if (ordenList) ordenList.style.display = 'none'; // Ocultar la lista de órdenes
-
-    console.log("Campos de temas y órdenes limpiados.");
-}
-
 
 function setupSearch(searchId, listId, dataMap, textProperty, filterProperty = null, extraFilterFunction = null) {
     const searchInput = document.getElementById(searchId);
@@ -489,8 +464,10 @@ function setupSearch(searchId, listId, dataMap, textProperty, filterProperty = n
             }
 
             if (searchId === 'search-campania') {
-                updateTemasList(selectedId);
-            }
+                updateOrdenList(selectedId);
+ 
+}
+ 
 
             list.style.display = 'none';
             document.querySelector('.clear-btn').style.display = 'none';
@@ -545,46 +522,40 @@ async function fetchIdClasificacion(id_medio) {
 }
 
 function updateOrdenList(idCampania) {
-    const list = document.getElementById('orden-list');
-    const ordenesRelacionadas = ordenMap.filter(orden => orden.id_campania == idCampania);
+  const list = document.getElementById('orden-list');
+  const ordenesRelacionadas = ordenMap.filter(orden => orden.id_campania == idCampania);
 
-    // Verificar si se han encontrado órdenes relacionadas
-    if (ordenesRelacionadas.length > 0) {
-        // Generar el HTML para las órdenes de compra
-        list.innerHTML = ordenesRelacionadas.map(orden =>
-            `<li data-id="${orden.id_orden_compra}">${orden.NombreOrden}</li>`
-        ).join('');
-        list.style.display = 'block';
-        
-        // Mostrar el HTML generado
-        console.log("HTML ORDENGENERADO:", list.innerHTML);
+  if (ordenesRelacionadas.length > 0) {
+    console.log("Ordene Relacionadas con id_campania:", ordenesRelacionadas);
 
-        // Agregar evento click a cada li para seleccionar la orden
-        const ordenItems = list.querySelectorAll('li');
-        if (ordenItems.length > 0) {
-            console.log("Asignando eventos a los elementos de la lista de órdenes.");
-        }
+    list.innerHTML = ordenesRelacionadas.map(orden =>
+      `<li data-id="${orden.id_orden_compra}">${orden.NombreOrden}</li>`
+    ).join('');
 
-        ordenItems.forEach(item => {
-            item.addEventListener('click', function() {
-                // Acceder al atributo data-id del elemento
-                const selectedOrdenId = this.getAttribute('data-id');
-                const selectedOrdenName = this.textContent;
+    console.log("HTML ORDEN GENERADO:", list.innerHTML);
 
-                // Mostrar el ID y el nombre de la orden seleccionada
-                console.log("ID de la orden seleccionada:", selectedOrdenId);
-                console.log("Nombre de la orden seleccionada:", selectedOrdenName);
+    list.style.display = 'block';
 
-                // Asignar los valores al input hidden y al campo de texto
-                document.getElementById('selected-orden-id').value = selectedOrdenId;
-                document.getElementById('search-orden').value = selectedOrdenName;
-            });
-        });
-    } else {
-        // No se encontraron órdenes relacionadas con la campaña seleccionada
-        list.innerHTML = '<li>No se encuentran órdenes para esta campaña.</li>';
-        list.style.display = 'block';
-    }
+    // Agrega el evento click a la lista entera
+    list.addEventListener('click', function(event) {
+      if (event.target.tagName === 'LI') {
+        const selectedId = event.target.getAttribute('data-id');
+        const selectedOrdenName = event.target.textContent;
+
+        console.log("ID de la orden seleccionada:", selectedId);
+        console.log("Nombre de la orden seleccionada:", selectedOrdenName);
+
+        document.getElementById('selected-orden-id').value = selectedId;
+        document.getElementById('search-orden').value = selectedOrdenName;
+
+        list.style.display = 'none';
+        document.querySelector('.clear-btn').style.display = 'none';
+      }
+    });
+  } else {
+    list.innerHTML = '<li>No se encuentran órdenes para esta campaña.</li>';
+    list.style.display = 'block';
+  }
 }
 
 
@@ -598,8 +569,7 @@ function updateTemasList(idCampania) {
         list.innerHTML = filteredTemas.map(tema =>
             `<li data-id="${tema.id}" data-id-medio="${tema.id_medio}" data-codigomegatime="${tema.CodigoMegatime}">${tema.nombreTema}</li>`
         ).join('');
-        console.log("HTML generado:", list.innerHTML);
-
+       
         list.style.display = 'block';
 
         // Agregar evento click a cada li para setear el CodigoMegatime y el Id_Clasificacion
@@ -629,43 +599,8 @@ function updateTemasList(idCampania) {
 }
 
 
-function updateTemasAndOrdenes(idCampania) {
-    updateTemasList(idCampania);  // Actualiza los temas
-    updateOrdenList(idCampania);  // Actualiza las órdenes
-}
-
-// Modificar la parte donde actualizas los temas para incluir la actualización de órdenes de compra
-document.getElementById('search-campania').addEventListener('input', function() {
-    const selectedCampaniaId = document.getElementById('selected-campania-id').value;
-    
-    console.log("ID de la campaña seleccionada:", selectedCampaniaId);
-    
-    clearSelectedFields();
-    
-    if (selectedCampaniaId) {
-        updateTemasAndOrdenes(selectedCampaniaId);
-    }
-});
-
-// Configuración del buscador de órdenes de compra
-setupSearch('search-orden', 'orden-list', ordenMap, 'NombreOrden', null, function(item) {
-    const selectedCampaniaId = document.getElementById('selected-campania-id').value;
-
-    if (!selectedCampaniaId) {
-
-        return false;
-    }
-
-    // Filtrar órdenes basadas en la campaña seleccionada
-    return item.id_campania == selectedCampaniaId;
-
-    const temasRelacionadosIds = campaniaTemasMap[selectedCampaniaId] || [];
-    
-    // Filtramos solo los temas relacionados con la campaña seleccionada
-    return temasRelacionadosIds.includes(item.id);
 
 
-});
 
 
 
