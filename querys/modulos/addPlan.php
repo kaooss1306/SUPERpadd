@@ -224,7 +224,7 @@ include '../../componentes/sidebar.php';
                                                 </div>
                                                 <input class="form-control" type="text" id="search-campania" placeholder="Buscar campaña...">
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-                                                <input   id="selected-campania-id" name="selected-campania-id">
+                                                <input type="hidden"  id="selected-campania-id" name="selected-campania-id">
                                             </div>
                                             <ul id="campania-list" class="client-dropdown">
                                                 <!-- Aquí se mostrarán las opciones filtradas -->
@@ -238,7 +238,7 @@ include '../../componentes/sidebar.php';
         </div>
         <input class="form-control" type="text" id="search-orden" placeholder="Buscar Orden...">
         <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-        <input  id="selected-orden-id" name="selected-orden-id">
+        <input    id="selected-orden-id" name="selected-orden-id">
     </div>
     <ul id="orden-list" class="client-dropdown">
         <!-- Aquí se mostrarán las opciones filtradas -->
@@ -252,7 +252,7 @@ include '../../componentes/sidebar.php';
                                                 </div>
                                                 <input class="form-control" type="text" id="search-temas" placeholder="Buscar temas...">
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-                                                <input    id="selected-temas-id" name="selected-temas-id">
+                                                <input type="hidden"   id="selected-temas-id" name="selected-temas-id">
                                                 <input  type="hidden" id="selected-temas-codigo" name="selected-temas-codigo">
                                                 <input type="hidden"  id="selected-id-medio" name="selected-id-medio">
                                                 <input  type="hidden" id="selected-id-clasificacion" name="selected-id-clasificacion">
@@ -844,14 +844,14 @@ document.addEventListener('DOMContentLoaded', function() {
             id_calendar: id_calendar,
             Megatime: document.getElementById('selected-temas-codigo').value,
             id_agencia: document.getElementById('selected-agencia-id').value,
-            id_clasificacion: document.getElementById('selected-id-clasificacion').value
-            
-      
+            id_clasificacion: document.getElementById('selected-id-clasificacion').value === "" ? null : document.getElementById('selected-id-clasificacion').value,
+            numero_orden: document.getElementById('selected-orden-id').value,
+            estado: '1'
             
            
              // Usa el id_calendar obtenido
          }; // Copia los datos de datosPlan, puedes modificar lo necesario después
-
+         console.log(datosOrden,"holaaa");
         return fetch('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/OrdenesDePublicidad', {
             method: 'POST',
             headers: {
