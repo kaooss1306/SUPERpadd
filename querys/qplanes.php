@@ -46,7 +46,12 @@ $ordenes = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/OrdenDe
 
 $ordenMap = [];
 foreach ($ordenes as $orden) {
-    $ordenMap[$orden['id_orden_compra']] = $orden;
+    $ordenMap[] = [
+        'id_orden_compra' => $orden['id_orden_compra'],
+        'NombreOrden' => $orden['NombreOrden'],
+        'id_campania' => $orden['id_campania'],
+        // Agrega otros campos que sean necesarios
+    ];
 }
 
 
