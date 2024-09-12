@@ -9,7 +9,9 @@ async function guardarCompania(event) {
     formData.forEach((value, key) => {
         jsonData[key] = value;
     });
-
+    const date = new Date();
+    const fechaCreacion = date.toISOString().split('T')[0]; // Extracts the date part in YYYY-MM-DD format
+    
     // Transformar los datos del formulario al formato requerido
     const transformedData = {
         "NombreCampania": jsonData.NombreCampania,
@@ -18,8 +20,12 @@ async function guardarCompania(event) {
         "Id_Agencia": parseInt(jsonData.Id_Agencia, 10),
         "id_Producto": parseInt(jsonData.id_Producto, 10),
         "Presupuesto": parseFloat(jsonData.Presupuesto),
+
+        "id_Temas": parseInt(jsonData.id_Temas, 10),
         "Id_Planes_Publicidad": jsonData.Planes_Publicidad !== null ? parseInt(jsonData.Planes_Publicidad, 10) : null,
-        "estado": '1'
+        "estado":true,
+        "fechaCreacion":fechaCreacion,
+
     };
 
     // URL y headers para la solicitud POST
@@ -30,6 +36,23 @@ async function guardarCompania(event) {
         "Content-Type": "application/json",
         "Prefer": "return=minimal"
     };
+
+
+    // Realizar la solicitud POST usando fetch
+    fetch(url, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(transformedData)
+    })
+    .then(async response => {
+        if (response.ok) {
+   
+            const modal = bootstrap.Modal.getInstance(document.getElementById('modalAgregarCampania'));
+            modal.hide();
+            await mostrarExito('Campaña agregada correctamente');
+
+            showLoading()
+            window.location.reload();
 
     try {
         // Realizar la solicitud POST usando fetch
@@ -55,6 +78,7 @@ async function guardarCompania(event) {
 
             // Recargar la página
             location.reload();
+
         } else {
             // Manejar el error de respuesta
             const errorData = await response.json();
@@ -77,6 +101,22 @@ async function guardarCompania(event) {
     }
 }
 
+
+async function mostrarExito(mensaje) {
+    return new Promise((resolve) => {
+        // Asumiendo que esta función muestra un mensaje y luego resuelve la promesa
+        Swal.fire({
+                  title: 'Éxito!',
+                text: mensaje,
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 1500
+        }).then(() => {
+            resolve(); // Resuelve la promesa cuando se cierra el Swal
+        });
+    });
+}
+
 function showLoading() {
     let loadingElement = document.getElementById('custom-loading');
     if (!loadingElement) {
@@ -90,4 +130,10 @@ function showLoading() {
         document.body.appendChild(loadingElement);
     }
     loadingElement.style.display = 'block';
+
 }
+// Asigna el evento de envío al formulario de actualizar proveedor
+document.getElementById('formularioAgregarCampania').addEventListener('submit', guardarCompania);
+
+}
+
