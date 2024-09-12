@@ -136,9 +136,11 @@ echo htmlspecialchars($mesNombre);
     <td style="text-align:center;"><strong>CAMPAÑA:</strong> <?php echo $datosCampania['NombreCampania'] ?? 'Nombre no disponible'; ?><br>
     
     <strong>PLAN DE MEDIOS:</strong> <?php echo $datosProductos['NombrePlan'] ?? 'Nombre no disponible'; ?><br>
-    <div class="thebordex">
+    <?php if (!empty($datosContrato['Descuento1']) && $datosContrato['Descuento1'] > 0) : ?>
+  <div class="thebordex">
     <strong>DESCUENTO:</strong> <?php echo '$' . number_format($datosContrato['Descuento1'], 0, ',', '.'); ?><br>
-</div>
+  </div>
+<?php endif; ?>
 </td>
 
 
@@ -183,16 +185,16 @@ echo htmlspecialchars($mesNombre);
     <td width="26%"><div class="formatotabla bordered-table">
       <table width="100%" border="1">
         <tr>
-          <td><div align="center">FORMATO</div></td>
+          <td ><div class="frtp10" align="center">FORMATO</div></td>
           <td><div align="center">DETALLE</div></td>
         </tr>
         <tr>
-          <td><div align="center">TEMA: CARRUSEL </div></td>
+          <td><div class="frtpm10" align="center">TEMA: CARRUSEL </div></td>
           <td><div align="center">- </div></td>
         </tr>
       </table>
     </div></td>
-    <td width="45%"><div class="formatotabla bordered-table">
+    <td width="43%"><div class="formatotabla bordered-table">
 <?php
 // Asumimos que ya tienes $calendarMap y $idCalendar definidos
 
@@ -220,14 +222,14 @@ $primerDia = date('w', mktime(0, 0, 0, $mes, 1, $anio));
 $html = '<table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse;">';
 
 // Fila de números de días
-$html .= '<tr>';
+$html .= '<tr class="numordenpdf">';
 for ($i = 1; $i <= $numDias; $i++) {
     $html .= "<th>$i</th>";
 }
 $html .= '</tr>';
 
 // Fila de nombres de días
-$html .= '<tr>';
+$html .= '<tr class="numordenpdf2">';
 for ($i = 0; $i < $numDias; $i++) {
     $diaSemana = ($primerDia + $i) % 7;
     $html .= "<td>{$nombresDias[$diaSemana]}</td>";
@@ -235,7 +237,7 @@ for ($i = 0; $i < $numDias; $i++) {
 $html .= '</tr>';
 
 // Fila de cantidades
-$html .= '<tr>';
+$html .= '<tr class="numordenpdf3">';
 for ($dia = 1; $dia <= $numDias; $dia++) {
     $cantidad = $cantidadesPorDia[$dia] ?? '';
     $html .= "<td>$cantidad</td>";
@@ -248,20 +250,24 @@ $html .= '</table>';
 echo $html;
 ?>
     </div></td>
-    <td width="29%">
+    <td width="30%">
         <table width="100%" class="bordered-table">
       <tr>
-        <td>Avisos </td>
+        <td style="padding:9px;">Avisos </td>
         <td>Bruto</td>
-        <td>Descto</td>
+        <?php if (!empty($datosContrato['Descuento1']) && $datosContrato['Descuento1'] > 0) : ?>
+    <td>Descto</td>
+  <?php endif; ?>
         <td>Recargo</td>
         <td>Tarifa</td>
         <td>NETO </td>
       </tr>
       <tr>
-        <td>1</td>
-        <td><?php echo '$' . number_format($datosContrato['ValorBruto'], 0, ',', '.'); ?></td>
-        <td><?php echo '$' . number_format($datosContrato['Descuento1'], 0, ',', '.'); ?></td>
+        <td style="padding:8px;">1</td>
+        <td ><?php echo '$' . number_format($datosContrato['ValorBruto'], 0, ',', '.'); ?></td>
+        <?php if (!empty($datosContrato['Descuento1']) && $datosContrato['Descuento1'] > 0) : ?>
+    <td><?php echo '$' . number_format($datosContrato['Descuento1'], 0, ',', '.'); ?></td>
+  <?php endif; ?>
         <td>0</td>
         <td><?php echo '$' . number_format($datosContrato['ValorBruto'], 0, ',', '.'); ?></td>
         <td><?php echo '$' . number_format($datosContrato['ValorNeto'], 0, ',', '.'); ?></td>
