@@ -8,16 +8,99 @@ if (!isset($_SESSION['user']) || empty($_SESSION['user'])) {
 }
 $user_name = $_SESSION['user_name'];
 
-include 'componentes/header.php';
 include '../qplanes.php';
-include 'componentes/sidebar.php';
+
+
+if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id_planes_publicidad'])) {
+    // Obtener el ID del plan de la URL y convertirlo a entero
+    $id_planes_publicidad = (int) $_GET['id_planes_publicidad'];
+
+    // Obtener todos los planes desde Supabase
+  
+    // Verificar que $planes es un array y tiene datos
+    if (!is_array($planes) || empty($planes)) {
+        echo "No se obtuvieron datos de los planes.";
+        exit;
+    }
+
+    // Buscar el plan que coincida con el ID
+    $plan = null;
+    foreach ($planes as $item) {
+        if ((int) $item['id_planes_publicidad'] === (int) $id_planes_publicidad) {
+            $plan = $item;
+            break;
+        }
+    }
+
+    // Verifica si se encontró el plan
+    if ($plan === null) {
+        echo "No se encontró el plan publicitario.";
+        exit;
+    }
+
+   
+} else {
+    echo "ID del plan no proporcionado.";
+}
+// Verifica si la respuesta contiene datos
+if (is_array($ordenepublicidad) && !empty($ordenepublicidad)) {
+    $id_ordenes_de_comprar = $ordenepublicidad[0]['id_ordenes_de_comprar'];
+    $id_ordenes_de_comprar2 = $ordenepublicidad[0]['id_agencia'];
+    $id_ordenes_de_comprar3 = $ordenepublicidad[0]['num_contrato'];
+    $id_ordenes_de_comprar4 = $ordenepublicidad[0]['id_proveedor'];
+    $id_ordenes_de_comprar5 = $ordenepublicidad[0]['Megatime'];
+    
+    $id_ordenes_de_comprar6 = $ordenepublicidad[0]['numero_orden'];
+    $nombreOrdenx = isset($ordenMap2[$id_ordenes_de_comprar6]) ? $ordenMap2[$id_ordenes_de_comprar6] : 'Nombre no disponible';
+
+} else {
+    $id_ordenes_de_comprar = null; // O algún valor por defecto si no se encuentra el dato
+    $id_ordenes_de_comprar2 = null;
+    $id_ordenes_de_comprar3 = null;
+    $id_ordenes_de_comprar4 = null;
+}
 
 // Verificar si $mesesMap y $aniosMap están disponibles
 if (!isset($mesesMap) || !isset($aniosMap)) {
     die("Error: No se pudieron obtener los datos de meses y años.");
 }
+$id_producto = $plan['id_producto'];
+$nombreProducto = isset($productosMap2[$id_producto]) ? $productosMap2[$id_producto] : "Nombre no disponible";
+$id_cliente = $plan['id_cliente'];
 
+// Obtener el nombre del cliente basado en el ID
+$nombreCliente = isset($clientesMap2[$id_cliente]) ? $clientesMap2[$id_cliente] : "Nombre no disponible";
+$id_contrato = $plan['id_contrato'];
 
+// Obtener el nombre del contrato basado en el ID
+$nombreContrato = isset($contratosMap2[$id_contrato]) ? $contratosMap2[$id_contrato] : "Nombre no disponible";
+$id_soporte = $plan['id_soporte'];
+
+// Obtener el nombre del soporte basado en el ID
+$nombreSoporte = isset($soportesMap2[$id_soporte]) ? $soportesMap2[$id_soporte] : "Nombre no disponible";
+$id_campania = $plan['id_campania'];
+
+// Obtener el nombre de la campaña basado en el ID
+$nombreCampania = isset($campaignsMap2[$id_campania]) ? $campaignsMap2[$id_campania] : "Nombre no disponible";
+$id_tema = $plan['id_temas'];
+
+// Obtener el nombre del tema basado en el ID
+$nombreTema = isset($temasMap2[$id_tema]) ? $temasMap2[$id_tema] : "Nombre no disponible";
+$selectedFrFactura = $plan['fr_factura'];
+$id_calendar = $plan['id_calendar'];
+$matrizCalendario = isset($calendarMap2[$id_calendar]) ? $calendarMap2[$id_calendar] : [];
+
+// Determinar el mes y año iniciales a partir de la matrizCalendario
+$mesInicial = isset($matrizCalendario[0]) ? $matrizCalendario[0]['mes'] : date('n');
+$anioInicial = isset($matrizCalendario[0]) ? $matrizCalendario[0]['anio'] : date('Y');
+$anioID = null; // Variable para almacenar el ID
+
+foreach ($anios2 as $anio) {
+    if ($anio['years'] == $anioInicial) {
+        $anioID = $anio['id'];
+        break; // Salir del bucle una vez encontrado
+    }
+}
 include '../../componentes/header.php';
 
 include '../../componentes/sidebar.php';
@@ -120,6 +203,7 @@ include '../../componentes/sidebar.php';
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="<?php echo $ruta; ?>dashboard">Home</a></li>
       <li class="breadcrumb-item"><a href="<?php echo $ruta; ?>ListPlanes.php">Ver Planes</a></li>
+      <li class="breadcrumb-item active" aria-current="page"><?php echo $plan['NombrePlan']; ?></li>
     </ol>
   </nav>
     <section class="section">
@@ -127,10 +211,10 @@ include '../../componentes/sidebar.php';
     width: 80% !important;
     margin: 0 auto;
     padding: 50px;">
-    <form id="formularioPlan">
+    <form id="formularioEditPlan">
                     <!-- Campos del formulario -->
                     <div>
-                        <h3 class="titulo-registro mb-3">Agregar Plan</h3>
+                        <h3 class="titulo-registro mb-3">Editar Plan</h3>
                         <div class="row">
                             <div class="col">
                         
@@ -143,9 +227,12 @@ include '../../componentes/sidebar.php';
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="bi bi-person"></i></span>
                                             </div>
-                                            <input class="form-control" type="text" id="search-client" placeholder="Buscar cliente...">
+                                            <input class="form-control" type="text" value="<?php echo htmlspecialchars($nombreCliente); ?>" id="search-client" placeholder="Buscar cliente...">
                                             <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-                                            <input type="hidden" id="selected-client-id" name="selected-client-id" >
+                                            <input  type="hidden"  id="selected-client-id" value="<?php echo $id_cliente; ?>" name="selected-client-id" >
+                                            <input type="hidden"  id="selected-calendar-id" value="<?php echo $plan['id_calendar']; ?>" name="selected-calendar-id" >
+                                            <input type="hidden" id="selected-plan-id" value="<?php echo $id_planes_publicidad; ?>" name="selected-plan-id" >
+                                            <input    id="ordenpublicidad-id" value="<?php echo htmlspecialchars($id_ordenes_de_comprar); ?>" name="ordenpublicidad-id" >
                                         </div>
                                         <ul id="client-list" class="client-dropdown">
                                             <!-- Aquí se mostrarán las opciones filtradas -->
@@ -155,40 +242,40 @@ include '../../componentes/sidebar.php';
                                     <label class="labelforms" for="codigo">Nombre de Plan</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bi bi-tag"></i></span>
+                                            <span class="input-group-text"><i class="bi bi-person"></i></span>
                                         </div>
-                                        <input class="form-control" placeholder="Nombre de Plan" name="nombrePlan">
+                                        <input class="form-control" placeholder="Nombre de Plan" name="nombrePlan" value="<?php echo $plan['NombrePlan']; ?>">
                                     </div>
-
+                                    
                                 <div class="row">
                                     <div class="col">
                                         <label class="labelforms" for="id_producto">Producto</label>
                                         <div class="custom-select-container">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text"><i class="bi bi-box"></i></span>
+                                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
                                                 </div>
-                                                <input class="form-control" type="text" id="search-product" placeholder="Buscar producto...">
+                                                <input class="form-control" type="text" id="search-product" value="<?php echo htmlspecialchars($nombreProducto); ?>" placeholder="Buscar producto...">
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-                                                <input type="hidden"  id="selected-product-id" name="selected-product-id">
+                                                <input type="hidden"  id="selected-product-id" name="selected-product-id" value="<?php echo $plan['id_producto']; ?>" >
                                             </div>
                                             <ul id="product-list" class="client-dropdown">
                                                 <!-- Aquí se mostrarán las opciones filtradas -->
                                             </ul>
                                         </div>
                             
-                                            <label class="labelforms" for="id_contrato">Contrato</label>
+                                        <label class="labelforms" for="id_contrato">Contrato</label>
                                                         <div class="custom-select-container">
                                                             <div class="input-group">
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text"><i class="bi bi-file-earmark-text"></i></span>
                                                                 </div>
-                                                                <input class="form-control" type="text" id="search-contrato" placeholder="Buscar contrato...">
+                                                                <input class="form-control" type="text" id="search-contrato" value="<?php echo htmlspecialchars($nombreContrato); ?>" placeholder="Buscar contrato...">
                                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-                                                                <input type="hidden"  id="selected-contrato-id" name="selected-contrato-id">
-                                                                <input   type="hidden"  id="selected-proveedor-id" name="selected-proveedor-id">
-                                                                <input  type="hidden"  id="selected-num-contrato" name="selected-num-contrato">
-                                                                <input   id="selected-agencia-id" name="selected-agencia-id">
+                                                                <input    id="selected-contrato-id" name="selected-contrato-id" value="<?php echo $plan['id_contrato']; ?>">
+                                                                <input    id="selected-proveedor-id" name="selected-proveedor-id" value="<?php echo htmlspecialchars($id_ordenes_de_comprar4); ?>">
+                                                                <input    id="selected-num-contrato" name="selected-num-contrato" value="<?php echo htmlspecialchars($id_ordenes_de_comprar3); ?>">
+                                                                <input   id="selected-agencia-id" name="selected-agencia-id" value="<?php echo htmlspecialchars($id_ordenes_de_comprar2); ?>">
                                                             </div>
                                                             <ul id="contrato-list" class="client-dropdown">
                                                                 <!-- Aquí se mostrarán las opciones filtradas -->
@@ -200,11 +287,11 @@ include '../../componentes/sidebar.php';
                                         <div class="custom-select-container">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text"><i class="bi bi-briefcase"></i></span>
+                                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
                                                 </div>
-                                                <input class="form-control" type="text" id="search-soporte" placeholder="Buscar soporte...">
+                                                <input class="form-control" type="text" id="search-soporte" value="<?php echo htmlspecialchars($nombreSoporte); ?>" placeholder="Buscar soporte...">
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-                                                <input  type="hidden"   id="selected-soporte-id" name="selected-soporte-id" value="">
+                                                <input  type="hidden"  id="selected-soporte-id" name="selected-soporte-id" value="<?php echo $plan['id_soporte']; ?>">
                                             </div>
                                             <ul id="soporte-list" class="client-dropdown">
                                                 <!-- Aquí se mostrarán las opciones filtradas -->
@@ -212,19 +299,18 @@ include '../../componentes/sidebar.php';
                                         </div>
                                         <label for="descripcion" class="labelforms">Detalle</label>
                                     <div class="custom-textarea-container">
-                                        <textarea id="descripcion" name="descripcion" class="form-control" rows="4" placeholder="Introduce la detalle aquí..."></textarea>
-                                    </div>
+                                    <textarea id="descripcion" name="descripcion" class="form-control" rows="4" placeholder="Introduce el detalle aquí..."><?php echo htmlspecialchars($plan['detalle']); ?></textarea>                                    </div>
                                         </div>
                                         <div class="col">
                                         <label class="labelforms" for="id_campania">Campaña</label>
                                         <div class="custom-select-container">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text"><i class="bi bi-bullseye"></i></span>
+                                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
                                                 </div>
-                                                <input class="form-control" type="text" id="search-campania" placeholder="Buscar campaña...">
+                                                <input class="form-control" type="text" value="<?php echo htmlspecialchars($nombreCampania); ?>" id="search-campania" placeholder="Buscar campaña...">
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-                                                <input type="hidden"  id="selected-campania-id" name="selected-campania-id">
+                                                <input  type="hidden"  id="selected-campania-id" name="selected-campania-id" value="<?php echo $plan['id_campania']; ?>">
                                             </div>
                                             <ul id="campania-list" class="client-dropdown">
                                                 <!-- Aquí se mostrarán las opciones filtradas -->
@@ -236,9 +322,9 @@ include '../../componentes/sidebar.php';
         <div class="input-group-prepend">
             <span class="input-group-text"><i class="bi bi-file-earmark-text"></i></span>
         </div>
-        <input class="form-control" type="text" id="search-orden" placeholder="Buscar Orden...">
+        <input class="form-control" type="text" id="search-orden" value="<?php echo htmlspecialchars($nombreOrdenx); ?>" placeholder="Buscar Orden...">
         <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-        <input    id="selected-orden-id" name="selected-orden-id">
+        <input    id="selected-orden-id" name="selected-orden-id" value="<?php echo htmlspecialchars($id_ordenes_de_comprar6); ?>">
     </div>
     <ul id="orden-list" class="client-dropdown">
         <!-- Aquí se mostrarán las opciones filtradas -->
@@ -248,31 +334,30 @@ include '../../componentes/sidebar.php';
                                         <div class="custom-select-container">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text"><i class="bi bi-stars"></i></span>
+                                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
                                                 </div>
-                                                <input class="form-control" type="text" id="search-temas" placeholder="Buscar temas...">
+                                                <input class="form-control" type="text" id="search-temas" value="<?php echo htmlspecialchars($nombreTema); ?>" placeholder="Buscar temas...">
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
                                                 <input type="hidden"   id="selected-temas-id" name="selected-temas-id">
-                                                <input    id="selected-temas-codigo" name="selected-temas-codigo">
+                                                <input   id="selected-temas-codigo" name="selected-temas-codigo" value="<?php echo htmlspecialchars($id_ordenes_de_comprar5); ?>">
                                                 <input type="hidden"  id="selected-id-medio" name="selected-id-medio">
                                                 <input  type="hidden" id="selected-id-clasificacion" name="selected-id-clasificacion">
                                             </div>
                                             <ul id="temas-list" class="client-dropdown">
                                                 <!-- Aquí se mostrarán las opciones filtradas -->
                                             </ul>
-                                        </div> 
-                             
+                                        </div>  
                                         <label for="forma-facturacion" class="labelforms">Forma de facturación</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="bi bi-person"></i></span>
                                                 </div>
-                                            <select id="forma-facturacion" name="forma-facturacion" class="form-control">
-                                                <option value="" disabled selected>Selecciona una opción</option>
-                                                <option value="afecta">Afecta</option>
-                                                <option value="exenta">Exenta</option>
-                                                <option value="exportacion">Exportación</option>
-                                            </select>
+                                                <select id="forma-facturacion" name="forma-facturacion" class="form-control">
+    <option value="" disabled <?php echo ($selectedFrFactura === '') ? 'selected' : ''; ?>>Selecciona una opción</option>
+    <option value="afecta" <?php echo ($selectedFrFactura === 'afecta') ? 'selected' : ''; ?>>Afecta</option>
+    <option value="exenta" <?php echo ($selectedFrFactura === 'exenta') ? 'selected' : ''; ?>>Exenta</option>
+    <option value="exportacion" <?php echo ($selectedFrFactura === 'exportacion') ? 'selected' : ''; ?>>Exportación</option>
+</select>
                                         </div>
                                             </div>
                                         </div>
@@ -314,44 +399,7 @@ include '../../componentes/sidebar.php';
                 </div>
     </section>
 </div>
-<script>
-    // Función para hacer la solicitud al endpoint y obtener el Id_Clasificacion
-    function fetchIdClasificacion(id_medio) {
-        const url = `https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Medios?id_medio=eq.${id_medio}&select=*`;
 
-        return fetch(url, {
-            headers: {
-                'Content-Type': 'application/json',
-            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.length > 0) {
-                return data[0].Id_Clasificacion;
-            } else {
-                console.error('No se encontró el id_medio.');
-                return null;
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            return null;
-        });
-    }
-
-    // Escucha el cambio en el input 'selected-id-medio'
-    document.getElementById('selected-id-medio').addEventListener('change', async function() {
-        const id_medio = this.value;
-        if (id_medio) {
-            const id_clasificacion = await fetchIdClasificacion(id_medio);
-            if (id_clasificacion !== null) {
-                document.getElementById('selected-id-clasificacion').value = id_clasificacion;
-            }
-        }
-    });
-</script>
 
 <script>
 const clientesMap = <?php echo json_encode($clientesMap); ?>;
@@ -366,21 +414,11 @@ console.log(ordenMap, "Map de órdenes");
 const ordenMapArray = Object.values(ordenMap); // Convierte el objeto en un array
 console.log(ordenMapArray,"hola");
 
-
-
-function closeAllLists() {
-    const lists = document.querySelectorAll('.client-dropdown');  // Selecciona todas las listas desplegables
-    lists.forEach(list => {
-        list.style.display = 'none';  // Oculta todas las listas
-    });
-}
-
 function setupSearch(searchId, listId, dataMap, textProperty, filterProperty = null, extraFilterFunction = null) {
     const searchInput = document.getElementById(searchId);
     const list = document.getElementById(listId);
 
     searchInput.addEventListener('focus', function() {
-        closeAllLists();
         const clientId = document.getElementById('selected-client-id').value;
         const filteredItems = dataMap.filter(item =>
             (!filterProperty || item[filterProperty] === (clientId ? parseInt(clientId, 10) : null)) &&
@@ -465,6 +503,7 @@ function setupSearch(searchId, listId, dataMap, textProperty, filterProperty = n
 
             if (searchId === 'search-campania') {
                 updateOrdenList(selectedId);
+                updateTemasList(selectedId);
  
 }
  
@@ -474,7 +513,6 @@ function setupSearch(searchId, listId, dataMap, textProperty, filterProperty = n
         }
     });
 }
-
 
 function updateSoporteList(idProveedor) {
     const list = document.getElementById('soporte-list');
@@ -490,7 +528,6 @@ function updateSoporteList(idProveedor) {
         list.style.display = 'block';
     }
 }
-
 async function fetchIdClasificacion(id_medio) {
     const url = `https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Medios?id=eq.${id_medio}&select=*`;
 
@@ -520,7 +557,6 @@ async function fetchIdClasificacion(id_medio) {
         return null;
     }
 }
-
 function updateOrdenList(idCampania) {
   const list = document.getElementById('orden-list');
   const ordenesRelacionadas = ordenMap.filter(orden => orden.id_campania == idCampania);
@@ -557,7 +593,6 @@ function updateOrdenList(idCampania) {
     list.style.display = 'block';
   }
 }
-
 
 function updateTemasList(idCampania) {
     const list = document.getElementById('temas-list');
@@ -598,12 +633,6 @@ function updateTemasList(idCampania) {
     }
 }
 
-
-
-
-
-
-
 // Modificación del buscador de temas
 setupSearch('search-temas', 'temas-list', temasMap, 'nombreTema', null, function(item) {
     const selectedCampaniaId = document.getElementById('selected-campania-id').value;
@@ -618,7 +647,6 @@ setupSearch('search-temas', 'temas-list', temasMap, 'nombreTema', null, function
     // Filtramos solo los temas relacionados con la campaña seleccionada
     return temasRelacionadosIds.includes(item.id);
 });
-
 
 // Configuración de búsqueda para cada campo
 setupSearch('search-client', 'client-list', clientesMap, 'nombreCliente');
@@ -678,53 +706,93 @@ document.addEventListener('click', function(event) {
 });
 </script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const mesSelector = document.getElementById('mesSelector');
-    const anioSelector = document.getElementById('anioSelector');
-    const diasContainer = document.getElementById('diasContainer');
-    const submitButton = document.getElementById('submitButton');
-
-    console.log('Selectores:', mesSelector, anioSelector);
-    console.log('Contenedor de días:', diasContainer);
-
-    if (!mesSelector || !anioSelector || !diasContainer || !submitButton) {
-        console.error('No se pudieron encontrar todos los elementos necesarios');
-        return;
-    }
-
     const mesesMap = <?php echo json_encode($mesesMap); ?>;
     const aniosMap = <?php echo json_encode($aniosMap); ?>;
-    const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+    const calendarMap2 = <?php echo json_encode($calendarMap2); ?>;
+    const idCalendar = <?php echo json_encode($plan['id_calendar']); ?>;
+    const iniciall = <?php echo json_encode($anioInicial); ?>
+    console.log('Meses Map:', mesesMap);
+    console.log('Años Map:', aniosMap);
+    console.log('Calendar Map2:', calendarMap2);
+    console.log('ID del Calendario:', idCalendar);
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var anioID = <?php echo json_encode($anioID); ?>;
+    console.log('El ID para el año es:', anioID);
+    mesSelector.value = <?php echo $mesInicial; ?>;
+anioSelector.value = <?php echo json_encode($anioID); ?>;
 
- function actualizarCalendario() {
+const diasContainer = document.getElementById('diasContainer');
+const submitButton = document.getElementById('submitButton');
+
+if (!mesSelector || !anioSelector || !diasContainer || !submitButton) {
+    console.error('No se pudieron encontrar todos los elementos necesarios');
+    return;
+}
+
+const mesesMap = <?php echo json_encode($mesesMap); ?>;
+const aniosMap = <?php echo json_encode($aniosMap); ?>;
+const calendarMap2 = <?php echo json_encode($calendarMap2); ?>;
+const idCalendar = <?php echo json_encode($plan['id_calendar']); ?>;
+
+console.log('ID del Calendario:', idCalendar);
+console.log('Contenido de aniosMap:', aniosMap);
+
+function actualizarCalendario() {
     const mesId = parseInt(mesSelector.value);
     const anioId = parseInt(anioSelector.value);
 
+    console.log('Valor de anioSelector:', anioSelector.value, 'anioId:', anioId);
+    console.log('Mes seleccionado:', mesId, mesesMap[mesId]);
+    console.log('Año seleccionado:', anioId, aniosMap[anioId]);
+
+    if (isNaN(anioId)) {
+        console.error('El valor de anioId no es un número válido:', anioSelector.value);
+        return;
+    }
+
+    if (!aniosMap[anioId] || typeof aniosMap[anioId].years === 'undefined') {
+        console.error('No se encontró el año en aniosMap:', anioId);
+        return;
+    }
+
     const mes = parseInt(mesesMap[mesId]['Id']);
     const anio = parseInt(aniosMap[anioId]['years']);
+    const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+    console.log('Mes y año para cálculos:', mes, anio);
 
     const diasEnMes = new Date(anio, mes, 0).getDate();
-    
+    console.log('Días en el mes:', diasEnMes);
+
     diasContainer.innerHTML = '';
 
+    const matrizCalendario = calendarMap2[idCalendar] || [];
+
     for (let dia = 1; dia <= diasEnMes; dia++) {
+
         const fecha = new Date(anio, mes - 1, dia);
         const nombreDia = diasSemana[fecha.getDay()];
-        
+
         const diaElement = document.createElement('div');
         diaElement.className = 'dia';
+
+        // Busca si hay datos guardados para este día
+        const datosDia = matrizCalendario.find(item => item.dia === dia && item.mes === mes && item.anio === anio);
+        const cantidad = datosDia ? datosDia.cantidad : '';
+
         diaElement.innerHTML = `
-            <div class="dia-nombre">${nombreDia}</div>
+         <div class="dia-nombre">${nombreDia}</div>
             <div class="dia-numero">${dia}</div>
-            <input type="number" id="input-${anio}-${mes}-${dia}" />
+            <input type="number" id="input-${anio}-${mes}-${dia}" value="${cantidad}" />
         `;
         diasContainer.appendChild(diaElement);
     }
 
-    console.log('Calendario actualizado');
+    console.log('Calendario actualizado con los datos existentes.');
 }
 
-    function recopilarDatos() {
+function recopilarDatos() {
     const mesId = parseInt(mesSelector.value);
     const anioId = parseInt(anioSelector.value);
     const mes = parseInt(mesesMap[mesId]['Id']);
@@ -733,7 +801,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Obtén el ID del cliente seleccionado
     const clienteId = parseInt(document.getElementById('selected-client-id').value);
- console.log(clienteId,"Holaaa");
+    const id_calendar = parseInt(document.getElementById('selected-calendar-id').value); 
+
     const matrizCalendario = [];
 
     for (let dia = 1; dia <= diasEnMes; dia++) {
@@ -749,49 +818,55 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     return {
+        id_calendar: id_calendar,  // Incluye el id_calendar en los datos
         id_cliente: clienteId || 23, // Usa el ID del cliente seleccionado, o 23 como valor por defecto
-        matrizCalendario: matrizCalendario
+        matrizCalendario: matrizCalendario,
+   
     };
 }
-    mesSelector.addEventListener('change', actualizarCalendario);
-    anioSelector.addEventListener('change', actualizarCalendario);
-    submitButton.addEventListener('click', enviarDatos);
 
-    console.log('Inicializando calendario');
-    actualizarCalendario();
+mesSelector.addEventListener('change', actualizarCalendario);
+anioSelector.addEventListener('change', actualizarCalendario);
+submitButton.addEventListener('click', enviarDatos);
 
+console.log('Inicializando calendario');
+actualizarCalendario();
 
-    function enviarDatos() {
+const id_calendar = <?php echo json_encode($id_calendar); ?>;
+const id_planes_publicidad = <?php echo json_encode($id_planes_publicidad); ?>;
+console.log(id_planes_publicidad,"asdad" );
+console.log(id_calendar,"asdad2" );
+function enviarDatos() {
     const datos = recopilarDatos();  // Asegúrate de que recopilarDatos() devuelva los datos correctos para la tabla "json"
-    console.log('Datos a enviar:', JSON.stringify(datos));
 
-    fetch('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/json', {
-        method: 'POST',
+    // Usa el id_planes_publicidad ya existente
+    const id_planes_publicidad = document.getElementById('selected-plan-id').value;
+    const id_ordenes_de_comprar = document.getElementById('ordenpublicidad-id').value; // Obtén el valor del campo oculto
+    console.log(id_ordenes_de_comprar,"ordenesctm");
+    // Actualización del registro en la tabla "json"
+    fetch(`https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/json?id_calendar=eq.${id_calendar}`, {
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
-            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
-            'Prefer': 'return=representation' // Importante para obtener el id_calendar devuelto
+                'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
+                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
+                'Prefer': 'return=representation'
         },
         body: JSON.stringify(datos)
     })
     .then(response => {
-        console.log('Respuesta completa:', response);
+        console.log('Respuesta completa de la actualización del calendario:', response);
         if (!response.ok) {
             return response.text().then(text => {
                 throw new Error(`HTTP error! status: ${response.status}, message: ${text}`);
             });
         }
-        return response.json(); // Asumimos que la respuesta es un JSON que contiene el id_calendar
+        return response.json();  // Asumimos que la respuesta es un JSON
     })
     .then(data => {
-        console.log('Respuesta del servidor:', data);
+        console.log('Respuesta del servidor al actualizar calendario:', data);
 
-        // Captura el id_calendar de la respuesta
-        const id_calendar = data[0].id_calendar;
-        console.log('ID Calendar obtenido:', id_calendar);
-
-        // Ahora que tienes el id_calendar, haz la segunda inserción
+        // Preparar los datos para la segunda actualización
         const datosPlan = {
             NombrePlan: document.querySelector('input[name="nombrePlan"]').value,
             id_cliente: document.getElementById('selected-client-id').value,
@@ -802,68 +877,23 @@ document.addEventListener('DOMContentLoaded', function() {
             id_campania: document.getElementById('selected-campania-id').value,
             id_temas: document.getElementById('selected-temas-id').value,
             fr_factura: document.getElementById('forma-facturacion').value,
-            id_calendar: id_calendar, // Usa el id_calendar obtenido
-            estado: '1'
+            id_calendar: id_calendar, // Usa el id_calendar existente
+            id_planes_publicidad: id_planes_publicidad
         };
-
-        return fetch('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/PlanesPublicidad', {
-            method: 'POST',
+        console.log(datosPlan,"datosplan");
+        // Actualización del registro en la tabla "PlanesPublicidad"
+        return fetch(`https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/PlanesPublicidad?id_planes_publicidad=eq.${id_planes_publicidad}`, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
                 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
-                'Prefer': 'return=representation'
             },
             body: JSON.stringify(datosPlan)
         });
     })
     .then(response => {
-        console.log('Respuesta completa de la segunda inserción:', response);
-        if (!response.ok) {
-            return response.text().then(text => {
-                throw new Error(`HTTP error! status: ${response.status}, message: ${text}`);
-            });
-        }
-        return response.json();
-    })
-    .then(data => {
-
-        
-        console.log('Respuesta del servidor2:', data);
-        const id_planes_publicidad = data[0].id_planes_publicidad;
-        const id_calendar = data[0].id_calendar;
-        // Ahora, realiza la tercera inserción en la tabla "OrdenesDePublicidad"
-        const datosOrden = { 
-            
-            id_cliente: document.getElementById('selected-client-id').value,
-            num_contrato: document.getElementById('selected-contrato-id').value,
-            id_proveedor: document.getElementById('selected-proveedor-id').value,
-            id_soporte: document.getElementById('selected-soporte-id').value,
-            id_tema: document.getElementById('selected-temas-id').value,
-            id_plan: id_planes_publicidad,
-            id_calendar: id_calendar,
-            Megatime: document.getElementById('selected-temas-codigo').value,
-            id_agencia: document.getElementById('selected-agencia-id').value,
-            id_clasificacion: document.getElementById('selected-id-clasificacion').value === "" ? null : document.getElementById('selected-id-clasificacion').value,
-            numero_orden: document.getElementById('selected-orden-id').value,
-            estado: '1'
-            
-           
-             // Usa el id_calendar obtenido
-         }; // Copia los datos de datosPlan, puedes modificar lo necesario después
-         console.log(datosOrden,"holaaa");
-        return fetch('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/OrdenesDePublicidad', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
-                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
-            },
-            body: JSON.stringify(datosOrden)
-        });
-    })
-    .then(response => {
-        console.log('Respuesta completa de la tercera inserción:', response);
+        console.log('Respuesta completa de la actualización del plan:', response);
         if (!response.ok) {
             return response.text().then(text => {
                 throw new Error(`HTTP error! status: ${response.status}, message: ${text}`);
@@ -872,24 +902,65 @@ document.addEventListener('DOMContentLoaded', function() {
         return response.text();
     })
     .then(data => {
-        
-        console.log('Tercera inserción exitosa:', data);
+        console.log('Actualización del plan exitosa:', data);
+
+        // Preparar los datos para la tercera actualización
+        const datosOrdenpublicidad = {
+            // Agrega los campos necesarios aquí
+            // Ejemplo:
+            id_cliente: document.getElementById('selected-client-id').value,
+            num_contrato: document.getElementById('selected-contrato-id').value,
+            id_proveedor: document.getElementById('selected-proveedor-id').value,
+            id_soporte: document.getElementById('selected-soporte-id').value,
+            id_tema: document.getElementById('selected-temas-id').value,
+            id_plan: id_planes_publicidad,
+            id_calendar: id_calendar,
+            id_ordenes_de_comprar: id_ordenes_de_comprar,
+            Megatime: document.getElementById('selected-temas-codigo').value,
+            id_agencia: document.getElementById('selected-agencia-id').value,
+            id_clasificacion: document.getElementById('selected-id-clasificacion').value === "" ? null : document.getElementById('selected-id-clasificacion').value,
+            numero_orden: document.getElementById('selected-orden-id').value
+        };
+
+        // Actualización del registro en la tabla "OrdenesDePublicidad"
+        return fetch(`https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/OrdenesDePublicidad?id_ordenes_de_comprar=eq.${id_ordenes_de_comprar}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
+                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
+                'Prefer': 'return=representation'
+            },
+            body: JSON.stringify(datosOrdenpublicidad)
+        });
+    })
+    .then(response => {
+        console.log('Respuesta completa de la actualización de OrdenesDePublicidad:', response);
+        if (!response.ok) {
+            return response.text().then(text => {
+                throw new Error(`HTTP error! status: ${response.status}, message: ${text}`);
+            });
+        }
+        return response.text();
+    })
+    .then(data => {
+        console.log('Actualización de OrdenesDePublicidad exitosa:', data);
         Swal.fire({
             title: '¡Éxito!',
-            text: 'Los datos se han guardado correctamente.',
+            text: 'Los datos se han actualizado correctamente.',
             icon: 'success',
             confirmButtonText: 'OK'
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = '/ListPlanes.php';
+                window.location.reload(); // Recarga la página
             }
         });
     })
     .catch(error => {
-        console.error('Error al guardar los datos:', error);
+        console.error('Error al actualizar los datos:', error);
         Swal.fire({
             title: 'Error',
-            text: 'Error al guardar los datos: ' + error.message,
+            text: 'Error al actualizar los datos: ' + error.message,
             icon: 'error',
             confirmButtonText: 'OK'
         });
@@ -898,47 +969,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
    
 });
-
-async function obtenerUltimoIdPlanesPublicidad() {
-    try {
-        let response = await fetch("https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/PlanesPublicidad?select=id_planes_publicidad&order=id_planes_publicidad.desc&limit=1", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9zZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
-                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9zZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc"
-            }
-        });
-
-        if (response.ok) {
-            const planesPublicidad = await response.json();
-            const ultimoRegistro = planesPublicidad[0];
-            const ultimoId = ultimoRegistro ? ultimoRegistro.id_planes_publicidad : null;
-            return ultimoId;
-        } else {
-            console.error("Error al obtener el último ID de PlanesPublicidad:", await response.text());
-            throw new Error("Error al obtener el último ID de PlanesPublicidad");
-        }
-    } catch (error) {
-        console.error("Error en la solicitud:", error);
-        throw error;
-    }
-}
-
-function showLoading() {
-    let loadingElement = document.getElementById('custom-loading');
-    if (!loadingElement) {
-        loadingElement = document.createElement('div');
-        loadingElement.id = 'custom-loading';
-        loadingElement.innerHTML = `
-            <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); display: flex; justify-content: center; align-items: center; z-index: 9999;">
-                <img src="/assets/img/loading.gif" alt="Cargando..." style="width: 220px; height: 135px;">
-            </div>
-        `;
-        document.body.appendChild(loadingElement);
-    }
-    loadingElement.style.display = 'block';
-}
 </script>
 
 

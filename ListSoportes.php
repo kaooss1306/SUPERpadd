@@ -91,6 +91,7 @@ function e($string) {
             <div class="row">
                 <div class="col-12">
                     <div class="card">
+                        
                         <div class="card-header">
                             <h4>Listado de Soportes</h4>
                         </div>

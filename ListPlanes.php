@@ -2,29 +2,9 @@
 // Iniciar la sesión
 session_start();
 
-
+include './querys/qplanes.php';
 // Función para hacer peticiones cURL
-  // Función para hacer peticiones cURL
-  function makeRequest($url) {
-    $curl = curl_init();
-    curl_setopt_array($curl, array(
-        CURLOPT_URL => $url,
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => '',
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 0,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => 'GET',
-        CURLOPT_HTTPHEADER => array(
-            'apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
-            'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc'
-        ),
-    ));
-    $response = curl_exec($curl);
-    curl_close($curl);
-    return json_decode($response, true);
-}
+
 
 // Obtener datos
 $campaigns = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Campania?select=*');
@@ -34,22 +14,31 @@ $planes = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/PlanesPu
 $meses = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Meses?select=*');
 $anos = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Anios?select=*');
 $productos = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Productos?select=*');
+$jsonData = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/json?select=*');
+$calendarMap = [];
 
+foreach ($jsonData as $calendar) {
+    // Aquí asumimos que `id_calendar` es único y usamos su valor como clave en nuestro mapa
+    $calendarMap[$calendar['id_calendar']] = $calendar['matrizCalendario'];
+}
+$mesesNombres = [
+    1 => 'Enero',
+    2 => 'Febrero',
+    3 => 'Marzo',
+    4 => 'Abril',
+    5 => 'Mayo',
+    6 => 'Junio',
+    7 => 'Julio',
+    8 => 'Agosto',
+    9 => 'Septiembre',
+    10 => 'Octubre',
+    11 => 'Noviembre',
+    12 => 'Diciembre'
+];
 
-$mesesMap = [];
-foreach ($meses as $mes) {
-    $mesesMap[$mes['Id']] = $mes;
-}
-$anosMap = [];
-foreach ($anos as $anio) {
-    $anosMap[$anio['id']] = $anio;
-}
 $clientesMap = [];
 foreach ($clientes as $cliente) {
-    $clientesMap[] = [
-        'id' => $cliente['id_cliente'],
-        'nombreCliente' => $cliente['nombreCliente']
-    ];
+    $clientesMap[$cliente['id_cliente']] = $cliente['nombreCliente'];
 }
 $productosMap = [];
 foreach ($productos as $producto) {
@@ -71,12 +60,12 @@ foreach ($campaigns as $campaign) {
 
 $contratosMap = [];
 foreach ($contratos as $contrato) {
-    $contratosMap[] = [
-        'id' => $contrato['id'],
+    $contratosMap[$contrato['id']] = [
         'nombreContrato' => $contrato['NombreContrato'],
         'idCliente' => $contrato['IdCliente']
     ];
 }
+
 include 'componentes/header.php';
 include 'componentes/sidebar.php';
 ?>
@@ -122,6 +111,12 @@ include 'componentes/sidebar.php';
 
 </style>
 <div class="main-content">
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="<?php echo $ruta; ?>dashboard">Home</a></li>
+      <li class="breadcrumb-item"><a href="<?php echo $ruta; ?>ListPlanes.php">Ver Planes</a></li>
+    </ol>
+  </nav>
     <section class="section">
         <div class="section-body">
             <div class="row">
@@ -129,7 +124,7 @@ include 'componentes/sidebar.php';
                     <div class="card">
                         <div class="card-header">
                             
-                            <div class="card-header milinea">
+                            <div style="    padding: 10px 5px;" class="card-header milinea">
                             <div class="titulox"><h4>Listado de Planes</h4></div>
                             <div class="agregar"><a  href="querys/modulos/addPlan.php" class="btn btn-primary micono"  ><i class="fas fa-plus-circle"></i> Agregar Plan</a>
                             </div>
@@ -137,7 +132,7 @@ include 'componentes/sidebar.php';
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-striped" id="table-1">
+                                <table class="table table-striped" id="tableExportadora">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
@@ -154,11 +149,35 @@ include 'componentes/sidebar.php';
                                 <?php foreach ($planes as $plan): ?>
 <tr>
     <td><?php echo $plan['id_planes_publicidad']; ?></td>
-    <td><?php echo isset($contratosMap[$plan['id_contrato']]) ? $contratosMap[$plan['id_contrato']]['NombreContrato'] : 'N/A'; ?></td>
-    <td><?php echo isset($contratosMap[$plan['id_contrato']]) ? $clientesMap[$plan['id_contrato']]['nombreCliente'] : 'N/A'; ?></td>
+    <td><?php echo isset($contratosMap[$plan['id_contrato']]) ? $contratosMap[$plan['id_contrato']]['nombreContrato'] : 'N/A'; ?></td>
+
+    <td>
+    <?php 
+    $idCliente = $contratosMap[$plan['id_contrato']]['idCliente'];
+    echo isset($clientesMap[$idCliente]) ? $clientesMap[$idCliente] : 'N/A'; 
+    ?>
+</td>
     <td><?php echo $plan['NombrePlan']; ?></td>
-    <td><?php echo isset($mesesMap[$plan['id_Mes']]) ? $mesesMap[$plan['id_Mes']]['Nombre'] : 'N/A'; ?></td>
-    <td><?php echo isset($anosMap[$plan['id_Anio']]) ? $anosMap[$plan['id_Anio']]['years'] : 'N/A'; ?></td>
+    <?php
+    // Verificar si existe un id_calendar en el plan actual
+    if (isset($calendarMap[$plan['id_calendar']])) {
+        // Extraer la matriz de calendario
+        $matrizCalendario = $calendarMap[$plan['id_calendar']];
+
+        // Obtener el primer mes y año
+        $mesNumero = $matrizCalendario[0]['mes'];
+        $anio = $matrizCalendario[0]['anio'];
+
+        // Convertir el número de mes a nombre
+        $mes = isset($mesesNombres[$mesNumero]) ? $mesesNombres[$mesNumero] : 'N/A';
+    } else {
+        $mes = 'N/A';
+        $anio = 'N/A';
+    }
+    ?>
+    
+    <td><?php echo $mes; ?></td>
+    <td><?php echo $anio; ?></td>
     <td>
     <div class="alineado">
     <label class="custom-switch mt-2" data-toggle="tooltip" 
@@ -172,8 +191,11 @@ include 'componentes/sidebar.php';
     </label>
 </div>
 </td>
-<td><a href="#" data-toggle="tooltip" title="Ver Cliente"><i class="fas fa-eye btn btn-primary micono"></i></a> <a href="#" data-toggle="tooltip" title="Editar Cliente"><i class="fas fa-pencil-alt btn btn-success micono"></i></a> <a href="#" data-toggle="tooltip" title="Eliminar Cliente"><i class="fas fa-trash-alt btn btn-danger micono"></i></a></td>
-                                       
+<td>
+                                            <a class="btn btn-primary micono"href="views/viewPlan.php?id=<?php echo $plan['id_planes_publicidad']; ?>" data-toggle="tooltip" title="Ver Proveedor"><i class="fas fa-eye "></i></a> 
+
+                                                <a class="btn btn-success micono" href="querys/modulos/editarplan.php?id_planes_publicidad=<?php echo $plan['id_planes_publicidad']; ?>"><i class="fas fa-pencil-alt"></i></a>
+                                            </td>                                   
 </tr>
 <?php endforeach; ?>
                                     </tbody>
@@ -413,7 +435,7 @@ document.addEventListener('click', function(event) {
 
 </script>
 
-
+<script src="assets/js/togglePlanes.js"></script>
 <?php include 'componentes/settings.php'; ?>
 
 

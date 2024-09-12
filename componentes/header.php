@@ -8,13 +8,15 @@ if (!isset($_SESSION['user']) || empty($_SESSION['user'])) {
     header("Location: index.php");
     exit();
 }
-$nombre = $_SESSION['user_name'];
+$nombre_usuario = $_SESSION['user']['Nombres'] ?? 'Usuario';
+$avatar_usuario = $_SESSION['user']['Avatar'] ?? 'Usuario';
 
+$ruta = 'https://automatic-funicular-x59jw79jv7jp3v4pv-3000.app.github.dev/';
 
+ 
+$avatar_defecto = $ruta . 'assets/img/avatar.png';
+ 
 
-
-
-$ruta = 'http://localhost:3000/';
 
 
 
@@ -82,14 +84,21 @@ $current_file = basename($_SERVER['PHP_SELF']);
           </ul>
         </div>
         <ul class="navbar-nav navbar-right duo">
-   Bienvenid@ - <?php echo htmlspecialchars($nombre); ?>
+   Bienvenid@ - <?php echo htmlspecialchars($nombre_usuario); ?>
           <li class="dropdown"><a href="#" data-bs-toggle="dropdown"
-              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="<?php echo $ruta; ?>assets/img/cristianImg.png"
+              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="
+              <?php 
+    if ($avatar_usuario !== 'Usuario') {
+        echo htmlspecialchars($avatar_usuario);
+    } else {
+        echo htmlspecialchars($avatar_defecto);
+    }
+?>
+              "
                 class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
             <div class="dropdown-menu dropdown-menu-right pullDown">
               
-              <a href="profile.html" class="dropdown-item has-icon"> <i class="far
-										fa-user"></i> Mi Perfíl
+              <a href="profile.html" class="dropdown-item has-icon"> <i class="fa-solid fa-user-tag"></i> Mi Perfíl
               </a><a href="" class="dropdown-item has-icon"> <i class="fas fa-copy"></i>
                 Publicar Mensajes
               </a>
@@ -104,3 +113,10 @@ $current_file = basename($_SERVER['PHP_SELF']);
           </li>
         </ul>
       </nav>
+      <script src="<?php echo $ruta; ?>assets/js/app.min.js" defer></script>
+    <script>
+        window.addEventListener('load', function() {
+            document.documentElement.className = 'fouc';
+            document.getElementById('app').style.display = 'block';
+        });
+    </script>

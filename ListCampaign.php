@@ -8,10 +8,7 @@ include 'componentes/sidebar.php';
 
 ?>
 
-<?php
-$absolutePath = dirname(__FILE__);
-echo $absolutePath;
-?>
+
 <div class="main-content">
     <section class="section">
         <div class="section-body">

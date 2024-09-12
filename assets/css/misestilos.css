@@ -1,3 +1,8 @@
+.numordenpdf th { font-size: 10px;} 
+.frtpm10{padding: 3px 0px 3px 0px;}
+.frtp10{padding: 4px 0px 4px 0px;}
+.numordenpdf2 td { font-size: 10px;} 
+.numordenpdf3 td { font-size: 10px;} 
 .foulou{ font-size: 14px !important; }
 .clasmedios{font-size:10px;}
 .opeo{     margin-top: -13px; padding: 12px 18px; margin-bottom: 13px; margin-left: 20px;}
@@ -154,7 +159,7 @@ i.material-icons.tres {
   padding: 3px;
 }
 .crmtitulo {
-  padding-top: 4px !important;
+  padding-top: 4% !important;
   font-size: 18px !important;
   font-weight: bold !important;
   color: red !important;
@@ -369,4 +374,66 @@ body{
 }
 .fc-today-button.fc-button.fc-state-default.fc-corner-left.fc-corner-right.fc-state-disabled {
   display: none !important;
+}
+.titulot {
+  font-size: 39px;
+}
+.titulot3 {
+  text-align: center;
+  color: red;
+  font-size: 20px;
+  font-weight: bold;
+}
+.titulot2 {
+  color: blue;
+  font-size: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.espaciador {
+  margin-bottom: 35px;
+}
+.thebordex {
+  border: 1px solid;
+  margin: 20px 40px;
+  padding: 15px;
+}
+.thename {
+  color: blue;
+  font-size: 18px;
+  font-weight: bold;
+}
+.themailx {
+  font-size: 17px;
+  font-weight: bold;
+}
+.bordered-table td {
+  border: 1px solid black;
+  padding: 5px;
+}
+.azul {
+  font-size: 20px;
+}
+#generatePdfButton {
+  box-shadow: 0 2px 6px #fd9b96;
+  background-color: #fc544b;
+  border-color: #fc544b;
+  color: #fff;
+  border-radius: 30px;
+  padding: 3px 20px;
+}
+.contentable {
+  border: 1px solid #a3a3a3;
+  padding: 20px;
+}
+.observa {
+  border: 1px solid;
+  padding: 15px;
+}
+.navbar .nav-link.nav-link-user .user-img-radious-style {
+  border-radius: 60px;
+  box-shadow: 2px 3px 6px 0 rgba(0,0,0,.2);
+}
+.logo-name2 {
+  width: 41%;
 }

@@ -76,18 +76,7 @@
                                 <input type="number" class="form-control" id="PresupuestoUpdate" name="PresupuestoUpdate" placeholder="Presupuesto" required>
                             </div>
                         </div>
-                        <!-- Temas -->
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label" for="id_Temas">Temas</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-list-task"></i></span>
-                                <select class="form-control" id="id_TemasUpdate" name="id_TemasUpdate" required>
-                                    <?php foreach ($temasMap as $id => $tema) : ?>
-                                        <option value="<?php echo $id; ?>"><?php echo $tema['NombreTema']; ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                        </div>
+                 
                         <!-- Planes Publicidad -->
                         <div class="col-md-6 mb-3">
                             <label class="form-label" for="Planes_Publicidad">Planes Publicidad</label>
