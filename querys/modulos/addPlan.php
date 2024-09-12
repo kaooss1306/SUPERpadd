@@ -155,7 +155,7 @@ include '../../componentes/sidebar.php';
                                     <label class="labelforms" for="codigo">Nombre de Plan</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                            <span class="input-group-text"><i class="bi bi-tag"></i></span>
                                         </div>
                                         <input class="form-control" placeholder="Nombre de Plan" name="nombrePlan">
                                     </div>
@@ -166,7 +166,7 @@ include '../../componentes/sidebar.php';
                                         <div class="custom-select-container">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                                    <span class="input-group-text"><i class="bi bi-box"></i></span>
                                                 </div>
                                                 <input class="form-control" type="text" id="search-product" placeholder="Buscar producto...">
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
@@ -181,14 +181,14 @@ include '../../componentes/sidebar.php';
                                                         <div class="custom-select-container">
                                                             <div class="input-group">
                                                                 <div class="input-group-prepend">
-                                                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                                                    <span class="input-group-text"><i class="bi bi-file-earmark-text"></i></span>
                                                                 </div>
                                                                 <input class="form-control" type="text" id="search-contrato" placeholder="Buscar contrato...">
                                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
                                                                 <input type="hidden"  id="selected-contrato-id" name="selected-contrato-id">
                                                                 <input   type="hidden"  id="selected-proveedor-id" name="selected-proveedor-id">
                                                                 <input  type="hidden"  id="selected-num-contrato" name="selected-num-contrato">
-                                                                <input type="hidden" id="selected-agencia-id" name="selected-agencia-id">
+                                                                <input   id="selected-agencia-id" name="selected-agencia-id">
                                                             </div>
                                                             <ul id="contrato-list" class="client-dropdown">
                                                                 <!-- Aquí se mostrarán las opciones filtradas -->
@@ -200,11 +200,11 @@ include '../../componentes/sidebar.php';
                                         <div class="custom-select-container">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                                    <span class="input-group-text"><i class="bi bi-briefcase"></i></span>
                                                 </div>
                                                 <input class="form-control" type="text" id="search-soporte" placeholder="Buscar soporte...">
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-                                                <input  type="hidden"  id="selected-soporte-id" name="selected-soporte-id" value="">
+                                                <input  type="hidden"   id="selected-soporte-id" name="selected-soporte-id" value="">
                                             </div>
                                             <ul id="soporte-list" class="client-dropdown">
                                                 <!-- Aquí se mostrarán las opciones filtradas -->
@@ -220,34 +220,48 @@ include '../../componentes/sidebar.php';
                                         <div class="custom-select-container">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                                    <span class="input-group-text"><i class="bi bi-bullseye"></i></span>
                                                 </div>
                                                 <input class="form-control" type="text" id="search-campania" placeholder="Buscar campaña...">
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-                                                <input  type="hidden"  id="selected-campania-id" name="selected-campania-id">
+                                                <input type="hidden"  id="selected-campania-id" name="selected-campania-id">
                                             </div>
                                             <ul id="campania-list" class="client-dropdown">
                                                 <!-- Aquí se mostrarán las opciones filtradas -->
                                             </ul>
                                         </div>
-                                        
+                                        <label class="labelforms" for="id_orden_compra">Orden de compra</label>
+<div class="custom-select-container">
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text"><i class="bi bi-file-earmark-text"></i></span>
+        </div>
+        <input class="form-control" type="text" id="search-orden" placeholder="Buscar Orden...">
+        <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
+        <input    id="selected-orden-id" name="selected-orden-id">
+    </div>
+    <ul id="orden-list" class="client-dropdown">
+        <!-- Aquí se mostrarán las opciones filtradas -->
+    </ul>
+</div> 
                                         <label class="labelforms" for="id_campania">Temas</label>
                                         <div class="custom-select-container">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                                    <span class="input-group-text"><i class="bi bi-stars"></i></span>
                                                 </div>
                                                 <input class="form-control" type="text" id="search-temas" placeholder="Buscar temas...">
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-                                                <input type="hidden"  id="selected-temas-id" name="selected-temas-id">
-                                                <input  type="hidden" id="selected-temas-codigo" name="selected-temas-codigo">
+                                                <input type="hidden"   id="selected-temas-id" name="selected-temas-id">
+                                                <input    id="selected-temas-codigo" name="selected-temas-codigo">
                                                 <input type="hidden"  id="selected-id-medio" name="selected-id-medio">
                                                 <input  type="hidden" id="selected-id-clasificacion" name="selected-id-clasificacion">
                                             </div>
                                             <ul id="temas-list" class="client-dropdown">
                                                 <!-- Aquí se mostrarán las opciones filtradas -->
                                             </ul>
-                                        </div>  
+                                        </div> 
+                             
                                         <label for="forma-facturacion" class="labelforms">Forma de facturación</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
@@ -347,12 +361,26 @@ const contratosMap = <?php echo json_encode($contratosMap); ?>;
 const soportesMap = <?php echo json_encode($soportesMap); ?>;
 const campaniaTemasMap = <?php echo json_encode($campaniaTemasMap); ?>;
 const temasMap = <?php echo json_encode($temasMap); ?>;
+const ordenMap = <?php echo json_encode($ordenMap); ?>;
+console.log(ordenMap, "Map de órdenes");
+const ordenMapArray = Object.values(ordenMap); // Convierte el objeto en un array
+console.log(ordenMapArray,"hola");
+
+
+
+function closeAllLists() {
+    const lists = document.querySelectorAll('.client-dropdown');  // Selecciona todas las listas desplegables
+    lists.forEach(list => {
+        list.style.display = 'none';  // Oculta todas las listas
+    });
+}
 
 function setupSearch(searchId, listId, dataMap, textProperty, filterProperty = null, extraFilterFunction = null) {
     const searchInput = document.getElementById(searchId);
     const list = document.getElementById(listId);
 
     searchInput.addEventListener('focus', function() {
+        closeAllLists();
         const clientId = document.getElementById('selected-client-id').value;
         const filteredItems = dataMap.filter(item =>
             (!filterProperty || item[filterProperty] === (clientId ? parseInt(clientId, 10) : null)) &&
@@ -436,14 +464,17 @@ function setupSearch(searchId, listId, dataMap, textProperty, filterProperty = n
             }
 
             if (searchId === 'search-campania') {
-                updateTemasList(selectedId);
-            }
+                updateOrdenList(selectedId);
+ 
+}
+ 
 
             list.style.display = 'none';
             document.querySelector('.clear-btn').style.display = 'none';
         }
     });
 }
+
 
 function updateSoporteList(idProveedor) {
     const list = document.getElementById('soporte-list');
@@ -490,22 +521,55 @@ async function fetchIdClasificacion(id_medio) {
     }
 }
 
+function updateOrdenList(idCampania) {
+  const list = document.getElementById('orden-list');
+  const ordenesRelacionadas = ordenMap.filter(orden => orden.id_campania == idCampania);
+
+  if (ordenesRelacionadas.length > 0) {
+    console.log("Ordene Relacionadas con id_campania:", ordenesRelacionadas);
+
+    list.innerHTML = ordenesRelacionadas.map(orden =>
+      `<li data-id="${orden.id_orden_compra}">${orden.NombreOrden}</li>`
+    ).join('');
+
+    console.log("HTML ORDEN GENERADO:", list.innerHTML);
+
+    list.style.display = 'block';
+
+    // Agrega el evento click a la lista entera
+    list.addEventListener('click', function(event) {
+      if (event.target.tagName === 'LI') {
+        const selectedId = event.target.getAttribute('data-id');
+        const selectedOrdenName = event.target.textContent;
+
+        console.log("ID de la orden seleccionada:", selectedId);
+        console.log("Nombre de la orden seleccionada:", selectedOrdenName);
+
+        document.getElementById('selected-orden-id').value = selectedId;
+        document.getElementById('search-orden').value = selectedOrdenName;
+
+        list.style.display = 'none';
+        document.querySelector('.clear-btn').style.display = 'none';
+      }
+    });
+  } else {
+    list.innerHTML = '<li>No se encuentran órdenes para esta campaña.</li>';
+    list.style.display = 'block';
+  }
+}
+
+
 function updateTemasList(idCampania) {
     const list = document.getElementById('temas-list');
     const temasRelacionadosIds = campaniaTemasMap[idCampania] || [];
 
-    console.log("temasMap:", temasMap);
-    console.log("temasRelacionadosIds:", temasRelacionadosIds);
-
     const filteredTemas = temasMap.filter(tema => temasRelacionadosIds.includes(tema.id));
-    console.log("filteredTemas:", filteredTemas);
 
     if (filteredTemas.length > 0) {
         list.innerHTML = filteredTemas.map(tema =>
             `<li data-id="${tema.id}" data-id-medio="${tema.id_medio}" data-codigomegatime="${tema.CodigoMegatime}">${tema.nombreTema}</li>`
         ).join('');
-        console.log("HTML generado:", list.innerHTML);
-
+       
         list.style.display = 'block';
 
         // Agregar evento click a cada li para setear el CodigoMegatime y el Id_Clasificacion
@@ -514,11 +578,7 @@ function updateTemasList(idCampania) {
             item.addEventListener('click', async function() {
                 const codigoMegatime = this.getAttribute('data-codigomegatime');
                 const medioid = this.getAttribute('data-id-medio');
-                console.log('Código Megatime seleccionado:', codigoMegatime);
-
-                // Obtener el Id_Clasificacion basado en id_medio
                 const idClasificacion = await fetchIdClasificacion(medioid);
-
                 const inputCodigo = document.getElementById('selected-temas-codigo');
                 const inputCodigo2 = document.getElementById('selected-id-medio');
                 const inputClasificacion = document.getElementById('selected-id-clasificacion');
@@ -538,13 +598,35 @@ function updateTemasList(idCampania) {
     }
 }
 
+
+
+
+
+
+
+// Modificación del buscador de temas
+setupSearch('search-temas', 'temas-list', temasMap, 'nombreTema', null, function(item) {
+    const selectedCampaniaId = document.getElementById('selected-campania-id').value;
+    
+    if (!selectedCampaniaId) {
+      
+        return false; // Detener si no hay campaña seleccionada
+    }
+
+    const temasRelacionadosIds = campaniaTemasMap[selectedCampaniaId] || [];
+    
+    // Filtramos solo los temas relacionados con la campaña seleccionada
+    return temasRelacionadosIds.includes(item.id);
+});
+
+
 // Configuración de búsqueda para cada campo
 setupSearch('search-client', 'client-list', clientesMap, 'nombreCliente');
 setupSearch('search-product', 'product-list', productosMap, 'nombreProducto', 'idCliente');
 setupSearch('search-campania', 'campania-list', campaignsMap, 'nombreCampania', 'idCliente');
 setupSearch('search-contrato', 'contrato-list', contratosMap, 'nombreContrato', 'idCliente');
 setupSearch('search-soporte', 'soporte-list', soportesMap, 'nombreSoporte');
-setupSearch('search-temas', 'temas-list', temasMap, 'nombreTema');
+
 
 function clearSearch() {
     document.getElementById('search-product').value = '';
@@ -563,6 +645,9 @@ function clearSearch() {
     document.getElementById('selected-temas-id').value = '';
     document.getElementById('temas-list').style.display = 'none';
     document.getElementById('selected-proveedor-id').value = '';
+    document.getElementById('search-orden').value = '';  // Limpiar el campo de órdenes
+    document.getElementById('selected-orden-id').value = '';  // Limpiar el id oculto de órdenes
+    document.getElementById('orden-list').style.display = 'none';
 
     document.querySelectorAll('.clear-btn').forEach(btn => btn.style.display = 'none');
 }
@@ -573,7 +658,8 @@ document.addEventListener('click', function(event) {
         document.getElementById('search-campania'),
         document.getElementById('search-contrato'),
         document.getElementById('search-soporte'),
-        document.getElementById('search-temas')
+        document.getElementById('search-temas'),
+        document.getElementById('search-orden') 
     ];
 
     const lists = [
@@ -581,7 +667,8 @@ document.addEventListener('click', function(event) {
         document.getElementById('campania-list'),
         document.getElementById('contrato-list'),
         document.getElementById('soporte-list'),
-        document.getElementById('temas-list')
+        document.getElementById('temas-list'),
+        document.getElementById('orden-list')
     ];
 
     if (!searchFields.some(field => field.contains(event.target)) &&
@@ -757,14 +844,14 @@ document.addEventListener('DOMContentLoaded', function() {
             id_calendar: id_calendar,
             Megatime: document.getElementById('selected-temas-codigo').value,
             id_agencia: document.getElementById('selected-agencia-id').value,
-            id_clasificacion: document.getElementById('selected-id-clasificacion').value
-            
-      
+            id_clasificacion: document.getElementById('selected-id-clasificacion').value === "" ? null : document.getElementById('selected-id-clasificacion').value,
+            numero_orden: document.getElementById('selected-orden-id').value,
+            estado: '1'
             
            
              // Usa el id_calendar obtenido
          }; // Copia los datos de datosPlan, puedes modificar lo necesario después
-
+         console.log(datosOrden,"holaaa");
         return fetch('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/OrdenesDePublicidad', {
             method: 'POST',
             headers: {

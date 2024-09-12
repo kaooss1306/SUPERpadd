@@ -22,11 +22,7 @@ function makeRequest($url) {
 }
 
 // Obtener datos
-$planes = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/PlanesPublicidad');
-$campaigns = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Campania?select=*');
-$clientes = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Clientes?select=*');
-$contratos = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Contratos?select=*');
-$planes = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/PlanesPublicidad?select=*');
+ 
 $anios = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Anios?select=*');
 $anios2 = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Anios?select=*');
 $meses = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Meses?select=*');
@@ -42,9 +38,23 @@ $ordenpublicidad = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1
 $medios = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Medios?select=*');
 $clasimedios = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/ClasificacionMedios?select=*');
 $calendarMap2 = [];
+$ordenes = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/OrdenDeCompra?select=*');
+$ordenes2 = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/OrdenDeCompra?select=*');
+$ordenepublicidad = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/OrdenesDePublicidad?select=*');
+$ordenMap = [];
+foreach ($ordenes as $orden) {
+    $ordenMap[] = [
+        'id_orden_compra' => $orden['id_orden_compra'],
+        'NombreOrden' => $orden['NombreOrden'],
+        'id_campania' => $orden['id_campania'],
+        // Agrega otros campos que sean necesarios
+    ];
+}
 
-
-
+$ordenMap2 = [];
+foreach ($ordenes2 as $orden2) {
+    $ordenMap2[$orden2['id_orden_compra']] = $orden['NombreOrden'];
+}
 
 foreach ($jsonData as $calendar) {
     // Aquí asumimos que `id_calendar` es único y usamos su valor como clave en nuestro mapa

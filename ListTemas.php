@@ -53,7 +53,52 @@ include 'componentes/sidebar.php';
                                             <td><?php echo $calidadsMap[$tema['id_Calidad']]['NombreCalidad'] ?? ''; ?></td>
                                             <td><?php echo $tema['cooperado']; ?></td>
                                             <td><?php echo $tema['rubro']; ?></td>
-                                            <td><?php echo !empty($campaignsMap[$tema['Id_campana']]['NombreCampania']) ? htmlspecialchars($campaignsMap[$tema['Id_campana']]['NombreCampania']) : 'No hay campaña vinculada'; ?></td>
+                                            <td>
+                                                
+                                            <?php 
+                                                // Solicitud para obtener la relación entre temas y campañas
+ 
+
+                                    // Variable con el id_tema actual
+                                    $id_tema_actual = $tema['id_tema'];
+
+                                    // Inicializamos la variable donde guardaremos el id_campania correspondiente
+                                    $id_campania = null;
+
+                                    // Buscamos el id_campania correspondiente al id_tema_actual
+                                    foreach ($calidadsMap as $calidad) {
+                                        if ($calidad['id_temas'] == $id_tema_actual) {
+                                            $id_campania = $calidad['id_campania'];
+                                            break; // Salimos del bucle una vez encontrado
+                                        }
+                                    }
+
+                                    // Verificamos que hemos encontrado un id_campania
+                                    if ($id_campania !== null) {
+                                        // Hacemos la solicitud para obtener las campañas
+                                        $campaigns = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Campania?select=*');
+                                        
+                                        // Creamos un array para mapear las campañas por id_campania
+                                        $campaignsMap = [];
+                                        foreach ($campaigns as $campaign) {
+                                            $campaignsMap[$campaign['id_campania']] = $campaign;
+                                        }
+
+                                        // Ahora podemos obtener el NombreCampania para el id_campania encontrado
+                                        if (isset($campaignsMap[$id_campania])) {
+                                            $nombre_campania = $campaignsMap[$id_campania]['NombreCampania'];
+                                            echo "Nombre de la campaña: " . $nombre_campania;
+                                        } else {
+                                            echo "No se encontró una campaña con el id_campania: " . $id_campania;
+                                        }
+                                    } else {
+                                        echo "No existe campaña asociada.";
+                                       
+                                    }
+
+                                            ?>
+                                            
+        </td>
                                             <td><?php echo $tema['color']; ?></td>
                                             <td><a class="btn btn-success micono"  data-bs-toggle="modal" data-bs-target="#actualizatema" data-nombretema="<?php echo $tema['NombreTema']; ?>"  data-idtema="<?php echo $tema['id_tema']; ?>" onclick="loadTema(this)" ><i class="fas fa-pencil-alt"></i></a></td>
                                         </tr>

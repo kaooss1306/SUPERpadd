@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const inputValorBruto = document.getElementById('ValorBruto');
     const inputDescuento = document.getElementById('Descuento1');
     const inputValorTotal = document.getElementById('ValorTotal');
-    const inputNumContrato = document.getElementById('num_contrato');
+
 
  // Función para mostrar la pantalla de carga
  function showLoading() {
@@ -57,10 +57,10 @@ if (btnAddContrato) {
     console.error("Error: No se pudo encontrar el botón de añadir contrato");
 }
 
-    // Agregar un event listener para cuando se abra el modal
+   /*
     $('#modalAddContrato').on('show.bs.modal', function (e) {
         getNextContractNumber();
-    });
+    }); */
 
     if (selectCliente) {
         selectCliente.addEventListener('change', function() {
@@ -96,7 +96,7 @@ if (btnAddContrato) {
         inputValorTotal.value = valorTotal;
     }
 
-    function getNextContractNumber() {
+    /*function getNextContractNumber() {
         fetch("https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Contratos?select=num_contrato&order=num_contrato.desc&limit=1", {
             headers: {
                 "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
@@ -115,7 +115,7 @@ if (btnAddContrato) {
             console.error("Error al obtener el siguiente número de contrato:", error);
             inputNumContrato.value = 1; // Valor por defecto en caso de error
         });
-    }
+    }*/
 
     function cargarProductoCliente(idCliente) {
         if (!selectProducto) {

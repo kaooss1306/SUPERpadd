@@ -42,6 +42,23 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id_planes_publicidad']))
 } else {
     echo "ID del plan no proporcionado.";
 }
+// Verifica si la respuesta contiene datos
+if (is_array($ordenepublicidad) && !empty($ordenepublicidad)) {
+    $id_ordenes_de_comprar = $ordenepublicidad[0]['id_ordenes_de_comprar'];
+    $id_ordenes_de_comprar2 = $ordenepublicidad[0]['id_agencia'];
+    $id_ordenes_de_comprar3 = $ordenepublicidad[0]['num_contrato'];
+    $id_ordenes_de_comprar4 = $ordenepublicidad[0]['id_proveedor'];
+    $id_ordenes_de_comprar5 = $ordenepublicidad[0]['Megatime'];
+    
+    $id_ordenes_de_comprar6 = $ordenepublicidad[0]['numero_orden'];
+    $nombreOrdenx = isset($ordenMap2[$id_ordenes_de_comprar6]) ? $ordenMap2[$id_ordenes_de_comprar6] : 'Nombre no disponible';
+
+} else {
+    $id_ordenes_de_comprar = null; // O algún valor por defecto si no se encuentra el dato
+    $id_ordenes_de_comprar2 = null;
+    $id_ordenes_de_comprar3 = null;
+    $id_ordenes_de_comprar4 = null;
+}
 
 // Verificar si $mesesMap y $aniosMap están disponibles
 if (!isset($mesesMap) || !isset($aniosMap)) {
@@ -215,7 +232,7 @@ include '../../componentes/sidebar.php';
                                             <input  type="hidden"  id="selected-client-id" value="<?php echo $id_cliente; ?>" name="selected-client-id" >
                                             <input type="hidden"  id="selected-calendar-id" value="<?php echo $plan['id_calendar']; ?>" name="selected-calendar-id" >
                                             <input type="hidden" id="selected-plan-id" value="<?php echo $id_planes_publicidad; ?>" name="selected-plan-id" >
-                                            
+                                            <input    id="ordenpublicidad-id" value="<?php echo htmlspecialchars($id_ordenes_de_comprar); ?>" name="ordenpublicidad-id" >
                                         </div>
                                         <ul id="client-list" class="client-dropdown">
                                             <!-- Aquí se mostrarán las opciones filtradas -->
@@ -247,16 +264,18 @@ include '../../componentes/sidebar.php';
                                             </ul>
                                         </div>
                             
-                                            <label class="labelforms" for="id_contrato">Contrato</label>
+                                        <label class="labelforms" for="id_contrato">Contrato</label>
                                                         <div class="custom-select-container">
                                                             <div class="input-group">
                                                                 <div class="input-group-prepend">
-                                                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                                                    <span class="input-group-text"><i class="bi bi-file-earmark-text"></i></span>
                                                                 </div>
                                                                 <input class="form-control" type="text" id="search-contrato" value="<?php echo htmlspecialchars($nombreContrato); ?>" placeholder="Buscar contrato...">
                                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-                                                                <input type="hidden"  id="selected-contrato-id" name="selected-contrato-id" value="<?php echo $plan['id_contrato']; ?>">
-                                                                <input type="hidden"   id="selected-proveedor-id" name="selected-proveedor-id">
+                                                                <input    id="selected-contrato-id" name="selected-contrato-id" value="<?php echo $plan['id_contrato']; ?>">
+                                                                <input    id="selected-proveedor-id" name="selected-proveedor-id" value="<?php echo htmlspecialchars($id_ordenes_de_comprar4); ?>">
+                                                                <input    id="selected-num-contrato" name="selected-num-contrato" value="<?php echo htmlspecialchars($id_ordenes_de_comprar3); ?>">
+                                                                <input   id="selected-agencia-id" name="selected-agencia-id" value="<?php echo htmlspecialchars($id_ordenes_de_comprar2); ?>">
                                                             </div>
                                                             <ul id="contrato-list" class="client-dropdown">
                                                                 <!-- Aquí se mostrarán las opciones filtradas -->
@@ -297,7 +316,20 @@ include '../../componentes/sidebar.php';
                                                 <!-- Aquí se mostrarán las opciones filtradas -->
                                             </ul>
                                         </div>
-                                        
+                                        <label class="labelforms" for="id_orden_compra">Orden de compra</label>
+<div class="custom-select-container">
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text"><i class="bi bi-file-earmark-text"></i></span>
+        </div>
+        <input class="form-control" type="text" id="search-orden" value="<?php echo htmlspecialchars($nombreOrdenx); ?>" placeholder="Buscar Orden...">
+        <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
+        <input    id="selected-orden-id" name="selected-orden-id" value="<?php echo htmlspecialchars($id_ordenes_de_comprar6); ?>">
+    </div>
+    <ul id="orden-list" class="client-dropdown">
+        <!-- Aquí se mostrarán las opciones filtradas -->
+    </ul>
+</div> 
                                         <label class="labelforms" for="id_campania">Temas</label>
                                         <div class="custom-select-container">
                                             <div class="input-group">
@@ -306,7 +338,10 @@ include '../../componentes/sidebar.php';
                                                 </div>
                                                 <input class="form-control" type="text" id="search-temas" value="<?php echo htmlspecialchars($nombreTema); ?>" placeholder="Buscar temas...">
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-                                                <input type="hidden" value="<?php echo $plan['id_temas']; ?>"  id="selected-temas-id" name="selected-temas-id">
+                                                <input type="hidden"   id="selected-temas-id" name="selected-temas-id">
+                                                <input   id="selected-temas-codigo" name="selected-temas-codigo" value="<?php echo htmlspecialchars($id_ordenes_de_comprar5); ?>">
+                                                <input type="hidden"  id="selected-id-medio" name="selected-id-medio">
+                                                <input  type="hidden" id="selected-id-clasificacion" name="selected-id-clasificacion">
                                             </div>
                                             <ul id="temas-list" class="client-dropdown">
                                                 <!-- Aquí se mostrarán las opciones filtradas -->
@@ -374,6 +409,10 @@ const contratosMap = <?php echo json_encode($contratosMap); ?>;
 const soportesMap = <?php echo json_encode($soportesMap); ?>;
 const campaniaTemasMap = <?php echo json_encode($campaniaTemasMap); ?>;
 const temasMap = <?php echo json_encode($temasMap); ?>;
+const ordenMap = <?php echo json_encode($ordenMap); ?>;
+console.log(ordenMap, "Map de órdenes");
+const ordenMapArray = Object.values(ordenMap); // Convierte el objeto en un array
+console.log(ordenMapArray,"hola");
 
 function setupSearch(searchId, listId, dataMap, textProperty, filterProperty = null, extraFilterFunction = null) {
     const searchInput = document.getElementById(searchId);
@@ -396,7 +435,7 @@ function setupSearch(searchId, listId, dataMap, textProperty, filterProperty = n
 
         if (filteredItems.length > 0) {
             list.innerHTML = filteredItems.map(item =>
-                `<li data-id="${item.id}" data-proveedor-id="${item.idProveedor || ''}">${item[textProperty]}</li>`
+                `<li data-id="${item.id}" data-agencia-id="${item.IdAgencias || ''}" data-proveedor-id="${item.idProveedor || ''}" data-num-contrato="${item.num_contrato || ''}">${item[textProperty]}</li>`
             ).join('');
             list.style.display = 'block';
         } else {
@@ -450,17 +489,24 @@ function setupSearch(searchId, listId, dataMap, textProperty, filterProperty = n
             searchInput.value = event.target.textContent;
             const selectedId = event.target.getAttribute('data-id');
             const selectedProveedorId = event.target.getAttribute('data-proveedor-id');
-
+            const selectedNumContrato = event.target.getAttribute('data-num-contrato');
+            const selectedIdAgencia = event.target.getAttribute('data-agencia-id');
+            
             document.getElementById(`selected-${searchId.replace('search-', '')}-id`).value = selectedId;
             
             if (searchId === 'search-contrato') {
                 document.getElementById('selected-proveedor-id').value = selectedProveedorId;
+                document.getElementById('selected-num-contrato').value = selectedNumContrato;
+                document.getElementById('selected-agencia-id').value = selectedIdAgencia;
                 updateSoporteList(selectedProveedorId);
             }
 
             if (searchId === 'search-campania') {
+                updateOrdenList(selectedId);
                 updateTemasList(selectedId);
-            }
+ 
+}
+ 
 
             list.style.display = 'none';
             document.querySelector('.clear-btn').style.display = 'none';
@@ -482,22 +528,125 @@ function updateSoporteList(idProveedor) {
         list.style.display = 'block';
     }
 }
+async function fetchIdClasificacion(id_medio) {
+    const url = `https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Medios?id=eq.${id_medio}&select=*`;
+
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
+           }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        if (data.length > 0) {
+            return data[0].Id_Clasificacion;
+        } else {
+            console.error('No se encontró el id_medio.');
+            return null;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+}
+function updateOrdenList(idCampania) {
+  const list = document.getElementById('orden-list');
+  const ordenesRelacionadas = ordenMap.filter(orden => orden.id_campania == idCampania);
+
+  if (ordenesRelacionadas.length > 0) {
+    console.log("Ordene Relacionadas con id_campania:", ordenesRelacionadas);
+
+    list.innerHTML = ordenesRelacionadas.map(orden =>
+      `<li data-id="${orden.id_orden_compra}">${orden.NombreOrden}</li>`
+    ).join('');
+
+    console.log("HTML ORDEN GENERADO:", list.innerHTML);
+
+    list.style.display = 'block';
+
+    // Agrega el evento click a la lista entera
+    list.addEventListener('click', function(event) {
+      if (event.target.tagName === 'LI') {
+        const selectedId = event.target.getAttribute('data-id');
+        const selectedOrdenName = event.target.textContent;
+
+        console.log("ID de la orden seleccionada:", selectedId);
+        console.log("Nombre de la orden seleccionada:", selectedOrdenName);
+
+        document.getElementById('selected-orden-id').value = selectedId;
+        document.getElementById('search-orden').value = selectedOrdenName;
+
+        list.style.display = 'none';
+        document.querySelector('.clear-btn').style.display = 'none';
+      }
+    });
+  } else {
+    list.innerHTML = '<li>No se encuentran órdenes para esta campaña.</li>';
+    list.style.display = 'block';
+  }
+}
 
 function updateTemasList(idCampania) {
     const list = document.getElementById('temas-list');
     const temasRelacionadosIds = campaniaTemasMap[idCampania] || [];
+
     const filteredTemas = temasMap.filter(tema => temasRelacionadosIds.includes(tema.id));
 
     if (filteredTemas.length > 0) {
         list.innerHTML = filteredTemas.map(tema =>
-            `<li data-id="${tema.id}">${tema.nombreTema}</li>`
+            `<li data-id="${tema.id}" data-id-medio="${tema.id_medio}" data-codigomegatime="${tema.CodigoMegatime}">${tema.nombreTema}</li>`
         ).join('');
+       
         list.style.display = 'block';
+
+        // Agregar evento click a cada li para setear el CodigoMegatime y el Id_Clasificacion
+        const temasItems = list.querySelectorAll('li');
+        temasItems.forEach(item => {
+            item.addEventListener('click', async function() {
+                const codigoMegatime = this.getAttribute('data-codigomegatime');
+                const medioid = this.getAttribute('data-id-medio');
+                const idClasificacion = await fetchIdClasificacion(medioid);
+                const inputCodigo = document.getElementById('selected-temas-codigo');
+                const inputCodigo2 = document.getElementById('selected-id-medio');
+                const inputClasificacion = document.getElementById('selected-id-clasificacion');
+
+                if (inputCodigo && inputCodigo2 && inputClasificacion) {
+                    inputCodigo.value = codigoMegatime;
+                    inputCodigo2.value = medioid;
+                    inputClasificacion.value = idClasificacion; // Setea el Id_Clasificacion
+                } else {
+                    console.error('No se encontraron los inputs.');
+                }
+            });
+        });
     } else {
         list.innerHTML = '<li>No se encuentran temas para esta campaña.</li>';
         list.style.display = 'block';
     }
 }
+
+// Modificación del buscador de temas
+setupSearch('search-temas', 'temas-list', temasMap, 'nombreTema', null, function(item) {
+    const selectedCampaniaId = document.getElementById('selected-campania-id').value;
+    
+    if (!selectedCampaniaId) {
+      
+        return false; // Detener si no hay campaña seleccionada
+    }
+
+    const temasRelacionadosIds = campaniaTemasMap[selectedCampaniaId] || [];
+    
+    // Filtramos solo los temas relacionados con la campaña seleccionada
+    return temasRelacionadosIds.includes(item.id);
+});
 
 // Configuración de búsqueda para cada campo
 setupSearch('search-client', 'client-list', clientesMap, 'nombreCliente');
@@ -505,7 +654,7 @@ setupSearch('search-product', 'product-list', productosMap, 'nombreProducto', 'i
 setupSearch('search-campania', 'campania-list', campaignsMap, 'nombreCampania', 'idCliente');
 setupSearch('search-contrato', 'contrato-list', contratosMap, 'nombreContrato', 'idCliente');
 setupSearch('search-soporte', 'soporte-list', soportesMap, 'nombreSoporte');
-setupSearch('search-temas', 'temas-list', temasMap, 'nombreTema');
+
 
 function clearSearch() {
     document.getElementById('search-product').value = '';
@@ -524,6 +673,9 @@ function clearSearch() {
     document.getElementById('selected-temas-id').value = '';
     document.getElementById('temas-list').style.display = 'none';
     document.getElementById('selected-proveedor-id').value = '';
+    document.getElementById('search-orden').value = '';  // Limpiar el campo de órdenes
+    document.getElementById('selected-orden-id').value = '';  // Limpiar el id oculto de órdenes
+    document.getElementById('orden-list').style.display = 'none';
 
     document.querySelectorAll('.clear-btn').forEach(btn => btn.style.display = 'none');
 }
@@ -534,7 +686,8 @@ document.addEventListener('click', function(event) {
         document.getElementById('search-campania'),
         document.getElementById('search-contrato'),
         document.getElementById('search-soporte'),
-        document.getElementById('search-temas')
+        document.getElementById('search-temas'),
+        document.getElementById('search-orden') 
     ];
 
     const lists = [
@@ -542,7 +695,8 @@ document.addEventListener('click', function(event) {
         document.getElementById('campania-list'),
         document.getElementById('contrato-list'),
         document.getElementById('soporte-list'),
-        document.getElementById('temas-list')
+        document.getElementById('temas-list'),
+        document.getElementById('orden-list')
     ];
 
     if (!searchFields.some(field => field.contains(event.target)) &&
@@ -684,17 +838,19 @@ console.log(id_planes_publicidad,"asdad" );
 console.log(id_calendar,"asdad2" );
 function enviarDatos() {
     const datos = recopilarDatos();  // Asegúrate de que recopilarDatos() devuelva los datos correctos para la tabla "json"
-   // Usa el id_planes_publicidad ya existente
 
-
+    // Usa el id_planes_publicidad ya existente
+    const id_planes_publicidad = document.getElementById('selected-plan-id').value;
+    const id_ordenes_de_comprar = document.getElementById('ordenpublicidad-id').value; // Obtén el valor del campo oculto
+    console.log(id_ordenes_de_comprar,"ordenesctm");
     // Actualización del registro en la tabla "json"
     fetch(`https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/json?id_calendar=eq.${id_calendar}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
-            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
-            'Prefer': 'return=representation'
+                'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
+                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
+                'Prefer': 'return=representation'
         },
         body: JSON.stringify(datos)
     })
@@ -722,9 +878,9 @@ function enviarDatos() {
             id_temas: document.getElementById('selected-temas-id').value,
             fr_factura: document.getElementById('forma-facturacion').value,
             id_calendar: id_calendar, // Usa el id_calendar existente
-            id_planes_publicidad: document.getElementById('selected-plan-id').value
+            id_planes_publicidad: id_planes_publicidad
         };
-
+        console.log(datosPlan,"datosplan");
         // Actualización del registro en la tabla "PlanesPublicidad"
         return fetch(`https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/PlanesPublicidad?id_planes_publicidad=eq.${id_planes_publicidad}`, {
             method: 'PUT',
@@ -747,6 +903,48 @@ function enviarDatos() {
     })
     .then(data => {
         console.log('Actualización del plan exitosa:', data);
+
+        // Preparar los datos para la tercera actualización
+        const datosOrdenpublicidad = {
+            // Agrega los campos necesarios aquí
+            // Ejemplo:
+            id_cliente: document.getElementById('selected-client-id').value,
+            num_contrato: document.getElementById('selected-contrato-id').value,
+            id_proveedor: document.getElementById('selected-proveedor-id').value,
+            id_soporte: document.getElementById('selected-soporte-id').value,
+            id_tema: document.getElementById('selected-temas-id').value,
+            id_plan: id_planes_publicidad,
+            id_calendar: id_calendar,
+            id_ordenes_de_comprar: id_ordenes_de_comprar,
+            Megatime: document.getElementById('selected-temas-codigo').value,
+            id_agencia: document.getElementById('selected-agencia-id').value,
+            id_clasificacion: document.getElementById('selected-id-clasificacion').value === "" ? null : document.getElementById('selected-id-clasificacion').value,
+            numero_orden: document.getElementById('selected-orden-id').value
+        };
+
+        // Actualización del registro en la tabla "OrdenesDePublicidad"
+        return fetch(`https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/OrdenesDePublicidad?id_ordenes_de_comprar=eq.${id_ordenes_de_comprar}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
+                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
+                'Prefer': 'return=representation'
+            },
+            body: JSON.stringify(datosOrdenpublicidad)
+        });
+    })
+    .then(response => {
+        console.log('Respuesta completa de la actualización de OrdenesDePublicidad:', response);
+        if (!response.ok) {
+            return response.text().then(text => {
+                throw new Error(`HTTP error! status: ${response.status}, message: ${text}`);
+            });
+        }
+        return response.text();
+    })
+    .then(data => {
+        console.log('Actualización de OrdenesDePublicidad exitosa:', data);
         Swal.fire({
             title: '¡Éxito!',
             text: 'Los datos se han actualizado correctamente.',

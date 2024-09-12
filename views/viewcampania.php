@@ -63,9 +63,17 @@ include '../componentes/sidebar.php';
                         </div>
                     </div>
                     <div class="card">
-                        <div class="card-header">
-                            <h4>Detalles de la Campaña</h4>
+                    <div class="card-header">
+                            <div class="cabeza">
+                            <h4>Detalles de la Campaña</h4> 
+                            <a class="btn btn-danger micono"  data-bs-toggle="modal" data-bs-target="#modalUpdateCampania"
+                                                        onclick="cargarDatosFormulario(<?php echo $datosCampania['id_campania']; ?>);">
+                                                        <i class="fas fa-pencil-alt"></i> Editar datos
+                                                    </a>
+                                                    
+                            </div>
                         </div>
+                     
                         <div class="card-body">
                             <div class="py-4">
                                 <p class="clearfix">
@@ -349,9 +357,11 @@ include '../componentes/sidebar.php';
     </div>
 </div>
 
+<?php include './modalUpdateCampania.php' ?>
 <?php include './modalUpdateFactura.php'; ?>
 <?php include './modalAgregarFacturaCampania.php'; ?>
 <?php include './modalAgregarOC.php'; ?>
 <?php include './modalAgregarTemasCampania.php'; ?>
+<script src="../assets/js/compania/update_campania.js"></script>
 <?php include '../componentes/settings.php'; ?>
 <?php include '../componentes/footer.php'; ?>

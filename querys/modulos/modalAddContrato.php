@@ -153,34 +153,44 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-3 mb-3">
+            <div class="col-md-4 mb-3">
               <label for="estado" class="form-label">Valor Neto</label>
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-currency-dollar"></i></span>
                 <input type="number" class="form-control" id="ValorNeto" name="ValorNeto" required>
               </div>
             </div>
-            <div class="col-md-3 mb-3">
+            <div class="col-md-4 mb-3">
               <label for="estado" class="form-label">Valor Bruto</label>
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-currency-dollar"></i></span>
                 <input type="number" class="form-control" id="ValorBruto" name="ValorBruto" required>
               </div>
             </div>
-            <div class="col-md-3 mb-3">
-              <label for="estado" class="form-label">Descuento</label>
-              <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-currency-dollar"></i></span>
-                <input type="number" class="form-control" id="Descuento1" name="Descuento1" required>
-              </div>
-            </div>
-            <div class="col-md-3 mb-3">
+            
+            <div class="col-md-4 mb-3">
               <label for="estado" class="form-label">Valor Total</label>
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-currency-dollar"></i></span>
                 <input type="number" class="form-control" id="ValorTotal" name="ValorTotal" required>
               </div>
             </div>
+                        <!-- Checkbox que controla la visibilidad del código -->
+<div style="margin-bottom:10px;">
+  <input class="form-check-input" type="checkbox" id="mostrarDescuento" />
+  <label style="margin-left:5px;" class="form-label" for="mostrarDescuento">Incluir descuento</label>
+</div>
+
+<!-- Código que se muestra u oculta según el checkbox -->
+<div id="descuento-container" style="display: none;">
+  <div class="col-md-3 mb-3">
+    <label for="estado" class="form-label">Descuento</label>
+    <div class="input-group">
+      <span class="input-group-text"><i class="bi bi-currency-dollar"></i></span>
+      <input type="number" class="form-control" id="Descuento1" name="Descuento1" value="0" required>
+    </div>
+  </div>
+</div>
           </div>
           <div class="row">
           <div class="col-md-12 mb-3">
@@ -203,7 +213,7 @@
               <label for="num_contrato" class="form-label">Número del Contrato</label>
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-journal"></i></span>
-                <input type="number" class="form-control" id="num_contrato" name="num_contrato" readonly>
+                <input type="number" class="form-control" id="num_contrato" name="num_contrato" requerid >
               </div>
             </div>
           </div>
@@ -218,3 +228,19 @@
   </div>
 </div>
 <script src="assets/js/addContrato.js"></script>
+<script>
+  // Obtiene el checkbox y el contenedor del código
+const checkbox = document.getElementById('mostrarDescuento');
+const container = document.getElementById('descuento-container');
+
+// Agrega un evento de cambio al checkbox
+checkbox.addEventListener('change', () => {
+  // Si el checkbox está seleccionado, muestra el contenedor del código
+  if (checkbox.checked) {
+    container.style.display = 'block';
+  } else {
+    // Si el checkbox no está seleccionado, oculta el contenedor del código
+    container.style.display = 'none';
+  }
+});
+</script>
