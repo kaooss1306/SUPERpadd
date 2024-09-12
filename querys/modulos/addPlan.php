@@ -188,7 +188,7 @@ include '../../componentes/sidebar.php';
                                                                 <input type="hidden"  id="selected-contrato-id" name="selected-contrato-id">
                                                                 <input   type="hidden"  id="selected-proveedor-id" name="selected-proveedor-id">
                                                                 <input  type="hidden"  id="selected-num-contrato" name="selected-num-contrato">
-                                                                <input type="hidden" id="selected-agencia-id" name="selected-agencia-id">
+                                                                <input   id="selected-agencia-id" name="selected-agencia-id">
                                                             </div>
                                                             <ul id="contrato-list" class="client-dropdown">
                                                                 <!-- Aquí se mostrarán las opciones filtradas -->
@@ -253,7 +253,7 @@ include '../../componentes/sidebar.php';
                                                 <input class="form-control" type="text" id="search-temas" placeholder="Buscar temas...">
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
                                                 <input type="hidden"   id="selected-temas-id" name="selected-temas-id">
-                                                <input  type="hidden" id="selected-temas-codigo" name="selected-temas-codigo">
+                                                <input    id="selected-temas-codigo" name="selected-temas-codigo">
                                                 <input type="hidden"  id="selected-id-medio" name="selected-id-medio">
                                                 <input  type="hidden" id="selected-id-clasificacion" name="selected-id-clasificacion">
                                             </div>
