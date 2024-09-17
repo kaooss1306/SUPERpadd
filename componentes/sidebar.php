@@ -2,7 +2,11 @@
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
             <a href="dashboard"> 
-              <img alt="image" src="<?php echo $ruta; ?>assets/img/origenlogo.png" class="header-logo" /></span>
+
+
+              <img alt="image" src="<?php echo $ruta; ?>assets/img/logo-origen-O.png" class="header-logo" /><img class="logo-name2" alt="image" src="<?php echo $ruta; ?>assets/img/logo-origen-O3.png"/></span>
+
+
             </a>
           </div>
         
