@@ -13,17 +13,9 @@ $avatar_usuario = $_SESSION['user']['Avatar'] ?? 'Usuario';
 
 $ruta = 'https://jubilant-parakeet-v6g976xx9v6x3xqwp-3000.app.github.dev/';
 
+
+ 
 $avatar_defecto = $ruta . 'assets/img/avatar.png';
-
-
-
-
-
-
-
-
-
-
 $current_file = basename($_SERVER['PHP_SELF']);
 
 ?>
@@ -84,15 +76,7 @@ $current_file = basename($_SERVER['PHP_SELF']);
         <ul class="navbar-nav navbar-right duo">
    Bienvenid@ - <?php echo htmlspecialchars($nombre_usuario); ?>
           <li class="dropdown"><a href="#" data-bs-toggle="dropdown"
-              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="
-              <?php 
-    if ($avatar_usuario !== 'Usuario') {
-        echo htmlspecialchars($avatar_usuario);
-    } else {
-        echo htmlspecialchars($avatar_defecto);
-    }
-?>
-              "
+              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="../assets/img/avatar.png"
                 class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
             <div class="dropdown-menu dropdown-menu-right pullDown">
               

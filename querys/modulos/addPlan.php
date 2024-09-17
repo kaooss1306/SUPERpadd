@@ -82,6 +82,7 @@ include '../../componentes/sidebar.php';
 }
 
 .client-dropdown {
+border:1px solid #ff0000;
     position: absolute;
     top: 100%;
     left: 0;
@@ -138,24 +139,24 @@ include '../../componentes/sidebar.php';
                   
                                     <!-- Selección de clientes -->
                                     <label class="labelforms" for="id_cliente">Clientes</label>
-                                    <div class="custom-select-container">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text"><i class="bi bi-person"></i></span>
-                                            </div>
-                                            <input class="form-control" type="text" id="search-client" placeholder="Buscar cliente...">
-                                            <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-                                            <input type="hidden" id="selected-client-id" name="selected-client-id" >
-                                        </div>
-                                        <ul id="client-list" class="client-dropdown">
-                                            <!-- Aquí se mostrarán las opciones filtradas -->
-                                        </ul>
-                                    </div>
+<div class="custom-select-container">
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text"><i class="bi bi-person"></i></span>
+        </div>
+        <input class="form-control" type="text" id="search-client" placeholder="Buscar cliente..." oninput="filterClients()">
+        <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
+        <input type="hidden" id="selected-client-id" name="selected-client-id">
+    </div>
+    <ul id="client-list" class="client-dropdown">
+        <!-- Aquí se mostrarán las opciones filtradas -->
+    </ul>
+</div>
 
                                     <label class="labelforms" for="codigo">Nombre de Plan</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                            <span class="input-group-text"><i class="bi bi-tag"></i></span>
                                         </div>
                                         <input class="form-control" placeholder="Nombre de Plan" name="nombrePlan">
                                     </div>
@@ -166,11 +167,11 @@ include '../../componentes/sidebar.php';
                                         <div class="custom-select-container">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                                    <span class="input-group-text"><i class="bi bi-box"></i></span>
                                                 </div>
                                                 <input class="form-control" type="text" id="search-product" placeholder="Buscar producto...">
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-                                                <input type="hidden"  id="selected-product-id" name="selected-product-id">
+                                                <input type="hidden" id="selected-product-id" name="selected-product-id">
                                             </div>
                                             <ul id="product-list" class="client-dropdown">
                                                 <!-- Aquí se mostrarán las opciones filtradas -->
@@ -181,13 +182,13 @@ include '../../componentes/sidebar.php';
                                                         <div class="custom-select-container">
                                                             <div class="input-group">
                                                                 <div class="input-group-prepend">
-                                                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                                                    <span class="input-group-text"><i class="bi bi-file-earmark-text"></i></span>
                                                                 </div>
                                                                 <input class="form-control" type="text" id="search-contrato" placeholder="Buscar contrato...">
                                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
                                                                 <input type="hidden"  id="selected-contrato-id" name="selected-contrato-id">
-                                                                <input   type="hidden"  id="selected-proveedor-id" name="selected-proveedor-id">
-                                                                <input  type="hidden"  id="selected-num-contrato" name="selected-num-contrato">
+                                                                <input type="hidden"  id="selected-proveedor-id" name="selected-proveedor-id">
+                                                                <input type="hidden"  id="selected-num-contrato" name="selected-num-contrato">
                                                                 <input type="hidden" id="selected-agencia-id" name="selected-agencia-id">
                                                             </div>
                                                             <ul id="contrato-list" class="client-dropdown">
@@ -200,11 +201,11 @@ include '../../componentes/sidebar.php';
                                         <div class="custom-select-container">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                                    <span class="input-group-text"><i class="bi bi-briefcase"></i></span>
                                                 </div>
                                                 <input class="form-control" type="text" id="search-soporte" placeholder="Buscar soporte...">
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-                                                <input  type="hidden"  id="selected-soporte-id" name="selected-soporte-id" value="">
+                                                <input type="hidden" id="selected-soporte-id" name="selected-soporte-id" value="">
                                             </div>
                                             <ul id="soporte-list" class="client-dropdown">
                                                 <!-- Aquí se mostrarán las opciones filtradas -->
@@ -217,37 +218,51 @@ include '../../componentes/sidebar.php';
                                         </div>
                                         <div class="col">
                                         <label class="labelforms" for="id_campania">Campaña</label>
-                                        <div class="custom-select-container">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
-                                                </div>
-                                                <input class="form-control" type="text" id="search-campania" placeholder="Buscar campaña...">
-                                                <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-                                                <input  type="hidden"  id="selected-campania-id" name="selected-campania-id">
-                                            </div>
-                                            <ul id="campania-list" class="client-dropdown">
-                                                <!-- Aquí se mostrarán las opciones filtradas -->
-                                            </ul>
-                                        </div>
-                                        
+<div class="custom-select-container">
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text"><i class="bi bi-bullseye"></i></span>
+        </div>
+        <input class="form-control" type="text" id="search-campania" placeholder="Buscar campaña...">
+        <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
+        <input type="hidden" id="selected-campania-id" name="selected-campania-id">
+    </div>
+    <ul id="campania-list" class="client-dropdown">
+        <!-- Aquí se mostrarán las opciones filtradas -->
+    </ul>
+</div>
+                                        <label class="labelforms" for="id_orden_compra">Orden de compra</label>
+<div class="custom-select-container">
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text"><i class="bi bi-file-earmark-text"></i></span>
+        </div>
+        <input class="form-control" type="text" id="search-orden" placeholder="Buscar Orden...">
+        <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
+        <input  type="hidden"  id="selected-orden-id" name="selected-orden-id">
+    </div>
+    <ul id="orden-list" class="client-dropdown">
+        <!-- Aquí se mostrarán las opciones filtradas -->
+    </ul>
+</div> 
                                         <label class="labelforms" for="id_campania">Temas</label>
                                         <div class="custom-select-container">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                                    <span class="input-group-text"><i class="bi bi-stars"></i></span>
                                                 </div>
                                                 <input class="form-control" type="text" id="search-temas" placeholder="Buscar temas...">
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-                                                <input type="hidden"  id="selected-temas-id" name="selected-temas-id">
+                                                <input type="hidden" id="selected-temas-id" name="selected-temas-id">
                                                 <input  type="hidden" id="selected-temas-codigo" name="selected-temas-codigo">
-                                                <input type="hidden"  id="selected-id-medio" name="selected-id-medio">
-                                                <input  type="hidden" id="selected-id-clasificacion" name="selected-id-clasificacion">
+                                                <input type="hidden" id="selected-id-medio" name="selected-id-medio">
+                                                <input type="hidden"  id="selected-id-clasificacion" name="selected-id-clasificacion">
                                             </div>
                                             <ul id="temas-list" class="client-dropdown">
                                                 <!-- Aquí se mostrarán las opciones filtradas -->
                                             </ul>
-                                        </div>  
+                                        </div> 
+                             
                                         <label for="forma-facturacion" class="labelforms">Forma de facturación</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
@@ -340,137 +355,698 @@ include '../../componentes/sidebar.php';
 </script>
 
 <script>
-const clientesMap = <?php echo json_encode($clientesMap); ?>;
-const productosMap = <?php echo json_encode($productosMap); ?>;
-const campaignsMap = <?php echo json_encode($campaignsMap); ?>;
-const contratosMap = <?php echo json_encode($contratosMap); ?>;
-const soportesMap = <?php echo json_encode($soportesMap); ?>;
-const campaniaTemasMap = <?php echo json_encode($campaniaTemasMap); ?>;
-const temasMap = <?php echo json_encode($temasMap); ?>;
+// Asignar clientes desde PHP al script
+const clientes = <?php echo json_encode($clientesMap); ?>;
 
-function setupSearch(searchId, listId, dataMap, textProperty, filterProperty = null, extraFilterFunction = null) {
-    const searchInput = document.getElementById(searchId);
-    const list = document.getElementById(listId);
-
-    searchInput.addEventListener('focus', function() {
-        const clientId = document.getElementById('selected-client-id').value;
-        const filteredItems = dataMap.filter(item =>
-            (!filterProperty || item[filterProperty] === (clientId ? parseInt(clientId, 10) : null)) &&
-            (!extraFilterFunction || extraFilterFunction(item))
-        );
-
-        if (searchId === 'search-soporte') {
-            const proveedorId = document.getElementById('selected-proveedor-id').value;
-            if (proveedorId) {
-                updateSoporteList(proveedorId);
-            }
-            return;
-        }
-
-        if (filteredItems.length > 0) {
-            list.innerHTML = filteredItems.map(item =>
-                `<li data-id="${item.id}" data-agencia-id="${item.IdAgencias || ''}" data-proveedor-id="${item.idProveedor || ''}" data-num-contrato="${item.num_contrato || ''}">${item[textProperty]}</li>`
-            ).join('');
-            list.style.display = 'block';
-        } else {
-            list.style.display = 'none';
-        }
+// Función para mostrar todas las opciones cuando se hace clic en el input
+function showAllClients() {
+    const clientList = document.getElementById("client-list");
+    
+    // Limpiar la lista antes de mostrar todos los resultados
+    clientList.innerHTML = '';
+    
+    clientes.forEach(cliente => {
+        const li = document.createElement("li");
+        li.textContent = cliente.nombreCliente;
+        li.setAttribute("data-id", cliente.id);
+        li.classList.add("client-item");
+        li.onclick = function() {
+            selectClient(cliente.id, cliente.nombreCliente);
+        };
+        clientList.appendChild(li);
     });
-
-    searchInput.addEventListener('input', function() {
-        const query = this.value.toLowerCase();
-        const clientId = document.getElementById('selected-client-id').value;
-
-        if (query.length > 0) {
-            document.querySelector('.clear-btn').style.display = 'block';
-
-            const filteredItems = dataMap.filter(item =>
-                item[textProperty].toLowerCase().includes(query) &&
-                (!filterProperty || item[filterProperty] === (clientId ? parseInt(clientId, 10) : null)) &&
-                (!extraFilterFunction || extraFilterFunction(item))
-            );
-
-            if (filteredItems.length > 0) {
-                list.innerHTML = filteredItems.map(item =>
-                    `<li data-id="${item.id}" data-proveedor-id="${item.idProveedor || ''}">${item[textProperty]}</li>`
-                ).join('');
-                list.style.display = 'block';
-            } else {
-                list.style.display = 'none';
-            }
-        } else {
-            if (searchId !== 'search-soporte') {
-                const filteredItems = dataMap.filter(item =>
-                    (!filterProperty || item[filterProperty] === (clientId ? parseInt(clientId, 10) : null)) &&
-                    (!extraFilterFunction || extraFilterFunction(item))
-                );
-
-                if (filteredItems.length > 0) {
-                    list.innerHTML = filteredItems.map(item =>
-                        `<li data-id="${item.id}" data-proveedor-id="${item.idProveedor || ''}">${item[textProperty]}</li>`
-                    ).join('');
-                    list.style.display = 'block';
-                } else {
-                    list.style.display = 'none';
-                }
-            }
-            document.querySelector('.clear-btn').style.display = 'none';
-        }
-    });
-
-    list.addEventListener('click', function(event) {
-        if (event.target.tagName === 'LI') {
-            searchInput.value = event.target.textContent;
-            const selectedId = event.target.getAttribute('data-id');
-            const selectedProveedorId = event.target.getAttribute('data-proveedor-id');
-            const selectedNumContrato = event.target.getAttribute('data-num-contrato');
-            const selectedIdAgencia = event.target.getAttribute('data-agencia-id');
-            
-            document.getElementById(`selected-${searchId.replace('search-', '')}-id`).value = selectedId;
-            
-            if (searchId === 'search-contrato') {
-                document.getElementById('selected-proveedor-id').value = selectedProveedorId;
-                document.getElementById('selected-num-contrato').value = selectedNumContrato;
-                document.getElementById('selected-agencia-id').value = selectedIdAgencia;
-                updateSoporteList(selectedProveedorId);
-            }
-
-            if (searchId === 'search-campania') {
-                updateTemasList(selectedId);
-            }
-
-            list.style.display = 'none';
-            document.querySelector('.clear-btn').style.display = 'none';
-        }
-    });
+    
+    clientList.style.display = "block"; // Mostrar lista
 }
 
-function updateSoporteList(idProveedor) {
-    const list = document.getElementById('soporte-list');
-    const filteredSoportes = soportesMap.filter(soporte => soporte.idProveedor == idProveedor);
+// Función para mostrar las opciones filtradas
+function filterClients() {
+    const searchInput = document.getElementById("search-client").value.toLowerCase();
+    const clientList = document.getElementById("client-list");
 
-    if (filteredSoportes.length > 0) {
-        list.innerHTML = filteredSoportes.map(soporte =>
-            `<li data-id="${soporte.id}">${soporte.nombreSoporte}</li>`
-        ).join('');
-        list.style.display = 'block';
+    // Limpiar la lista antes de mostrar resultados
+    clientList.innerHTML = '';
+
+    // Filtrar clientes según el valor del input
+    const filteredClients = clientes.filter(cliente => cliente.nombreCliente.toLowerCase().includes(searchInput));
+
+    if (filteredClients.length === 0) {
+        clientList.style.display = "none";
     } else {
-        list.innerHTML = '<li>No se encuentran soportes para este proveedor.</li>';
-        list.style.display = 'block';
+        clientList.style.display = "block";
+        filteredClients.forEach(cliente => {
+            const li = document.createElement("li");
+            li.textContent = cliente.nombreCliente;
+            li.setAttribute("data-id", cliente.id);
+            li.classList.add("client-item");
+            li.onclick = function() {
+                selectClient(cliente.id, cliente.nombreCliente);
+            };
+            clientList.appendChild(li);
+        });
+    }
+
+    // Mostrar el botón de limpiar si hay algo en el input
+    document.querySelector(".clear-btn").style.display = searchInput ? 'inline' : 'none';
+}
+
+// Función para seleccionar un cliente de la lista
+function selectClient(id, nombreCliente) {
+    document.getElementById("search-client").value = nombreCliente;
+    document.getElementById("selected-client-id").value = id;
+
+    // Limpiar la lista de opciones una vez seleccionado
+    document.getElementById("client-list").style.display = "none";
+}
+
+// Función para limpiar la búsqueda
+function clearSearch() {
+    document.getElementById("search-client").value = '';
+    document.getElementById("selected-client-id").value = '';
+    document.getElementById("client-list").style.display = "none";
+    document.querySelector(".clear-btn").style.display = 'none';
+}
+
+// Función para cerrar el dropdown si se hace clic fuera
+document.addEventListener('click', function(event) {
+    const searchInput = document.getElementById('search-client');
+    const clientList = document.getElementById('client-list');
+    
+    // Si el clic está fuera del campo de búsqueda y de la lista de opciones
+    if (!searchInput.contains(event.target) && !clientList.contains(event.target)) {
+        clientList.style.display = 'none';
+    }
+});
+
+// Mostrar todos los clientes cuando el input es clickeado
+document.getElementById("search-client").addEventListener('click', function() {
+    const searchInput = document.getElementById("search-client").value;
+    
+    // Si el campo de búsqueda está vacío, mostrar todos los clientes
+    if (searchInput === '') {
+        showAllClients();
+    }
+});
+
+// Asignar productos desde PHP al script
+const productos = <?php echo json_encode($productosMap); ?>;
+
+// Función para mostrar productos asociados al cliente seleccionado
+function showProductsForClient() {
+    const clientId = document.getElementById("selected-client-id").value;
+    const productList = document.getElementById("product-list");
+
+    // Limpiar la lista antes de mostrar los productos
+    productList.innerHTML = '';
+
+    // Filtrar productos según el cliente seleccionado
+    const filteredProducts = productos.filter(producto => producto.idCliente === parseInt(clientId));
+
+    if (filteredProducts.length === 0) {
+        productList.style.display = "none";
+    } else {
+        productList.style.display = "block";
+        filteredProducts.forEach(producto => {
+            const li = document.createElement("li");
+            li.textContent = producto.nombreProducto;
+            li.setAttribute("data-id", producto.id);
+            li.classList.add("product-item");
+            li.onclick = function() {
+                selectProduct(producto.id, producto.nombreProducto);
+            };
+            productList.appendChild(li);
+        });
     }
 }
 
+// Función para mostrar todos los productos filtrados por búsqueda
+function filterProducts() {
+    const searchInput = document.getElementById("search-product").value.toLowerCase();
+    const clientId = document.getElementById("selected-client-id").value;
+    const productList = document.getElementById("product-list");
+
+    // Limpiar la lista antes de mostrar resultados
+    productList.innerHTML = '';
+
+    // Filtrar productos según el valor del input y el cliente seleccionado
+    const filteredProducts = productos.filter(producto =>
+        producto.idCliente === parseInt(clientId) &&
+        producto.nombreProducto.toLowerCase().includes(searchInput)
+    );
+
+    if (filteredProducts.length === 0) {
+        productList.style.display = "none";
+    } else {
+        productList.style.display = "block";
+        filteredProducts.forEach(producto => {
+            const li = document.createElement("li");
+            li.textContent = producto.nombreProducto;
+            li.setAttribute("data-id", producto.id);
+            li.classList.add("product-item");
+            li.onclick = function() {
+                selectProduct(producto.id, producto.nombreProducto);
+            };
+            productList.appendChild(li);
+        });
+    }
+
+    // Mostrar el botón de limpiar si hay algo en el input
+    document.querySelector(".clear-btn").style.display = searchInput ? 'inline' : 'none';
+}
+
+// Función para seleccionar un producto de la lista
+function selectProduct(id, nombreProducto) {
+    document.getElementById("search-product").value = nombreProducto;
+    document.getElementById("selected-product-id").value = id;
+
+    // Limpiar la lista de opciones una vez seleccionado
+    document.getElementById("product-list").style.display = "none";
+}
+
+// Función para cerrar el dropdown si se hace clic fuera (aplicable para productos también)
+document.addEventListener('click', function(event) {
+    const searchInputProduct = document.getElementById('search-product');
+    const productList = document.getElementById('product-list');
+    
+    // Si el clic está fuera del campo de búsqueda y de la lista de opciones de productos
+    if (!searchInputProduct.contains(event.target) && !productList.contains(event.target)) {
+        productList.style.display = 'none';
+    }
+});
+
+// Mostrar productos del cliente cuando el input es clickeado
+document.getElementById("search-product").addEventListener('click', function() {
+    const clientId = document.getElementById("selected-client-id").value;
+
+    // Si hay un cliente seleccionado, mostrar sus productos
+    if (clientId) {
+        showProductsForClient();
+    }
+});
+function clearSearchProduct() {
+    document.getElementById("search-product").value = '';
+    document.getElementById("selected-product-id").value = '';
+    document.getElementById("product-list").style.display = "none";
+    document.querySelector(".clear-btn").style.display = 'none';
+}
+
+// Asignar contratos desde PHP al script
+const contratos = <?php echo json_encode($contratosMap); ?>;
+
+// Función para mostrar contratos asociados al cliente seleccionado
+function showContractsForClient() {
+    const clientId = document.getElementById("selected-client-id").value;
+    const contratoList = document.getElementById("contrato-list");
+
+    // Limpiar la lista antes de mostrar los contratos
+    contratoList.innerHTML = '';
+
+    // Filtrar contratos según el cliente seleccionado
+    const filteredContracts = contratos.filter(contrato => contrato.idCliente === parseInt(clientId));
+
+    if (filteredContracts.length === 0) {
+        contratoList.style.display = "none";
+    } else {
+        contratoList.style.display = "block";
+        filteredContracts.forEach(contrato => {
+            const li = document.createElement("li");
+            li.textContent = contrato.nombreContrato;
+            li.setAttribute("data-id", contrato.id);
+            li.setAttribute("data-proveedor-id", contrato.idProveedor);
+            li.setAttribute("data-num-contrato", contrato.num_contrato);
+            li.setAttribute("data-agencia-id", contrato.IdAgencias);
+            li.classList.add("contract-item");
+            li.onclick = function() {
+                selectContract(contrato);
+            };
+            contratoList.appendChild(li);
+        });
+    }
+}
+
+// Función para mostrar todos los contratos filtrados por búsqueda
+function filterContracts() {
+    const searchInput = document.getElementById("search-contrato").value.toLowerCase();
+    const clientId = document.getElementById("selected-client-id").value;
+    const contratoList = document.getElementById("contrato-list");
+
+    // Limpiar la lista antes de mostrar resultados
+    contratoList.innerHTML = '';
+
+    // Filtrar contratos según el valor del input y el cliente seleccionado
+    const filteredContracts = contratos.filter(contrato =>
+        contrato.idCliente === parseInt(clientId) &&
+        contrato.nombreContrato.toLowerCase().includes(searchInput)
+    );
+
+    if (filteredContracts.length === 0) {
+        contratoList.style.display = "none";
+    } else {
+        contratoList.style.display = "block";
+        filteredContracts.forEach(contrato => {
+            const li = document.createElement("li");
+            li.textContent = contrato.nombreContrato;
+            li.setAttribute("data-id", contrato.id);
+            li.setAttribute("data-proveedor-id", contrato.idProveedor);
+            li.setAttribute("data-num-contrato", contrato.num_contrato);
+            li.setAttribute("data-agencia-id", contrato.IdAgencias);
+            li.classList.add("contract-item");
+            li.onclick = function() {
+                selectContract(contrato);
+            };
+            contratoList.appendChild(li);
+        });
+    }
+
+    // Mostrar el botón de limpiar si hay algo en el input
+    document.querySelector(".clear-btn").style.display = searchInput ? 'inline' : 'none';
+}
+
+// Función para seleccionar un contrato de la lista
+function selectContract(contrato) {
+    document.getElementById("search-contrato").value = contrato.nombreContrato;
+    document.getElementById("selected-contrato-id").value = contrato.id;
+    document.getElementById("selected-proveedor-id").value = contrato.idProveedor;
+    document.getElementById("selected-num-contrato").value = contrato.num_contrato;
+    document.getElementById("selected-agencia-id").value = contrato.IdAgencias;
+
+    // Limpiar la lista de opciones una vez seleccionado
+    document.getElementById("contrato-list").style.display = "none";
+}
+
+// Función para cerrar el dropdown si se hace clic fuera (aplicable para contratos también)
+document.addEventListener('click', function(event) {
+    const searchInputContrato = document.getElementById('search-contrato');
+    const contratoList = document.getElementById('contrato-list');
+    
+    // Si el clic está fuera del campo de búsqueda y de la lista de opciones de contratos
+    if (!searchInputContrato.contains(event.target) && !contratoList.contains(event.target)) {
+        contratoList.style.display = 'none';
+    }
+});
+
+// Mostrar contratos del cliente cuando el input es clickeado
+document.getElementById("search-contrato").addEventListener('click', function() {
+    const clientId = document.getElementById("selected-client-id").value;
+
+    // Si hay un cliente seleccionado, mostrar sus contratos
+    if (clientId) {
+        showContractsForClient();
+    }
+});
+function clearSearchContrato() {
+    document.getElementById("search-contrato").value = '';
+    document.getElementById("selected-contrato-id").value = '';
+    document.getElementById("selected-proveedor-id").value = '';
+    document.getElementById("selected-num-contrato").value = '';
+    document.getElementById("selected-agencia-id").value = '';
+    document.getElementById("contrato-list").style.display = "none";
+    document.querySelector(".clear-btn").style.display = 'none';
+}
+// Map de soportes
+const soportesMap = <?php echo json_encode($soportesMap); ?>;
+
+const searchSoporteInput = document.getElementById('search-soporte');
+const soporteList = document.getElementById('soporte-list');
+const selectedSoporteIdInput = document.getElementById('selected-soporte-id');
+
+// Evento de búsqueda de soportes
+searchSoporteInput.addEventListener('input', function () {
+    const searchTerm = searchSoporteInput.value.toLowerCase();
+    const selectedProveedorId = document.getElementById('selected-proveedor-id').value;
+
+    // Filtrar los soportes que coinciden con el término de búsqueda y el idProveedor
+    const filteredSoportes = soportesMap.filter(soporte =>
+        soporte.nombreSoporte.toLowerCase().includes(searchTerm) &&
+        soporte.idProveedor == selectedProveedorId
+    );
+
+    // Mostrar los soportes en el dropdown
+    renderSoporteDropdown(filteredSoportes);
+});
+
+// Mostrar lista al hacer clic en el input
+searchSoporteInput.addEventListener('focus', function () {
+    const selectedProveedorId = document.getElementById('selected-proveedor-id').value;
+
+    if (selectedProveedorId) {
+        const filteredSoportes = soportesMap.filter(soporte => soporte.idProveedor == selectedProveedorId);
+        renderSoporteDropdown(filteredSoportes);
+    }
+});
+
+// Función para renderizar el dropdown de soportes
+function renderSoporteDropdown(soportes) {
+    soporteList.innerHTML = '';
+
+    if (soportes.length === 0) {
+        soporteList.innerHTML = '<li>No se encontraron soportes.</li>';
+        return;
+    }
+
+    soportes.forEach(soporte => {
+        const li = document.createElement('li');
+        li.textContent = soporte.nombreSoporte;
+        li.dataset.id = soporte.id;
+        li.classList.add('client-dropdown-item');
+        
+        li.addEventListener('click', function () {
+            selectedSoporteIdInput.value = soporte.id;
+            searchSoporteInput.value = soporte.nombreSoporte;
+            soporteList.style.display = 'none'; // Cerrar el dropdown
+        });
+
+        soporteList.appendChild(li);
+    });
+
+    soporteList.style.display = 'block';
+}
+
+// Cerrar el dropdown al hacer clic fuera del mismo
+document.addEventListener('click', function (event) {
+    if (!event.target.closest('.custom-select-container')) {
+        soporteList.style.display = 'none';
+    }
+});
+
+// Función para limpiar la búsqueda
+function clearSearch() {
+    searchSoporteInput.value = '';
+    selectedSoporteIdInput.value = '';
+    soporteList.style.display = 'none';
+}
+
+const campaigns = <?php echo json_encode($campaignsMap); ?>;
+// Función para mostrar campañas asociadas al cliente seleccionado
+function showCampaignsForClient() {
+    const clientId = document.getElementById("selected-client-id").value;
+    const campaniaList = document.getElementById("campania-list");
+
+    // Limpiar la lista antes de mostrar las campañas
+    campaniaList.innerHTML = '';
+
+    // Filtrar campañas según el cliente seleccionado
+    const filteredCampaigns = campaigns.filter(campaign => campaign.idCliente === parseInt(clientId));
+
+    if (filteredCampaigns.length === 0) {
+        campaniaList.style.display = "none";
+    } else {
+        campaniaList.style.display = "block";
+        filteredCampaigns.forEach(campaign => {
+            const li = document.createElement("li");
+            li.textContent = campaign.nombreCampania;
+            li.setAttribute("data-id", campaign.id);
+            li.classList.add("campaign-item");
+            li.onclick = function() {
+                selectCampaign(campaign);
+            };
+            campaniaList.appendChild(li);
+        });
+    }
+}
+
+// Función para mostrar todas las campañas filtradas por búsqueda
+function filterCampaigns() {
+    const searchInput = document.getElementById("search-campania").value.toLowerCase();
+    const clientId = document.getElementById("selected-client-id").value;
+    const campaniaList = document.getElementById("campania-list");
+
+    // Limpiar la lista antes de mostrar resultados
+    campaniaList.innerHTML = '';
+
+    // Filtrar campañas según el valor del input y el cliente seleccionado
+    const filteredCampaigns = campaigns.filter(campaign =>
+        campaign.idCliente === parseInt(clientId) &&
+        campaign.nombreCampania.toLowerCase().includes(searchInput)
+    );
+
+    if (filteredCampaigns.length === 0) {
+        campaniaList.style.display = "none";
+    } else {
+        campaniaList.style.display = "block";
+        filteredCampaigns.forEach(campaign => {
+            const li = document.createElement("li");
+            li.textContent = campaign.nombreCampania;
+            li.setAttribute("data-id", campaign.id);
+            li.classList.add("campaign-item");
+            li.onclick = function() {
+                selectCampaign(campaign);
+            };
+            campaniaList.appendChild(li);
+        });
+    }
+
+    // Mostrar el botón de limpiar si hay algo en el input
+    document.querySelector(".clear-btn").style.display = searchInput ? 'inline' : 'none';
+}
+
+// Función para seleccionar una campaña de la lista
+function selectCampaign(campaign) {
+    document.getElementById("search-campania").value = campaign.nombreCampania;
+    document.getElementById("selected-campania-id").value = campaign.id;
+
+    // Limpiar la lista de opciones una vez seleccionado
+    document.getElementById("campania-list").style.display = "none";
+}
+
+// Mostrar campañas del cliente cuando el input es clickeado
+document.getElementById("search-campania").addEventListener('click', function() {
+    const clientId = document.getElementById("selected-client-id").value;
+
+    // Si hay un cliente seleccionado, mostrar sus campañas
+    if (clientId) {
+        showCampaignsForClient();
+    }
+});
+
+// Función para cerrar el dropdown si se hace clic fuera
+document.addEventListener('click', function(event) {
+    const searchInputCampania = document.getElementById('search-campania');
+    const campaniaList = document.getElementById('campania-list');
+    
+    // Si el clic está fuera del campo de búsqueda y de la lista de opciones de campañas
+    if (!searchInputCampania.contains(event.target) && !campaniaList.contains(event.target)) {
+        campaniaList.style.display = 'none';
+    }
+});
+
+// Función para limpiar la búsqueda de campañas
+function clearSearchCampania() {
+    document.getElementById("search-campania").value = '';
+    document.getElementById("selected-campania-id").value = '';
+    document.getElementById("campania-list").style.display = "none";
+    document.querySelector(".clear-btn").style.display = 'none';
+}
+
+const ordenes = <?php echo json_encode($ordenMap); ?>;
+// Función para mostrar las órdenes asociadas a la campaña seleccionada
+function showOrdenesForCampania() {
+    const campaniaId = document.getElementById("selected-campania-id").value;
+    const ordenList = document.getElementById("orden-list");
+
+    // Limpiar la lista antes de mostrar las órdenes
+    ordenList.innerHTML = '';
+
+    // Filtrar órdenes según la campaña seleccionada
+    const filteredOrdenes = ordenes.filter(orden => orden.id_campania === parseInt(campaniaId));
+
+    if (filteredOrdenes.length === 0) {
+        ordenList.style.display = "none";
+    } else {
+        ordenList.style.display = "block";
+        filteredOrdenes.forEach(orden => {
+            const li = document.createElement("li");
+            li.textContent = orden.NombreOrden;
+            li.setAttribute("data-id", orden.id_orden_compra);
+            li.classList.add("orden-item");
+            li.onclick = function() {
+                selectOrden(orden);
+            };
+            ordenList.appendChild(li);
+        });
+    }
+}
+
+// Función para filtrar órdenes por búsqueda y campaña seleccionada
+function filterOrdenes() {
+    const searchInput = document.getElementById("search-orden").value.toLowerCase();
+    const campaniaId = document.getElementById("selected-campania-id").value;
+    const ordenList = document.getElementById("orden-list");
+
+    // Limpiar la lista antes de mostrar resultados
+    ordenList.innerHTML = '';
+
+    // Filtrar órdenes según el valor del input y la campaña seleccionada
+    const filteredOrdenes = ordenes.filter(orden =>
+        orden.id_campania === parseInt(campaniaId) &&
+        orden.NombreOrden.toLowerCase().includes(searchInput)
+    );
+
+    if (filteredOrdenes.length === 0) {
+        ordenList.style.display = "none";
+    } else {
+        ordenList.style.display = "block";
+        filteredOrdenes.forEach(orden => {
+            const li = document.createElement("li");
+            li.textContent = orden.NombreOrden;
+            li.setAttribute("data-id", orden.id_orden_compra);
+            li.classList.add("orden-item");
+            li.onclick = function() {
+                selectOrden(orden);
+            };
+            ordenList.appendChild(li);
+        });
+    }
+
+    // Mostrar el botón de limpiar si hay algo en el input
+    document.querySelector(".clear-btn").style.display = searchInput ? 'inline' : 'none';
+}
+
+// Función para seleccionar una orden de la lista
+function selectOrden(orden) {
+    document.getElementById("search-orden").value = orden.NombreOrden;
+    document.getElementById("selected-orden-id").value = orden.id_orden_compra;
+
+    // Limpiar la lista de opciones una vez seleccionada
+    document.getElementById("orden-list").style.display = "none";
+}
+
+// Mostrar órdenes de la campaña cuando el input es clickeado
+document.getElementById("search-orden").addEventListener('click', function() {
+    const campaniaId = document.getElementById("selected-campania-id").value;
+
+    // Si hay una campaña seleccionada, mostrar sus órdenes
+    if (campaniaId) {
+        showOrdenesForCampania();
+    }
+});
+
+// Función para cerrar el dropdown si se hace clic fuera
+document.addEventListener('click', function(event) {
+    const searchInputOrden = document.getElementById('search-orden');
+    const ordenList = document.getElementById('orden-list');
+    
+    // Si el clic está fuera del campo de búsqueda y de la lista de órdenes
+    if (!searchInputOrden.contains(event.target) && !ordenList.contains(event.target)) {
+        ordenList.style.display = 'none';
+    }
+});
+
+// Función para limpiar la búsqueda de órdenes
+function clearSearch() {
+    document.getElementById("search-orden").value = '';
+    document.getElementById("selected-orden-id").value = '';
+    document.getElementById("orden-list").style.display = "none";
+    document.querySelector(".clear-btn").style.display = 'none';
+}
+
+const campaniaTemasMap = <?php echo json_encode($campaniaTemasMap); ?>;
+const temasMap = <?php echo json_encode($temasMap); ?>;
+
+// Función para mostrar temas asociados a la campaña seleccionada
+function showTemasForCampaign() {
+    const campaignId = document.getElementById("selected-campania-id").value;
+    const temasList = document.getElementById("temas-list");
+
+    // Limpiar la lista antes de mostrar los temas
+    temasList.innerHTML = '';
+
+    // Obtener los temas relacionados a la campaña seleccionada usando campaniaTemasMap
+    const temasRelacionados = campaniaTemasMap[campaignId] || [];
+
+    // Filtrar los temas del temasMap que coincidan con los id_temas de campaniaTemasMap
+    const filteredTemas = temasMap.filter(tema => temasRelacionados.includes(tema.id));
+
+    if (filteredTemas.length === 0) {
+        temasList.style.display = "none";
+    } else {
+        temasList.style.display = "block";
+        filteredTemas.forEach(tema => {
+            const li = document.createElement("li");
+            li.textContent = tema.nombreTema;
+            li.setAttribute("data-id", tema.id);
+            li.setAttribute("data-codigo", tema.CodigoMegatime);
+            li.setAttribute("data-medio", tema.id_medio);
+            li.classList.add("tema-item");
+            li.onclick = function() {
+                selectTema(tema);
+            };
+            temasList.appendChild(li);
+        });
+    }
+}
+
+// Función para filtrar los temas por búsqueda
+function filterTemas() {
+    const searchInput = document.getElementById("search-temas").value.toLowerCase();
+    const campaignId = document.getElementById("selected-campania-id").value;
+    const temasList = document.getElementById("temas-list");
+
+    // Limpiar la lista antes de mostrar resultados
+    temasList.innerHTML = '';
+
+    // Obtener los temas relacionados a la campaña seleccionada usando campaniaTemasMap
+    const temasRelacionados = campaniaTemasMap[campaignId] || [];
+
+    // Filtrar los temas del temasMap que coincidan con los id_temas de campaniaTemasMap y el valor del input
+    const filteredTemas = temasMap.filter(tema =>
+        temasRelacionados.includes(tema.id) &&
+        tema.nombreTema.toLowerCase().includes(searchInput)
+    );
+
+    if (filteredTemas.length === 0) {
+        temasList.style.display = "none";
+    } else {
+        temasList.style.display = "block";
+        filteredTemas.forEach(tema => {
+            const li = document.createElement("li");
+            li.textContent = tema.nombreTema;
+            li.setAttribute("data-id", tema.id);
+            li.setAttribute("data-codigo", tema.CodigoMegatime);
+            li.setAttribute("data-medio", tema.id_medio);
+            li.classList.add("tema-item");
+            li.onclick = function() {
+                selectTema(tema);
+            };
+            temasList.appendChild(li);
+        });
+    }
+
+    // Mostrar el botón de limpiar si hay algo en el input
+    document.querySelector(".clear-btn").style.display = searchInput ? 'inline' : 'none';
+}
+
+// Función para seleccionar un tema de la lista
+function selectTema(tema) {
+    document.getElementById("search-temas").value = tema.nombreTema;
+    document.getElementById("selected-temas-id").value = tema.id;
+    document.getElementById("selected-temas-codigo").value = tema.CodigoMegatime;
+    document.getElementById("selected-id-medio").value = tema.id_medio;
+
+    // Llamada a la función fetchIdClasificacion para obtener la clasificación
+    fetchIdClasificacion(tema.id_medio).then(idClasificacion => {
+        if (idClasificacion) {
+            document.getElementById("selected-id-clasificacion").value = idClasificacion;
+        } else {
+            document.getElementById("selected-id-clasificacion").value = '';
+            console.error('No se encontró la clasificación para este id_medio.');
+        }
+    });
+
+    // Limpiar la lista de opciones una vez seleccionado
+    document.getElementById("temas-list").style.display = "none";
+}
 async function fetchIdClasificacion(id_medio) {
-    const url = `https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Medios?id=eq.${id_medio}&select=*`;
+    const url = `https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Medios?id=eq.${id_medio}&select=Id_Clasificacion`;
 
     try {
         const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
-           }
+                'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
+                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
+            }
         });
 
         if (!response.ok) {
@@ -490,105 +1066,36 @@ async function fetchIdClasificacion(id_medio) {
     }
 }
 
-function updateTemasList(idCampania) {
-    const list = document.getElementById('temas-list');
-    const temasRelacionadosIds = campaniaTemasMap[idCampania] || [];
+// Mostrar temas de la campaña cuando el input es clickeado
+document.getElementById("search-temas").addEventListener('click', function() {
+    const campaignId = document.getElementById("selected-campania-id").value;
 
-    console.log("temasMap:", temasMap);
-    console.log("temasRelacionadosIds:", temasRelacionadosIds);
-
-    const filteredTemas = temasMap.filter(tema => temasRelacionadosIds.includes(tema.id));
-    console.log("filteredTemas:", filteredTemas);
-
-    if (filteredTemas.length > 0) {
-        list.innerHTML = filteredTemas.map(tema =>
-            `<li data-id="${tema.id}" data-id-medio="${tema.id_medio}" data-codigomegatime="${tema.CodigoMegatime}">${tema.nombreTema}</li>`
-        ).join('');
-        console.log("HTML generado:", list.innerHTML);
-
-        list.style.display = 'block';
-
-        // Agregar evento click a cada li para setear el CodigoMegatime y el Id_Clasificacion
-        const temasItems = list.querySelectorAll('li');
-        temasItems.forEach(item => {
-            item.addEventListener('click', async function() {
-                const codigoMegatime = this.getAttribute('data-codigomegatime');
-                const medioid = this.getAttribute('data-id-medio');
-                console.log('Código Megatime seleccionado:', codigoMegatime);
-
-                // Obtener el Id_Clasificacion basado en id_medio
-                const idClasificacion = await fetchIdClasificacion(medioid);
-
-                const inputCodigo = document.getElementById('selected-temas-codigo');
-                const inputCodigo2 = document.getElementById('selected-id-medio');
-                const inputClasificacion = document.getElementById('selected-id-clasificacion');
-
-                if (inputCodigo && inputCodigo2 && inputClasificacion) {
-                    inputCodigo.value = codigoMegatime;
-                    inputCodigo2.value = medioid;
-                    inputClasificacion.value = idClasificacion; // Setea el Id_Clasificacion
-                } else {
-                    console.error('No se encontraron los inputs.');
-                }
-            });
-        });
-    } else {
-        list.innerHTML = '<li>No se encuentran temas para esta campaña.</li>';
-        list.style.display = 'block';
-    }
-}
-
-// Configuración de búsqueda para cada campo
-setupSearch('search-client', 'client-list', clientesMap, 'nombreCliente');
-setupSearch('search-product', 'product-list', productosMap, 'nombreProducto', 'idCliente');
-setupSearch('search-campania', 'campania-list', campaignsMap, 'nombreCampania', 'idCliente');
-setupSearch('search-contrato', 'contrato-list', contratosMap, 'nombreContrato', 'idCliente');
-setupSearch('search-soporte', 'soporte-list', soportesMap, 'nombreSoporte');
-setupSearch('search-temas', 'temas-list', temasMap, 'nombreTema');
-
-function clearSearch() {
-    document.getElementById('search-product').value = '';
-    document.getElementById('selected-product-id').value = '';
-    document.getElementById('product-list').style.display = 'none';
-    document.getElementById('search-campania').value = '';
-    document.getElementById('selected-campania-id').value = '';
-    document.getElementById('campania-list').style.display = 'none';
-    document.getElementById('search-contrato').value = '';
-    document.getElementById('selected-contrato-id').value = '';
-    document.getElementById('contrato-list').style.display = 'none';
-    document.getElementById('search-soporte').value = '';
-    document.getElementById('selected-soporte-id').value = '';
-    document.getElementById('soporte-list').style.display = 'none';
-    document.getElementById('search-temas').value = '';
-    document.getElementById('selected-temas-id').value = '';
-    document.getElementById('temas-list').style.display = 'none';
-    document.getElementById('selected-proveedor-id').value = '';
-
-    document.querySelectorAll('.clear-btn').forEach(btn => btn.style.display = 'none');
-}
-
-document.addEventListener('click', function(event) {
-    const searchFields = [
-        document.getElementById('search-product'),
-        document.getElementById('search-campania'),
-        document.getElementById('search-contrato'),
-        document.getElementById('search-soporte'),
-        document.getElementById('search-temas')
-    ];
-
-    const lists = [
-        document.getElementById('product-list'),
-        document.getElementById('campania-list'),
-        document.getElementById('contrato-list'),
-        document.getElementById('soporte-list'),
-        document.getElementById('temas-list')
-    ];
-
-    if (!searchFields.some(field => field.contains(event.target)) &&
-        !lists.some(list => list.contains(event.target))) {
-        lists.forEach(list => list.style.display = 'none');
+    // Si hay una campaña seleccionada, mostrar sus temas
+    if (campaignId) {
+        showTemasForCampaign();
     }
 });
+
+// Función para cerrar el dropdown si se hace clic fuera
+document.addEventListener('click', function(event) {
+    const searchInputTemas = document.getElementById('search-temas');
+    const temasList = document.getElementById('temas-list');
+    
+    // Si el clic está fuera del campo de búsqueda y de la lista de opciones de temas
+    if (!searchInputTemas.contains(event.target) && !temasList.contains(event.target)) {
+        temasList.style.display = 'none';
+    }
+});
+
+// Función para limpiar la búsqueda de temas
+function clearSearch() {
+    document.getElementById("search-temas").value = '';
+    document.getElementById("selected-temas-id").value = '';
+    document.getElementById("selected-temas-codigo").value = '';
+    document.getElementById("temas-list").style.display = "none";
+    document.querySelector(".clear-btn").style.display = 'none';
+}
+
 </script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -607,36 +1114,35 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const mesesMap = <?php echo json_encode($mesesMap); ?>;
     const aniosMap = <?php echo json_encode($aniosMap); ?>;
+    const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 
-    function actualizarCalendario() {
-        const mesId = parseInt(mesSelector.value);
-        const anioId = parseInt(anioSelector.value);
+ function actualizarCalendario() {
+    const mesId = parseInt(mesSelector.value);
+    const anioId = parseInt(anioSelector.value);
 
-        console.log('Mes seleccionado:', mesId, mesesMap[mesId]);
-        console.log('Año seleccionado:', anioId, aniosMap[anioId]);
+    const mes = parseInt(mesesMap[mesId]['Id']);
+    const anio = parseInt(aniosMap[anioId]['years']);
 
-        const mes = parseInt(mesesMap[mesId]['Id']);
-        const anio = parseInt(aniosMap[anioId]['years']);
+    const diasEnMes = new Date(anio, mes, 0).getDate();
+    
+    diasContainer.innerHTML = '';
 
-        console.log('Mes y año para cálculos:', mes, anio);
-
-        const diasEnMes = new Date(anio, mes, 0).getDate();
-        console.log('Días en el mes:', diasEnMes);
-
-        diasContainer.innerHTML = '';
-
-        for (let dia = 1; dia <= diasEnMes; dia++) {
-            const diaElement = document.createElement('div');
-            diaElement.className = 'dia';
-            diaElement.innerHTML = `
-                <div class="dia-numero">${dia}</div>
-                <input type="number" id="input-${anio}-${mes}-${dia}" />
-            `;
-            diasContainer.appendChild(diaElement);
-        }
-
-        console.log('Calendario actualizado');
+    for (let dia = 1; dia <= diasEnMes; dia++) {
+        const fecha = new Date(anio, mes - 1, dia);
+        const nombreDia = diasSemana[fecha.getDay()];
+        
+        const diaElement = document.createElement('div');
+        diaElement.className = 'dia';
+        diaElement.innerHTML = `
+            <div class="dia-nombre">${nombreDia}</div>
+            <div class="dia-numero">${dia}</div>
+            <input type="number" id="input-${anio}-${mes}-${dia}" />
+        `;
+        diasContainer.appendChild(diaElement);
     }
+
+    console.log('Calendario actualizado');
+}
 
     function recopilarDatos() {
     const mesId = parseInt(mesSelector.value);
@@ -758,14 +1264,14 @@ document.addEventListener('DOMContentLoaded', function() {
             id_calendar: id_calendar,
             Megatime: document.getElementById('selected-temas-codigo').value,
             id_agencia: document.getElementById('selected-agencia-id').value,
-            id_clasificacion: document.getElementById('selected-id-clasificacion').value
-            
-      
+            id_clasificacion: document.getElementById('selected-id-clasificacion').value === "" ? null : document.getElementById('selected-id-clasificacion').value,
+            numero_orden: document.getElementById('selected-orden-id').value,
+            estado: '1'
             
            
              // Usa el id_calendar obtenido
          }; // Copia los datos de datosPlan, puedes modificar lo necesario después
-
+         console.log(datosOrden,"holaaa");
         return fetch('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/OrdenesDePublicidad', {
             method: 'POST',
             headers: {

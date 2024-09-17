@@ -46,7 +46,8 @@ document.addEventListener('DOMContentLoaded', function () {
     async function agregarProducto(nombreProducto, idCliente) {
         const bodyContent = JSON.stringify({
             "NombreDelProducto": nombreProducto,
-            "Id_Cliente": idCliente
+            "Id_Cliente": idCliente,
+            "Estado": "1"
         });
 
         const headersList = {

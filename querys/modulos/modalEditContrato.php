@@ -169,7 +169,7 @@
               <label for="editDescuento1" class="form-label">Descuento</label>
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-currency-dollar"></i></span>
-                <input type="number" class="form-control" id="editDescuento1" name="Descuento1" required>
+                <input type="number" class="form-control" id="editDescuento1" name="Descuento1" value="0" required>
               </div>
             </div>
             <div class="col-md-3 mb-3">
@@ -201,7 +201,7 @@
               <label for="editNumContrato" class="form-label">Número del Contrato</label>
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-journal"></i></span>
-                <input type="number" class="form-control" id="editNumContrato" name="num_contrato" readonly>
+                <input type="number" class="form-control" id="editNumContrato" name="num_contrato" >
               </div>
             </div>
           </div>

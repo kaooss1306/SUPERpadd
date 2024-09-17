@@ -153,50 +153,50 @@ include '../componentes/sidebar.php';
                   </div>
                   <div class="card-body">
     <div class="py-4">
-        <p class="clearfix">
-            <span class="float-start">Nombre Proveedor</span>
-            <span class="float-right text-muted "><?php echo $datosProveedor['nombreProveedor']; ?></span>
-        </p>
-        <p class="clearfix">
-            <span class="float-start">Nombre de Fantasía</span>
-            <span class="float-right text-muted "><?php echo $datosProveedor['nombreFantasia']; ?></span>
-        </p>
-        <p class="clearfix">
-            <span class="float-start">Razón Social</span>
-            <span class="float-right text-muted "><?php echo $datosProveedor['razonSocial']; ?></span>
-        </p>
-        <p class="clearfix">
-            <span class="float-start">Giro Proveedor</span>
-            <span class="float-right text-muted "><?php echo $datosProveedor['giroProveedor']; ?></span>
-        </p>
-        <p class="clearfix">
-            <span class="float-start">Dirección</span>
-            <span class="float-right text-muted "><?php echo $datosProveedor['direccionFacturacion']; ?></span>
-        </p>
-        <p class="clearfix">
-            <span class="float-start">Representante</span>
-            <span class="float-right text-muted "><?php echo $datosProveedor['nombreRepresentante']; ?></span>
-        </p>
-        <p class="clearfix">
-            <span class="float-start">Rut Representante</span>
-            <span class="float-right text-muted "><?php echo $datosProveedor['rutRepresentante']; ?></span>
-        </p>
-        <p class="clearfix">
-            <span class="float-start">Teléfono Celular</span>
-            <span class="float-right text-muted "><?php echo $datosProveedor['telCelular']; ?></span>
-        </p>
-        <p class="clearfix">
-            <span class="float-start">Teléfono Fijo</span>
-            <span class="float-right text-muted "><?php echo $datosProveedor['telFijo']; ?></span>
-        </p>
-        <p class="clearfix">
-            <span class="float-start">Correo</span>
-            <span class="float-right text-muted "><?php echo $datosProveedor['email']; ?></span>
-        </p>
-        <p class="clearfix">
-            <span class="float-start">Medios</span>
-            <span class="float-right text-muted "><?php echo $tooltip_content?></span>
-        </p>
+                            <p class="clearfix">
+                                <span class="float-start">Nombre Proveedor</span>
+                                <span class="float-right text-muted "><?php echo $datosProveedor['nombreProveedor']; ?></span>
+                            </p>
+                            <p class="clearfix">
+                                <span class="float-start">Nombre de Fantasía</span>
+                                <span class="float-right text-muted "><?php echo $datosProveedor['nombreFantasia']; ?></span>
+                            </p>
+                            <p class="clearfix">
+                                <span class="float-start">Razón Social</span>
+                                <span class="float-right text-muted "><?php echo $datosProveedor['razonSocial']; ?></span>
+                            </p>
+                            <p class="clearfix">
+                                <span class="float-start">Giro Proveedor</span>
+                                <span class="float-right text-muted "><?php echo $datosProveedor['giroProveedor']; ?></span>
+                            </p>
+                            <p class="clearfix">
+                                <span class="float-start">Dirección</span>
+                                <span class="float-right text-muted "><?php echo $datosProveedor['direccionFacturacion']; ?></span>
+                            </p>
+                            <p class="clearfix">
+                                <span class="float-start">Representante</span>
+                                <span class="float-right text-muted "><?php echo $datosProveedor['nombreRepresentante']; ?></span>
+                            </p>
+                            <p class="clearfix">
+                                <span class="float-start">Rut Representante</span>
+                                <span class="float-right text-muted "><?php echo $datosProveedor['rutRepresentante']; ?></span>
+                            </p>
+                            <p class="clearfix">
+                                <span class="float-start">Teléfono Celular</span>
+                                <span class="float-right text-muted "><?php echo $datosProveedor['telCelular']; ?></span>
+                            </p>
+                            <p class="clearfix">
+                                <span class="float-start">Teléfono Fijo</span>
+                                <span class="float-right text-muted "><?php echo $datosProveedor['telFijo']; ?></span>
+                            </p>
+                            <p class="clearfix">
+                                <span class="float-start">Correo</span>
+                                <span class="float-right text-muted "><?php echo $datosProveedor['email']; ?></span>
+                            </p>
+                            <p class="clearfix">
+                                <span class="float-start">Medios</span>
+                                <span class="float-right text-muted "><?php echo $tooltip_content?></span>
+                            </p>
     </div>
 </div>
                 </div>
