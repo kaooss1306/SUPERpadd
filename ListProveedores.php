@@ -163,7 +163,7 @@ include 'componentes/sidebar.php';
                                             <td>
                                             <div class="alineado">
                                             <label class="custom-switch sino" data-toggle="tooltip" 
-                                            title="<?php echo $proveedor['estado'] ? 'Desactivar Proveedor' : 'Activar Cliente'; ?>">
+                                            title="<?php echo $proveedor['estado'] ? 'Desactivar Proveedor' : 'Activar Proveedor'; ?>">
                                             <input type="checkbox" 
                                                 class="custom-switch-input estado-switch2"
                                                 data-id="<?php echo $proveedor['id_proveedor']; ?>" data-tipo="proveedor" <?php echo $proveedor['estado'] ? 'checked' : ''; ?>>

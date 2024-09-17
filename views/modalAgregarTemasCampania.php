@@ -204,7 +204,6 @@
 }
 
 async function rellenarTabla(temas) {
-
     const tableHead = document.querySelector('#table1 thead');
     const tableBody = document.querySelector('#table1 tbody');
 
@@ -214,7 +213,7 @@ async function rellenarTabla(temas) {
 
     // Crear el encabezado de la tabla
     const headerRow = document.createElement('tr');
-    const headers = ['ID', 'Nombre Tema', 'Código Megatime', 'Duración', 'Cooperado', 'Rubro', 'Nombre Medio'];
+    const headers = ['ID', 'Nombre Tema', 'Código Megatime', 'Duración', 'Cooperado', 'Rubro', 'Nombre Medio', 'Estado'];
     headers.forEach(headerText => {
         const th = document.createElement('th');
         th.textContent = headerText;
@@ -256,11 +255,41 @@ async function rellenarTabla(temas) {
         medioCell.textContent = nombreMedio;
         row.appendChild(medioCell);
 
+        // Crear la celda de estado con el switch
+        const estadoCell = document.createElement('td');
+        const estadoSwitch = document.createElement('div');
+        estadoSwitch.classList.add('alineado');
+
+        const label = document.createElement('label');
+        label.classList.add('custom-switch', 'sino');
+        label.setAttribute('data-toggle', 'tooltip');
+        label.setAttribute('title', tema.estado ? 'Desactivar Tema' : 'Activar Tema');
+
+        const input = document.createElement('input');
+        input.type = 'checkbox';
+        input.classList.add('custom-switch-input', 'estado-switch2');
+        input.setAttribute('data-id', tema.id_tema);
+        input.setAttribute('data-tipo', 'tema');
+        if (tema.estado) {
+            input.setAttribute('checked', 'checked');
+        }
+
+        const span = document.createElement('span');
+        span.classList.add('custom-switch-indicator');
+
+        label.appendChild(input);
+        label.appendChild(span);
+        estadoSwitch.appendChild(label);
+        estadoCell.appendChild(estadoSwitch);
+        row.appendChild(estadoCell);
+
         tableBody.appendChild(row);
     }
 }
 
 </script>
+<script src="../assets/js/toggleOrden.js"></script>
+<script src="../assets/js/toggleTema2.js"></script>
 <script>
     function loadTema(button) {
     // Obtener el ID del tema desde el atributo data-idproveedor del botón

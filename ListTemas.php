@@ -36,8 +36,8 @@ include 'componentes/sidebar.php';
                                             <th>Cooperado</th>
                                             <th>Rubro</th>
                                             <th>Campaña</th>
-                                            
                                             <th>Color</th>
+                                            <th>Estado</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
@@ -100,6 +100,17 @@ include 'componentes/sidebar.php';
                                             
         </td>
                                             <td><?php echo $tema['color']; ?></td>
+                                            <td>
+                                            <div class="alineado">
+                                            <label class="custom-switch sino" data-toggle="tooltip" 
+                                            title="<?php echo $tema['estado'] ? 'Desactivar Tema' : 'Activar Tema'; ?>">
+                                            <input type="checkbox" 
+                                                class="custom-switch-input estado-switch2"
+                                                data-id="<?php echo $tema['id_tema']; ?>" data-tipo="tema" <?php echo $tema['estado'] ? 'checked' : ''; ?>>
+                                            <span class="custom-switch-indicator"></span>
+                                        </label>
+                                            </div>
+                                            </td>
                                             <td><a class="btn btn-success micono"  data-bs-toggle="modal" data-bs-target="#actualizatema" data-nombretema="<?php echo $tema['NombreTema']; ?>"  data-idtema="<?php echo $tema['id_tema']; ?>" onclick="loadTema(this)" ><i class="fas fa-pencil-alt"></i></a></td>
                                         </tr>
                                         <?php endforeach; ?>
@@ -364,6 +375,7 @@ document.addEventListener('DOMContentLoaded', function() {
     mediosSelect.addEventListener('change', updateFields);
 });
 </script>
+<script src="assets/js/toggleTema.js"></script>
 <script src="assets/js/agregarTema.js"></script>
 <?php include 'componentes/settings.php'; ?>
 <?php include 'componentes/footer.php'; ?>

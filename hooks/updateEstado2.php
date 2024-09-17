@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $estado = filter_input(INPUT_POST, 'estado', FILTER_VALIDATE_INT);
     $tipo = filter_input(INPUT_POST, 'tipo', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-    if ($id === false || $id === null || $estado === false || $estado === null || !in_array($tipo, ['plan', 'cliente', 'proveedor'])) {
+    if ($id === false || $id === null || $estado === false || $estado === null || !in_array($tipo, ['plan', 'tema', 'cliente', 'proveedor', 'orden'])) {
         echo json_encode(['success' => false, 'message' => 'Datos de entrada inválidos']);
         exit;
     }
@@ -54,6 +54,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }elseif ($tipo === 'proveedor'){
         $url = "https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Proveedores?id_proveedor=eq.$id";
         $idField = 'id_proveedor';
+    }elseif ($tipo === 'tema'){
+        $url = "https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Temas?id_tema=eq.$id";
+        $idField = 'id_tema';
+    }elseif ($tipo === 'tema'){
+        $url = "https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/OrdenDeCompra?id_orden_compra=eq.$id";
+        $idField = 'id_orden_compra';
     }
 
     // Datos a actualizar

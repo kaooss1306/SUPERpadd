@@ -32,6 +32,7 @@ require_once 'componentes/sidebar.php';
                                             <th>Tema</th>
                                             <th>Soporte</th>
                                             <th>Clasificación</th>
+                                            <th>Estado</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
@@ -48,7 +49,17 @@ require_once 'componentes/sidebar.php';
                                             <td><?php echo htmlspecialchars($temasMap[$orden['id_tema']]['NombreTema'] ?? ''); ?></td>
                                             <td><?php echo htmlspecialchars($soportesMap[$orden['id_soporte']]['nombreIdentficiador'] ?? ''); ?></td>
                                             <td><?php echo htmlspecialchars($clasificacionesMap[$orden['id_clasificacion']]['NombreClasificacion'] ?? ''); ?></td>
-                                           
+                                            <td>
+                                            <div class="alineado">
+                                            <label class="custom-switch sino" data-toggle="tooltip" 
+                                            title="<?php echo $orden['estado'] ? 'Desactivar Orden de publicidad' : 'Activar Orden depublicidad'; ?>">
+                                            <input type="checkbox" 
+                                                class="custom-switch-input estado-switch2"
+                                                data-id="<?php echo $orden['id_ordenes_de_comprar']; ?>" data-tipo="orden" <?php echo $orden['estado'] ? 'checked' : ''; ?>>
+                                            <span class="custom-switch-indicator"></span>
+                                        </label>
+                                            </div>
+                                            </td>
                                             <td>
                                                     <a class="btn btn-primary micono" href="querys/modulos/orden.php?id_orden=<?php echo $orden['id_ordenes_de_comprar']; ?>" data-toggle="tooltip" title="Ver Orden">
                                                         <i class="fas fa-eye"></i>
