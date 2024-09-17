@@ -22,7 +22,8 @@ function makeRequest($url) {
 }
 
 // Obtener datos
- 
+$provedorsoportes = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/proveedor_soporte?select=*');
+$planes = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/PlanesPublicidad?select=*');
 $anios = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Anios?select=*');
 $anios2 = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Anios?select=*');
 $meses = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Meses?select=*');
@@ -51,10 +52,7 @@ foreach ($ordenes as $orden) {
     ];
 }
 
-$ordenMap2 = [];
-foreach ($ordenes2 as $orden2) {
-    $ordenMap2[$orden2['id_orden_compra']] = $orden['NombreOrden'];
-}
+
 
 foreach ($jsonData as $calendar) {
     // Aquí asumimos que `id_calendar` es único y usamos su valor como clave en nuestro mapa
@@ -66,6 +64,7 @@ foreach ($campania_temas as $relacion) {
 }
 $temasMap = [];
 foreach ($temas as $tema) {
+    if ($tema['estado'] === true) {
     $temasMap[] = [
         'id' => $tema['id_tema'],
         'nombreTema' => $tema['NombreTema'],
@@ -73,17 +72,20 @@ foreach ($temas as $tema) {
         'id_medio' => $tema['id_medio']
     ];
 }
+}
 
 
 
 
 $soportesMap = [];
 foreach ($soportes as $soporte) {
+    if ($soporte['estado'] === true) {
     $soportesMap[] = [
         'id' => $soporte['id_soporte'],
         'nombreSoporte' => $soporte['nombreIdentficiador'],
         'idProveedor' => $soporte['id_proveedor']
     ];
+}
 }
 
 $aniosMap = [];
@@ -97,7 +99,7 @@ foreach ($meses as $mes) {
 
 
 $contratosMap = [];
-foreach ($contratos as $contrato) {
+foreach ($contratos as $contrato) {  
     $contratosMap[] = [
         'id' => $contrato['id'],
         'nombreContrato' => $contrato['NombreContrato'],
@@ -108,50 +110,65 @@ foreach ($contratos as $contrato) {
     ];
 }   
 $clientesMap = [];
-foreach ($clientes as $cliente) {
-    $clientesMap[] = [
-        'id' => $cliente['id_cliente'],
-        'nombreCliente' => $cliente['nombreCliente']
-    ];
+foreach ($clientes as $cliente) {  
+    if ($cliente['estado'] === true) {
+        $clientesMap[] = [
+            'id' => $cliente['id_cliente'],
+            'nombreCliente' => $cliente['nombreCliente']
+        ];
+    }
 }
 $productosMap = [];
 foreach ($productos as $producto) {
+    if ($producto['Estado'] === true) {
     $productosMap[] = [
         'id' => $producto['id'],
         'nombreProducto' => $producto['NombreDelProducto'],
         'idCliente' => $producto['Id_Cliente']
     ];
 }
-
+}
 $campaignsMap = [];
 foreach ($campaigns as $campaign) {
+    if ($campaign['estado'] === true) {
     $campaignsMap[] = [
         'id' => $campaign['id_campania'],
         'nombreCampania' => $campaign['NombreCampania'],
         'idCliente' => $campaign['id_Cliente']
     ];
 }
+}
 $productosMap2 = [];
 foreach ($productos as $producto) {
+    if ($producto['Estado'] === true) {
     $productosMap2[$producto['id']] = $producto['NombreDelProducto'];
-}
+}}
 $clientesMap2 = [];
 foreach ($clientes as $cliente) {
+    if ($cliente['estado'] === true) {
     $clientesMap2[$cliente['id_cliente']] = $cliente['nombreCliente'];
-}
+}}
 $contratosMap2 = [];
 foreach ($contratos as $contrato) {
     $contratosMap2[$contrato['id']] = $contrato['NombreContrato'];
 }
 $soportesMap2 = [];
 foreach ($soportes as $soporte) {
+    if ($soporte['estado'] === true) {
     $soportesMap2[$soporte['id_soporte']] = $soporte['nombreIdentficiador'];
-}
+}}
 $campaignsMap2 = [];
 foreach ($campaigns as $campaign) {
+    if ($campaign['estado'] === true) {
     $campaignsMap2[$campaign['id_campania']] = $campaign['NombreCampania'];
-}
+}}
 $temasMap2 = [];
 foreach ($temas as $tema) {
-    $temasMap2[$tema['id_tema']] = $tema['NombreTema'];
+    if ($tema['estado'] === true) {
+        // Agrega un array con el nombre del tema y el id_medio como valor
+        $temasMap2[$tema['id_tema']] = [
+            'NombreTema' => $tema['NombreTema'],
+            'id_medio' => $tema['id_medio']  // Asegúrate de que 'id_medio' sea un campo válido en tu array $tema
+        ];
+    }
 }

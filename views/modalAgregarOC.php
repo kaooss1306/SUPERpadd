@@ -131,44 +131,70 @@ function obtenerOrdenCompra(idCampania) {
     .then(data => {
         // Seleccionar el cuerpo de la tabla
         const tableBody = document.querySelector('#tableOC tbody');
-        const tableHead = document.querySelector('#tableOC thead');
+const tableHead = document.querySelector('#tableOC thead');
 
-        // Limpiar contenido previo
-        tableBody.innerHTML = '';
-        tableHead.innerHTML = '';
+// Limpiar contenido previo
+tableBody.innerHTML = '';
+tableHead.innerHTML = '';
 
-        // Crear encabezados de tabla
-        const headers = ['Nombre Orden', 'Fecha Orden', 'Monto'];
-        const headRow = document.createElement('tr');
-        headers.forEach(header => {
-            const th = document.createElement('th');
-            th.textContent = header;
-            headRow.appendChild(th);
-        });
-        tableHead.appendChild(headRow);
+// Crear encabezados de tabla
+const headers = ['Nombre Orden', 'Fecha Orden', 'Monto', 'Estado'];
+const headRow = document.createElement('tr');
+headers.forEach(header => {
+    const th = document.createElement('th');
+    th.textContent = header;
+    headRow.appendChild(th);
+});
+tableHead.appendChild(headRow);
 
-        // Rellenar la tabla con los datos obtenidos
-        data.forEach(orden => {
-            const row = document.createElement('tr');
+// Rellenar la tabla con los datos obtenidos
+data.forEach(orden => {
+    const row = document.createElement('tr');
 
-            // Crear celdas con la información de cada orden
-            const nombreCell = document.createElement('td');
-            nombreCell.textContent = orden.NombreOrden || '';
-            row.appendChild(nombreCell);
+    // Crear celdas con la información de cada orden
+    const nombreCell = document.createElement('td');
+    nombreCell.textContent = orden.NombreOrden || '';
+    row.appendChild(nombreCell);
 
-            
+    const fechaCell = document.createElement('td');
+    fechaCell.textContent = orden.fechaOrden || '';
+    row.appendChild(fechaCell);
 
-            const fechaCell = document.createElement('td');
-            fechaCell.textContent = orden.fechaOrden || '';
-            row.appendChild(fechaCell);
+    const montoCell = document.createElement('td');
+    montoCell.textContent = orden.monto || '';
+    row.appendChild(montoCell);
 
-            const montoCell = document.createElement('td');
-            montoCell.textContent = orden.monto || '';
-            row.appendChild(montoCell);
+    // Crear la celda de estado con el switch
+    const estadoCell = document.createElement('td');
+    const estadoSwitch = document.createElement('div');
+    estadoSwitch.classList.add('alineado');
 
-            // Añadir la fila a la tabla
-            tableBody.appendChild(row);
-        });
+    const label = document.createElement('label');
+    label.classList.add('custom-switch', 'sino');
+    label.setAttribute('data-toggle', 'tooltip');
+    label.setAttribute('title', orden.estado ? 'Desactivar Orden' : 'Activar Orden');
+
+    const input = document.createElement('input');
+    input.type = 'checkbox';
+    input.classList.add('custom-switch-input', 'estado-switch3');
+    input.setAttribute('data-id', orden.id_orden_compra);
+    input.setAttribute('data-tipo', 'orden');
+    if (orden.estado) {
+        input.setAttribute('checked', 'checked');
+    }
+
+    const span = document.createElement('span');
+    span.classList.add('custom-switch-indicator');
+
+    label.appendChild(input);
+    label.appendChild(span);
+    estadoSwitch.appendChild(label);
+    estadoCell.appendChild(estadoSwitch);
+    row.appendChild(estadoCell);
+
+    // Añadir la fila a la tabla
+    tableBody.appendChild(row);
+});
     })
     .catch(error => {
         console.error('Error al obtener la Orden de Compra:', error);

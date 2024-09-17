@@ -356,6 +356,7 @@ include '../componentes/sidebar.php';
 
     </div>
 </div>
+<script src="../assets/js/toggleTema.js"></script>
 
 <?php include './modalUpdateCampania.php' ?>
 <?php include './modalUpdateFactura.php'; ?>

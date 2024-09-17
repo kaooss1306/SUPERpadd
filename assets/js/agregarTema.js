@@ -32,7 +32,8 @@ document.addEventListener('DOMContentLoaded', function() {
             id_medio: document.querySelector('select[name="id_medio"]').value || null,
             color: document.querySelector('input[name="color"]').value || null,
             cooperado: document.querySelector('select[name="cooperado"]').value || null,
-            rubro: document.querySelector('input[name="rubro"]').value || null
+            rubro: document.querySelector('input[name="rubro"]').value || null,
+            estado: "1"
             // Agrega aquí cualquier otro campo necesario para la tabla "Temas"
         };
         console.log(temaData,"dataa");
