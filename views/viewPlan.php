@@ -206,7 +206,7 @@ include '../componentes/sidebar.php';
       <nav aria-label="breadcrumb">
                       <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="<?php echo $ruta; ?>dashboard.php">Home</a></li>
-                        <li class="breadcrumb-item"><a href="<?php echo $ruta; ?>ListMedios.php">Ver Medios</a></li>
+                        <li class="breadcrumb-item"><a href="<?php echo $ruta; ?>ListMedios.php">Ver Plan</a></li>
                         <li class="breadcrumb-item active" aria-current="page"><?php echo $razonSocial; ?></li>
                       </ol>
                     </nav>
@@ -214,6 +214,23 @@ include '../componentes/sidebar.php';
           <div class="section-body">
             <div class="row mt-sm-4">
               <div class="col-12 col-md-12 col-lg-4">
+              <div class="card author-box">
+                        <div class="card-body">
+                            <div class="author-box-center">
+                                <div class="clearfix"></div>
+                                <div class="author-box-job">
+                                    Nombre Plan
+                                </div>
+                                <div class="nombrex author-box-name">
+
+                                    <?php echo $datosPlan['NombrePlan']; ?>
+                                </div>
+                                
+                              
+
+                            </div>
+                        </div>
+                    </div>
               <div class="card">
                   <div style="display: flex;
     justify-content: space-between;" class="card-header">
@@ -224,10 +241,7 @@ include '../componentes/sidebar.php';
                   </div>
                   <div class="card-body">
     <div class="py-4">
-                            <p class="clearfix">
-                                <span class="float-start">Nombre Plan</span>
-                                <span class="float-right text-muted "><?php echo $datosPlan['NombrePlan']; ?></span>
-                            </p>
+                      
                             <p class="clearfix">
                                 <span class="float-start">Razón Social</span>
                                 <span class="float-right text-muted "><?php echo $razonSocial; ?></span>
@@ -291,7 +305,7 @@ include '../componentes/sidebar.php';
                     <ul class="nav nav-tabs" id="myTab2" role="tablist">
                       <li class="nav-item">
                         <a class="nav-link active" id="home-tab2" data-bs-toggle="tab" href="#medio" role="tab"
-                          aria-selected="true">Información Medio</a>
+                          aria-selected="true">Información Calendario</a>
                       </li>
                        <li class="removido">
                        <button type="button" class="btn6" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -299,12 +313,12 @@ include '../componentes/sidebar.php';
                     </ul>
                     <div class="calendario">
         <div class="selectores">
-            <select id="mesSelector">
+            <select style="display:none;" id="mesSelector">
                 <?php foreach ($mesesMap as $id => $mes): ?>
                     <option value="<?php echo $id; ?>"><?php echo htmlspecialchars($mes['Nombre']); ?></option>
                 <?php endforeach; ?>
             </select>
-            <select id="anioSelector">
+            <select style="display:none;" id="anioSelector">
                 <?php foreach ($aniosMap as $id => $anio): ?>
                     <option value="<?php echo $id; ?>"><?php echo htmlspecialchars($anio['years']); ?></option>
                 <?php endforeach; ?>

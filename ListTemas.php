@@ -189,7 +189,7 @@ include 'componentes/sidebar.php';
                                     <label class="labelforms" for="id_medio">Medios</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                                <span class="input-group-text"><i class="bi bi-bullseye"></i></span>
                                             </div>
                                             <select class="form-control" name="id_medio">
                                                 <?php if (!empty($mediosMap)): ?>
@@ -206,7 +206,7 @@ include 'componentes/sidebar.php';
                                     <label class="labelforms" for="codigo">Nombre de Tema</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                            <span class="input-group-text"><i class="bi bi-tag"></i></span>
                                         </div>
                                         <input class="form-control" placeholder="Nombre de Tema" name="NombreTema">
                                     </div>
@@ -217,7 +217,7 @@ include 'componentes/sidebar.php';
                                     <label class="labelforms" for="codigo">Duración</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                            <span class="input-group-text"><i class="bi bi-calendar"></i></span>
                                         </div>
                                         <input class="form-control" placeholder="Duración" name="Duracion">
                                     </div>            
@@ -226,7 +226,7 @@ include 'componentes/sidebar.php';
                                     <label class="labelforms" for="codigo">Color</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                            <span class="input-group-text"><i class="bi bi-card-text"></i></span>
                                         </div>
                                         <input class="form-control" placeholder="Color" name="color">
                                     </div>            
@@ -235,7 +235,7 @@ include 'componentes/sidebar.php';
                                     <label class="labelforms" for="codigo">Codigo Megatime</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                            <span class="input-group-text"><i class="bi bi-broadcast"></i></span>
                                         </div>
                                         <input class="form-control" placeholder="Codigo Megatime" name="CodigoMegatime">
                                     </div>            
@@ -245,7 +245,7 @@ include 'componentes/sidebar.php';
                                     <label class="labelforms" for="calidad">Calidad</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                            <span class="input-group-text"><i class="bi bi-stars"></i></span>
                                         </div>
                                         <select class="form-control" name="id_Calidad">
                                             <?php if (!empty($calidadsMap)): ?>
@@ -266,7 +266,7 @@ include 'componentes/sidebar.php';
                                     <label class="labelforms" for="codigo">Cooperado</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                            <span class="input-group-text"><i class="bi bi-briefcase"></i></span>
                                         </div>
                                         <select class="form-control" name="cooperado">
                                             <option value="Sí">Sí</option>
@@ -279,7 +279,7 @@ include 'componentes/sidebar.php';
                                     <label class="labelforms" for="codigo">Rubro</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                            <span class="input-group-text"><i class="bi bi-bullseye"></i></span>
                                         </div>
                                         <input class="form-control" placeholder="Rubro" name="rubro">
                                     </div>             
