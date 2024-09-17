@@ -2,7 +2,7 @@
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
             <a href="dashboard"> 
-              <img alt="image" src="https://ubiquitous-sniffle-wr9pjrwwp7w5hgpqp-3000.app.github.dev/assets/img/logo-origen-O.png" class="header-logo" /><img class="logo-name2" alt="image" src="https://ubiquitous-sniffle-wr9pjrwwp7w5hgpqp-3000.app.github.dev/assets/img/logo-origen-O3.png"/></span>
+              <img alt="image" src="<?php echo $ruta; ?>assets/img/logo-origen-O.png" class="header-logo" /><img class="logo-name2" alt="image" src="<?php echo $ruta; ?>assets/img/logo-origen-O3.png"/></span>
             </a>
           </div>
         
