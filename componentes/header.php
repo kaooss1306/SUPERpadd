@@ -11,7 +11,7 @@ if (!isset($_SESSION['user']) || empty($_SESSION['user'])) {
 $nombre_usuario = $_SESSION['user']['Nombres'] ?? 'Usuario';
 $avatar_usuario = $_SESSION['user']['Avatar'] ?? 'Usuario';
 
-$ruta = 'https://jubilant-parakeet-v6g976xx9v6x3xqwp-3000.app.github.dev/';
+$ruta = 'https://super-duper-garbanzo-q7p7w6rxw4r4c66v6-3000.app.github.dev/';
 
 
  

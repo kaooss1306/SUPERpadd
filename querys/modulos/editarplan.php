@@ -124,6 +124,13 @@ include '../../componentes/sidebar.php';
         gap: 10px;
         margin-bottom: 20px;
     }
+    .is-invalid {
+    border-color: #dc3545;
+}
+
+.is-invalid ~ .invalid-feedback {
+    display: block;
+}
     #mesSelector, #anioSelector {
         flex: 1;
         padding: 10px;
@@ -232,7 +239,7 @@ include '../../componentes/sidebar.php';
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="bi bi-person"></i></span>
                                             </div>
-                                            <input class="form-control" type="text" value="<?php echo htmlspecialchars($nombreCliente); ?>" id="search-client" placeholder="Buscar cliente...">
+                                            <input class="form-control" type="text" value="<?php echo htmlspecialchars($nombreCliente); ?>" id="search-client" placeholder="Buscar cliente..." required>
                                             <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
                                             <input  type="hidden"  id="selected-client-id" value="<?php echo $id_cliente; ?>" name="selected-client-id" >
                                             <input type="hidden"  id="selected-calendar-id" value="<?php echo $plan['id_calendar']; ?>" name="selected-calendar-id" >
@@ -249,7 +256,7 @@ include '../../componentes/sidebar.php';
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="bi bi-person"></i></span>
                                         </div>
-                                        <input class="form-control" placeholder="Nombre de Plan" name="nombrePlan" value="<?php echo $plan['NombrePlan']; ?>">
+                                        <input class="form-control" placeholder="Nombre de Plan" name="nombrePlan" value="<?php echo $plan['NombrePlan']; ?>" required>
                                     </div>
                                     
                                 <div class="row">
@@ -260,7 +267,7 @@ include '../../componentes/sidebar.php';
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="bi bi-person"></i></span>
                                                 </div>
-                                                <input class="form-control" type="text" id="search-product" value="<?php echo htmlspecialchars($nombreProducto); ?>" placeholder="Buscar producto...">
+                                                <input class="form-control" type="text" id="search-product" value="<?php echo htmlspecialchars($nombreProducto); ?>" placeholder="Buscar producto..." required>
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
                                                 <input type="hidden"  id="selected-product-id" name="selected-product-id" value="<?php echo $plan['id_producto']; ?>" >
                                             </div>
@@ -275,7 +282,7 @@ include '../../componentes/sidebar.php';
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text"><i class="bi bi-file-earmark-text"></i></span>
                                                                 </div>
-                                                                <input class="form-control" type="text" id="search-contrato" value="<?php echo htmlspecialchars($nombreContrato); ?>" placeholder="Buscar contrato...">
+                                                                <input class="form-control" type="text" id="search-contrato" value="<?php echo htmlspecialchars($nombreContrato); ?>" placeholder="Buscar contrato..." required>
                                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
                                                                 <input  type="hidden"  id="selected-contrato-id" name="selected-contrato-id" value="<?php echo $plan['id_contrato']; ?>">
                                                                 <input  type="hidden"  id="selected-proveedor-id" name="selected-proveedor-id" value="<?php echo htmlspecialchars($id_ordenes_de_comprar4); ?>">
@@ -294,7 +301,7 @@ include '../../componentes/sidebar.php';
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="bi bi-person"></i></span>
                                                 </div>
-                                                <input class="form-control" type="text" id="search-soporte" value="<?php echo htmlspecialchars($nombreSoporte); ?>" placeholder="Buscar soporte...">
+                                                <input class="form-control" type="text" id="search-soporte" value="<?php echo htmlspecialchars($nombreSoporte); ?>" placeholder="Buscar soporte..." required>
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
                                                 <input  type="hidden"  id="selected-soporte-id" name="selected-soporte-id" value="<?php echo $plan['id_soporte']; ?>">
                                             </div>
@@ -313,7 +320,7 @@ include '../../componentes/sidebar.php';
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="bi bi-person"></i></span>
                                                 </div>
-                                                <input class="form-control" type="text" value="<?php echo htmlspecialchars($nombreCampania); ?>" id="search-campania" placeholder="Buscar campaña...">
+                                                <input class="form-control" type="text" value="<?php echo htmlspecialchars($nombreCampania); ?>" id="search-campania" placeholder="Buscar campaña..." required>
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
                                                 <input  type="hidden"  id="selected-campania-id" name="selected-campania-id" value="<?php echo $plan['id_campania']; ?>">
                                             </div>
@@ -327,7 +334,7 @@ include '../../componentes/sidebar.php';
         <div class="input-group-prepend">
             <span class="input-group-text"><i class="bi bi-file-earmark-text"></i></span>
         </div>
-        <input class="form-control" type="text" id="search-orden" value="<?php echo htmlspecialchars($nombreOrdenx); ?>" placeholder="Buscar Orden...">
+        <input class="form-control" type="text" id="search-orden" value="<?php echo htmlspecialchars($nombreOrdenx); ?>" placeholder="Buscar Orden..." required>
         <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
         <input  type="hidden"  id="selected-orden-id" name="selected-orden-id" value="<?php echo htmlspecialchars($id_ordenes_de_comprar7); ?>">
     </div>
@@ -341,7 +348,7 @@ include '../../componentes/sidebar.php';
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="bi bi-person"></i></span>
                                                 </div>
-                                                <input class="form-control" type="text" id="search-temas" value="<?php echo htmlspecialchars($nombreTema); ?>" placeholder="Buscar temas...">
+                                                <input class="form-control" type="text" id="search-temas" value="<?php echo htmlspecialchars($nombreTema); ?>" placeholder="Buscar temas..." required>
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
                                                 <input  type="hidden"  id="selected-temas-id" name="selected-temas-id" value="<?php echo $plan['id_temas']; ?>">
                                                 <input  type="hidden" id="selected-temas-codigo" name="selected-temas-codigo" value="<?php echo htmlspecialchars($id_ordenes_de_comprar5); ?>">
@@ -357,7 +364,7 @@ include '../../componentes/sidebar.php';
                                             <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="bi bi-person"></i></span>
                                                 </div>
-                                                <select id="forma-facturacion" name="forma-facturacion" class="form-control">
+                                                <select id="forma-facturacion" name="forma-facturacion" class="form-control" required>
     <option value="" disabled <?php echo ($selectedFrFactura === '') ? 'selected' : ''; ?>>Selecciona una opción</option>
     <option value="afecta" <?php echo ($selectedFrFactura === 'afecta') ? 'selected' : ''; ?>>Afecta</option>
     <option value="exenta" <?php echo ($selectedFrFactura === 'exenta') ? 'selected' : ''; ?>>Exenta</option>
@@ -407,6 +414,38 @@ include '../../componentes/sidebar.php';
 
 
 <script>
+    function validateForm() {
+    var form = document.getElementById('formularioPlan');
+    var valid = true;
+
+    // Validar campos requeridos
+    var requiredFields = form.querySelectorAll('[required]');
+    requiredFields.forEach(function(field) {
+        if (!field.value.trim()) {
+            valid = false;
+            field.classList.add('is-invalid');
+        } else {
+            field.classList.remove('is-invalid');
+        }
+    });
+
+    // Habilitar o deshabilitar el botón de envío
+    var submitButton = document.getElementById('submitButton');
+    submitButton.disabled = !valid;
+
+    return valid; // Asegúrate de devolver el valor booleano
+}
+
+// Escuchar eventos de entrada y cambio para validar el formulario
+document.getElementById('formularioPlan').addEventListener('input', validateForm);
+document.getElementById('formularioPlan').addEventListener('change', validateForm);
+
+// Validar el formulario cuando se intente enviar
+document.getElementById('formularioPlan').addEventListener('submit', function(event) {
+    if (!validateForm()) {
+        event.preventDefault();  // Evita el envío si el formulario no es válido
+    }
+});
 // Asignar clientes desde PHP al script
 const clientes = <?php echo json_encode($clientesMap); ?>;
 
@@ -1281,7 +1320,11 @@ const id_planes_publicidad = <?php echo json_encode($id_planes_publicidad); ?>;
 console.log(id_planes_publicidad,"asdad" );
 console.log(id_calendar,"asdad2" );
 function enviarDatos() {
+
+ 
     const datos = recopilarDatos();  // Asegúrate de que recopilarDatos() devuelva los datos correctos para la tabla "json"
+
+
 
     // Usa el id_planes_publicidad ya existente
     const id_planes_publicidad = document.getElementById('selected-plan-id').value;

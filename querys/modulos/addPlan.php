@@ -300,16 +300,19 @@ border:1px solid #ff0000;
                     <div >
     <div class="calendario">
         <div class="selectores">
-            <select id="mesSelector" >
-                <?php foreach ($mesesMap as $id => $mes): ?>
-                    <option value="<?php echo $id; ?>"><?php echo htmlspecialchars($mes['Nombre']); ?></option>
-                <?php endforeach; ?>
-            </select>
-            <select id="anioSelector" >
-                <?php foreach ($aniosMap as $id => $anio): ?>
-                    <option value="<?php echo $id; ?>"><?php echo htmlspecialchars($anio['years']); ?></option>
-                <?php endforeach; ?>
-            </select>
+        <select id="mesSelector" required>
+    <option value="" disabled selected>Selecciona un mes</option>
+    <?php foreach ($mesesMap as $id => $mes): ?>
+        <option value="<?php echo $id; ?>"><?php echo htmlspecialchars($mes['Nombre']); ?></option>
+    <?php endforeach; ?>
+</select>
+
+<select id="anioSelector" required>
+    <option value="" disabled selected>Selecciona un año</option>
+    <?php foreach ($aniosMap as $id => $anio): ?>
+        <option value="<?php echo $id; ?>"><?php echo htmlspecialchars($anio['years']); ?></option>
+    <?php endforeach; ?>
+</select>
         </div>
         <div id="diasContainer" class="dias"></div>
         
@@ -344,11 +347,13 @@ function validateForm() {
     // Habilitar o deshabilitar el botón de envío
     var submitButton = document.getElementById('submitButton');
     submitButton.disabled = !valid;
+
+    return valid; // Asegúrate de devolver el valor booleano
 }
 
 // Escuchar eventos de entrada y cambio para validar el formulario
-document.addEventListener('input', validateForm);
-document.addEventListener('change', validateForm);
+document.getElementById('formularioPlan').addEventListener('input', validateForm);
+document.getElementById('formularioPlan').addEventListener('change', validateForm);
 
 // Validar el formulario cuando se intente enviar
 document.getElementById('formularioPlan').addEventListener('submit', function(event) {
@@ -1233,9 +1238,24 @@ document.addEventListener('DOMContentLoaded', function() {
             icon: 'error',
             confirmButtonText: 'OK'
         });
+        event.preventDefault(); // Evita el envío si `matrizCalendario` está vacío
         return; // Salir de la función si el formulario no es válido
     }
+ 
     const datos = recopilarDatos();  // Asegúrate de que recopilarDatos() devuelva los datos correctos para la tabla "json"
+
+// Verifica si `matrizCalendario` está vacío
+if (!datos || !datos.matrizCalendario || (Array.isArray(datos.matrizCalendario) && datos.matrizCalendario.length === 0)) {
+    Swal.fire({
+        title: 'Advertencia',
+        text: 'La matriz de calendario está vacía. Por favor, asegúrate de agregar datos a la matriz.',
+        icon: 'warning',
+        confirmButtonText: 'OK'
+    });
+    event.preventDefault(); // Evita el envío si `matrizCalendario` está vacío
+    return; // Salir de la función si `matrizCalendario` está vacío
+}
+
     console.log('Datos a enviar:', JSON.stringify(datos));
 
     fetch('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/json', {
