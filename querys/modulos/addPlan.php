@@ -53,6 +53,10 @@ include '../../componentes/sidebar.php';
         padding: 10px;
         text-align: center;
     }
+    ::marker {
+    color: red;
+}
+    .product-item{text-align:left !important;}
     .dia input {
         width: 100%;
         padding: 5px;
@@ -199,8 +203,7 @@ border:1px solid #ff0000;
                                                                 <input type="hidden"  id="selected-contrato-id" name="selected-contrato-id">
                                                                 <input type="hidden"  id="selected-proveedor-id" name="selected-proveedor-id">
                                                                 <input type="hidden"  id="selected-num-contrato" name="selected-num-contrato">
-                                                                <input type="hidden" id="selected-agencia-id" name="selected-agencia-id">
-                                                            </div>
+                                                                                                            </div>
                                                             <ul id="contrato-list" class="client-dropdown">
                                                                 <!-- Aquí se mostrarán las opciones filtradas -->
                                                             </ul>
@@ -236,6 +239,7 @@ border:1px solid #ff0000;
         <input class="form-control" type="text" id="search-campania" placeholder="Buscar campaña..." required>
         <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
         <input type="hidden" id="selected-campania-id" name="selected-campania-id">
+        <input type="hidden" id="selected-campania-agencia" name="selected-campania-agencia">
     </div>
     <ul id="campania-list" class="client-dropdown">
         <!-- Aquí se mostrarán las opciones filtradas -->
@@ -675,7 +679,6 @@ function selectContract(contrato) {
     document.getElementById("selected-contrato-id").value = contrato.id;
     document.getElementById("selected-proveedor-id").value = contrato.idProveedor;
     document.getElementById("selected-num-contrato").value = contrato.num_contrato;
-    document.getElementById("selected-agencia-id").value = contrato.IdAgencias;
 
     // Limpiar la lista de opciones una vez seleccionado
     document.getElementById("contrato-list").style.display = "none";
@@ -706,7 +709,6 @@ function clearSearchContrato() {
     document.getElementById("selected-contrato-id").value = '';
     document.getElementById("selected-proveedor-id").value = '';
     document.getElementById("selected-num-contrato").value = '';
-    document.getElementById("selected-agencia-id").value = '';
     document.getElementById("contrato-list").style.display = "none";
     document.querySelector(".clear-btn").style.display = 'none';
 }
@@ -818,6 +820,7 @@ function filterCampaigns() {
     const clientId = document.getElementById("selected-client-id").value;
     const campaniaList = document.getElementById("campania-list");
 
+
     // Limpiar la lista antes de mostrar resultados
     campaniaList.innerHTML = '';
 
@@ -851,7 +854,7 @@ function filterCampaigns() {
 function selectCampaign(campaign) {
     document.getElementById("search-campania").value = campaign.nombreCampania;
     document.getElementById("selected-campania-id").value = campaign.id;
-
+    document.getElementById("selected-campania-agencia").value = campaign.IdAgencias; 
     // Limpiar la lista de opciones una vez seleccionado
     document.getElementById("campania-list").style.display = "none";
 }
@@ -1328,17 +1331,17 @@ if (!datos || !datos.matrizCalendario || (Array.isArray(datos.matrizCalendario) 
         // Ahora, realiza la tercera inserción en la tabla "OrdenesDePublicidad"
         const datosOrden = { 
             
-            id_cliente: document.getElementById('selected-client-id').value,
-            num_contrato: document.getElementById('selected-contrato-id').value,
-            id_proveedor: document.getElementById('selected-proveedor-id').value,
-            id_soporte: document.getElementById('selected-soporte-id').value,
-            id_tema: document.getElementById('selected-temas-id').value,
-            id_plan: id_planes_publicidad,
-            id_calendar: id_calendar,
-            Megatime: document.getElementById('selected-temas-codigo').value,
-            id_agencia: document.getElementById('selected-agencia-id').value,
-            id_clasificacion: document.getElementById('selected-id-clasificacion').value === "" ? null : document.getElementById('selected-id-clasificacion').value,
-            numero_orden: document.getElementById('selected-orden-id').value,
+            id_cliente: document.getElementById('selected-client-id').value ?? null,
+    num_contrato: document.getElementById('selected-contrato-id').value ?? null,
+    id_proveedor: document.getElementById('selected-proveedor-id').value ?? null,
+    id_soporte: document.getElementById('selected-soporte-id').value ?? null,
+    id_tema: document.getElementById('selected-temas-id').value ?? null,
+    id_plan: id_planes_publicidad,
+    id_calendar: id_calendar,
+    Megatime: document.getElementById('selected-temas-codigo').value ?? null,
+    id_agencia: document.getElementById('selected-campania-agencia').value ?? null,
+    id_clasificacion: document.getElementById('selected-id-clasificacion').value || null,
+    numero_orden: document.getElementById('selected-orden-id').value ?? null,
             estado: '1'
             
            
@@ -1374,6 +1377,7 @@ if (!datos || !datos.matrizCalendario || (Array.isArray(datos.matrizCalendario) 
             confirmButtonText: 'OK'
         }).then((result) => {
             if (result.isConfirmed) {
+                showLoading()
                 window.location.href = '/ListPlanes.php';
             }
         });

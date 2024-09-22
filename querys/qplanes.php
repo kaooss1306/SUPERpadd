@@ -105,8 +105,7 @@ foreach ($contratos as $contrato) {
         'nombreContrato' => $contrato['NombreContrato'],
         'idCliente' => $contrato['IdCliente'],
         'idProveedor' => $contrato['IdProveedor'], // Se asegura que el IdProveedor esté aquí
-        'num_contrato' => $contrato['num_contrato'],
-        'IdAgencias' => $contrato['IdAgencias']
+        'num_contrato' => $contrato['num_contrato']
     ];
 }   
 $clientesMap = [];
@@ -131,12 +130,13 @@ foreach ($productos as $producto) {
 $campaignsMap = [];
 foreach ($campaigns as $campaign) {
     if ($campaign['estado'] === true) {
-    $campaignsMap[] = [
-        'id' => $campaign['id_campania'],
-        'nombreCampania' => $campaign['NombreCampania'],
-        'idCliente' => $campaign['id_Cliente']
-    ];
-}
+        $campaignsMap[] = [
+            'id' => $campaign['id_campania'],
+            'nombreCampania' => $campaign['NombreCampania'],
+            'idCliente' => $campaign['id_Cliente'],
+            'IdAgencias' => $campaign['Id_Agencia'] // Asegúrate de que el valor sea correcto
+        ];
+    }
 }
 $productosMap2 = [];
 foreach ($productos as $producto) {
