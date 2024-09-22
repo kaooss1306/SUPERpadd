@@ -53,6 +53,10 @@ include '../../componentes/sidebar.php';
         padding: 10px;
         text-align: center;
     }
+    ::marker {
+    color: red;
+}
+    .product-item{text-align:left !important;}
     .dia input {
         width: 100%;
         padding: 5px;
@@ -79,6 +83,13 @@ include '../../componentes/sidebar.php';
 .custom-select-container {
     position: relative;
     width: 100%;
+}
+.is-invalid {
+    border-color: #dc3545;
+}
+
+.is-invalid ~ .invalid-feedback {
+    display: block;
 }
 
 .client-dropdown {
@@ -144,8 +155,11 @@ border:1px solid #ff0000;
         <div class="input-group-prepend">
             <span class="input-group-text"><i class="bi bi-person"></i></span>
         </div>
-        <input class="form-control" type="text" id="search-client" placeholder="Buscar cliente..." oninput="filterClients()">
+        <input class="form-control" type="text" id="search-client" placeholder="Buscar cliente..." oninput="filterClients()" required>
         <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
+        <div class="invalid-feedback">
+    Por favor, seleccione un cliente.
+</div>
         <input type="hidden" id="selected-client-id" name="selected-client-id">
     </div>
     <ul id="client-list" class="client-dropdown">
@@ -158,7 +172,7 @@ border:1px solid #ff0000;
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="bi bi-tag"></i></span>
                                         </div>
-                                        <input class="form-control" placeholder="Nombre de Plan" name="nombrePlan">
+                                        <input class="form-control" placeholder="Nombre de Plan" name="nombrePlan" required>
                                     </div>
 
                                 <div class="row">
@@ -169,7 +183,7 @@ border:1px solid #ff0000;
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="bi bi-box"></i></span>
                                                 </div>
-                                                <input class="form-control" type="text" id="search-product" placeholder="Buscar producto...">
+                                                <input class="form-control" type="text" id="search-product" placeholder="Buscar producto..." required>
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
                                                 <input type="hidden" id="selected-product-id" name="selected-product-id">
                                             </div>
@@ -184,13 +198,12 @@ border:1px solid #ff0000;
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text"><i class="bi bi-file-earmark-text"></i></span>
                                                                 </div>
-                                                                <input class="form-control" type="text" id="search-contrato" placeholder="Buscar contrato...">
+                                                                <input class="form-control" type="text" id="search-contrato" placeholder="Buscar contrato..." required>
                                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
                                                                 <input type="hidden"  id="selected-contrato-id" name="selected-contrato-id">
                                                                 <input type="hidden"  id="selected-proveedor-id" name="selected-proveedor-id">
                                                                 <input type="hidden"  id="selected-num-contrato" name="selected-num-contrato">
-                                                                <input type="hidden" id="selected-agencia-id" name="selected-agencia-id">
-                                                            </div>
+                                                                                                            </div>
                                                             <ul id="contrato-list" class="client-dropdown">
                                                                 <!-- Aquí se mostrarán las opciones filtradas -->
                                                             </ul>
@@ -203,7 +216,7 @@ border:1px solid #ff0000;
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="bi bi-briefcase"></i></span>
                                                 </div>
-                                                <input class="form-control" type="text" id="search-soporte" placeholder="Buscar soporte...">
+                                                <input class="form-control" type="text" id="search-soporte" placeholder="Buscar soporte..." required>
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
                                                 <input type="hidden" id="selected-soporte-id" name="selected-soporte-id" value="">
                                             </div>
@@ -223,9 +236,10 @@ border:1px solid #ff0000;
         <div class="input-group-prepend">
             <span class="input-group-text"><i class="bi bi-bullseye"></i></span>
         </div>
-        <input class="form-control" type="text" id="search-campania" placeholder="Buscar campaña...">
+        <input class="form-control" type="text" id="search-campania" placeholder="Buscar campaña..." required>
         <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
         <input type="hidden" id="selected-campania-id" name="selected-campania-id">
+        <input type="hidden" id="selected-campania-agencia" name="selected-campania-agencia">
     </div>
     <ul id="campania-list" class="client-dropdown">
         <!-- Aquí se mostrarán las opciones filtradas -->
@@ -237,7 +251,7 @@ border:1px solid #ff0000;
         <div class="input-group-prepend">
             <span class="input-group-text"><i class="bi bi-file-earmark-text"></i></span>
         </div>
-        <input class="form-control" type="text" id="search-orden" placeholder="Buscar Orden...">
+        <input class="form-control" type="text" id="search-orden" placeholder="Buscar Orden..." required>
         <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
         <input  type="hidden"  id="selected-orden-id" name="selected-orden-id">
     </div>
@@ -251,9 +265,9 @@ border:1px solid #ff0000;
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="bi bi-stars"></i></span>
                                                 </div>
-                                                <input class="form-control" type="text" id="search-temas" placeholder="Buscar temas...">
+                                                <input class="form-control" type="text" id="search-temas" placeholder="Buscar temas..." required>
                                                 <button type="button" class="clear-btn" style="display:none;" onclick="clearSearch()">x</button>
-                                                <input type="hidden" id="selected-temas-id" name="selected-temas-id">
+                                                <input type="hidden" id="selected-temas-id" name="selected-temas-id" requerid>
                                                 <input  type="hidden" id="selected-temas-codigo" name="selected-temas-codigo">
                                                 <input type="hidden" id="selected-id-medio" name="selected-id-medio">
                                                 <input type="hidden"  id="selected-id-clasificacion" name="selected-id-clasificacion">
@@ -268,7 +282,7 @@ border:1px solid #ff0000;
                                             <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="bi bi-person"></i></span>
                                                 </div>
-                                            <select id="forma-facturacion" name="forma-facturacion" class="form-control">
+                                            <select id="forma-facturacion" name="forma-facturacion" class="form-control" required>
                                                 <option value="" disabled selected>Selecciona una opción</option>
                                                 <option value="afecta">Afecta</option>
                                                 <option value="exenta">Exenta</option>
@@ -290,16 +304,19 @@ border:1px solid #ff0000;
                     <div >
     <div class="calendario">
         <div class="selectores">
-            <select id="mesSelector">
-                <?php foreach ($mesesMap as $id => $mes): ?>
-                    <option value="<?php echo $id; ?>"><?php echo htmlspecialchars($mes['Nombre']); ?></option>
-                <?php endforeach; ?>
-            </select>
-            <select id="anioSelector">
-                <?php foreach ($aniosMap as $id => $anio): ?>
-                    <option value="<?php echo $id; ?>"><?php echo htmlspecialchars($anio['years']); ?></option>
-                <?php endforeach; ?>
-            </select>
+        <select id="mesSelector" required>
+    <option value="" disabled selected>Selecciona un mes</option>
+    <?php foreach ($mesesMap as $id => $mes): ?>
+        <option value="<?php echo $id; ?>"><?php echo htmlspecialchars($mes['Nombre']); ?></option>
+    <?php endforeach; ?>
+</select>
+
+<select id="anioSelector" required>
+    <option value="" disabled selected>Selecciona un año</option>
+    <?php foreach ($aniosMap as $id => $anio): ?>
+        <option value="<?php echo $id; ?>"><?php echo htmlspecialchars($anio['years']); ?></option>
+    <?php endforeach; ?>
+</select>
         </div>
         <div id="diasContainer" class="dias"></div>
         
@@ -316,45 +333,79 @@ border:1px solid #ff0000;
     </section>
 </div>
 <script>
-    // Función para hacer la solicitud al endpoint y obtener el Id_Clasificacion
-    function fetchIdClasificacion(id_medio) {
-        const url = `https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Medios?id_medio=eq.${id_medio}&select=*`;
+function validateForm() {
+    var form = document.getElementById('formularioPlan');
+    var valid = true;
 
-        return fetch(url, {
-            headers: {
-                'Content-Type': 'application/json',
-            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.length > 0) {
-                return data[0].Id_Clasificacion;
-            } else {
-                console.error('No se encontró el id_medio.');
-                return null;
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            return null;
-        });
-    }
-
-    // Escucha el cambio en el input 'selected-id-medio'
-    document.getElementById('selected-id-medio').addEventListener('change', async function() {
-        const id_medio = this.value;
-        if (id_medio) {
-            const id_clasificacion = await fetchIdClasificacion(id_medio);
-            if (id_clasificacion !== null) {
-                document.getElementById('selected-id-clasificacion').value = id_clasificacion;
-            }
+    // Validar campos requeridos
+    var requiredFields = form.querySelectorAll('[required]');
+    requiredFields.forEach(function(field) {
+        if (!field.value.trim()) {
+            valid = false;
+            field.classList.add('is-invalid');
+        } else {
+            field.classList.remove('is-invalid');
         }
     });
+
+    // Habilitar o deshabilitar el botón de envío
+    var submitButton = document.getElementById('submitButton');
+    submitButton.disabled = !valid;
+
+    return valid; // Asegúrate de devolver el valor booleano
+}
+
+// Escuchar eventos de entrada y cambio para validar el formulario
+document.getElementById('formularioPlan').addEventListener('input', validateForm);
+document.getElementById('formularioPlan').addEventListener('change', validateForm);
+
+// Validar el formulario cuando se intente enviar
+document.getElementById('formularioPlan').addEventListener('submit', function(event) {
+    if (!validateForm()) {
+        event.preventDefault();  // Evita el envío si el formulario no es válido
+    }
+});
 </script>
 
 <script>
+
+function validateDynamicField(fieldId) {
+    var field = document.getElementById(fieldId);
+    if (!field.value.trim()) {
+        field.classList.add('is-invalid');
+        return false;
+    } else {
+        field.classList.remove('is-invalid');
+        return true;
+    }
+}
+
+document.getElementById('formularioPlan').addEventListener('submit', function(event) {
+    var valid = true;
+
+    // Validar campos estáticos con required
+    var requiredFields = document.querySelectorAll('[required]');
+    requiredFields.forEach(function(field) {
+        if (!field.value.trim()) {
+            valid = false;
+            field.classList.add('is-invalid');
+        } else {
+            field.classList.remove('is-invalid');
+        }
+    });
+
+    // Validar campos dinámicos (ejemplo de validación adicional)
+    valid = valid && validateDynamicField('selected-client-id');
+    valid = valid && validateDynamicField('selected-product-id');
+
+    if (!valid) {
+        event.preventDefault();
+        alert('Por favor, complete todos los campos obligatorios.');
+    }
+});
+
+
+
 // Asignar clientes desde PHP al script
 const clientes = <?php echo json_encode($clientesMap); ?>;
 
@@ -628,7 +679,6 @@ function selectContract(contrato) {
     document.getElementById("selected-contrato-id").value = contrato.id;
     document.getElementById("selected-proveedor-id").value = contrato.idProveedor;
     document.getElementById("selected-num-contrato").value = contrato.num_contrato;
-    document.getElementById("selected-agencia-id").value = contrato.IdAgencias;
 
     // Limpiar la lista de opciones una vez seleccionado
     document.getElementById("contrato-list").style.display = "none";
@@ -659,7 +709,6 @@ function clearSearchContrato() {
     document.getElementById("selected-contrato-id").value = '';
     document.getElementById("selected-proveedor-id").value = '';
     document.getElementById("selected-num-contrato").value = '';
-    document.getElementById("selected-agencia-id").value = '';
     document.getElementById("contrato-list").style.display = "none";
     document.querySelector(".clear-btn").style.display = 'none';
 }
@@ -771,6 +820,7 @@ function filterCampaigns() {
     const clientId = document.getElementById("selected-client-id").value;
     const campaniaList = document.getElementById("campania-list");
 
+
     // Limpiar la lista antes de mostrar resultados
     campaniaList.innerHTML = '';
 
@@ -804,7 +854,7 @@ function filterCampaigns() {
 function selectCampaign(campaign) {
     document.getElementById("search-campania").value = campaign.nombreCampania;
     document.getElementById("selected-campania-id").value = campaign.id;
-
+    document.getElementById("selected-campania-agencia").value = campaign.IdAgencias; 
     // Limpiar la lista de opciones una vez seleccionado
     document.getElementById("campania-list").style.display = "none";
 }
@@ -1182,7 +1232,33 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     function enviarDatos() {
+
+           // Primero, valida el formulario
+    if (!validateForm()) {
+        Swal.fire({
+            title: 'Error',
+            text: 'Por favor, completa todos los campos requeridos.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
+        event.preventDefault(); // Evita el envío si `matrizCalendario` está vacío
+        return; // Salir de la función si el formulario no es válido
+    }
+ 
     const datos = recopilarDatos();  // Asegúrate de que recopilarDatos() devuelva los datos correctos para la tabla "json"
+
+// Verifica si `matrizCalendario` está vacío
+if (!datos || !datos.matrizCalendario || (Array.isArray(datos.matrizCalendario) && datos.matrizCalendario.length === 0)) {
+    Swal.fire({
+        title: 'Advertencia',
+        text: 'La matriz de calendario está vacía. Por favor, asegúrate de agregar datos a la matriz.',
+        icon: 'warning',
+        confirmButtonText: 'OK'
+    });
+    event.preventDefault(); // Evita el envío si `matrizCalendario` está vacío
+    return; // Salir de la función si `matrizCalendario` está vacío
+}
+
     console.log('Datos a enviar:', JSON.stringify(datos));
 
     fetch('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/json', {
@@ -1255,17 +1331,17 @@ document.addEventListener('DOMContentLoaded', function() {
         // Ahora, realiza la tercera inserción en la tabla "OrdenesDePublicidad"
         const datosOrden = { 
             
-            id_cliente: document.getElementById('selected-client-id').value,
-            num_contrato: document.getElementById('selected-contrato-id').value,
-            id_proveedor: document.getElementById('selected-proveedor-id').value,
-            id_soporte: document.getElementById('selected-soporte-id').value,
-            id_tema: document.getElementById('selected-temas-id').value,
-            id_plan: id_planes_publicidad,
-            id_calendar: id_calendar,
-            Megatime: document.getElementById('selected-temas-codigo').value,
-            id_agencia: document.getElementById('selected-agencia-id').value,
-            id_clasificacion: document.getElementById('selected-id-clasificacion').value === "" ? null : document.getElementById('selected-id-clasificacion').value,
-            numero_orden: document.getElementById('selected-orden-id').value,
+            id_cliente: document.getElementById('selected-client-id').value ?? null,
+    num_contrato: document.getElementById('selected-contrato-id').value ?? null,
+    id_proveedor: document.getElementById('selected-proveedor-id').value ?? null,
+    id_soporte: document.getElementById('selected-soporte-id').value ?? null,
+    id_tema: document.getElementById('selected-temas-id').value ?? null,
+    id_plan: id_planes_publicidad,
+    id_calendar: id_calendar,
+    Megatime: document.getElementById('selected-temas-codigo').value ?? null,
+    id_agencia: document.getElementById('selected-campania-agencia').value ?? null,
+    id_clasificacion: document.getElementById('selected-id-clasificacion').value || null,
+    numero_orden: document.getElementById('selected-orden-id').value ?? null,
             estado: '1'
             
            
@@ -1301,6 +1377,7 @@ document.addEventListener('DOMContentLoaded', function() {
             confirmButtonText: 'OK'
         }).then((result) => {
             if (result.isConfirmed) {
+                showLoading()
                 window.location.href = '/ListPlanes.php';
             }
         });
