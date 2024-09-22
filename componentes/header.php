@@ -11,7 +11,7 @@ if (!isset($_SESSION['user']) || empty($_SESSION['user'])) {
 $nombre_usuario = $_SESSION['user']['Nombres'] ?? 'Usuario';
 $avatar_usuario = $_SESSION['user']['Avatar'] ?? 'Usuario';
 
-$ruta = 'https://jubilant-parakeet-v6g976xx9v6x3xqwp-3000.app.github.dev/';
+$ruta = 'https://super-duper-space-xylophone-7vr64vgg67wqcr6w7-3000.app.github.dev/';
 
 
  
@@ -76,11 +76,11 @@ $current_file = basename($_SERVER['PHP_SELF']);
         <ul class="navbar-nav navbar-right duo">
    Bienvenid@ - <?php echo htmlspecialchars($nombre_usuario); ?>
           <li class="dropdown"><a href="#" data-bs-toggle="dropdown"
-              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="../assets/img/avatar.png"
+              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="<?php echo $avatar_usuario ? $avatar_usuario : $ruta . 'assets/img/avatar.png'; ?>"
                 class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
             <div class="dropdown-menu dropdown-menu-right pullDown">
               
-              <a href="profile.html" class="dropdown-item has-icon"> <i class="fa-solid fa-user-tag"></i> Mi Perfíl
+              <a href="perfil.php" class="dropdown-item has-icon"> <i class="fa-solid fa-user-tag"></i> Mi Perfíl
               </a><a href="" class="dropdown-item has-icon"> <i class="fas fa-copy"></i>
                 Publicar Mensajes
               </a>

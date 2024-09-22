@@ -45,14 +45,14 @@
             <li class="dropdown">
               <a href="#" class="menu-toggle nav-link has-dropdown fondo"><i data-feather="user-check"></i><span>Usuarios</span></a>
               <ul class="dropdown-menu">
-                <li><a class="nav-link" href="alert.html">Listado de Usuarios</a></li>
+                <li><a class="nav-link" href="ListUsuarios.php">Listado de Usuarios</a></li>
               </ul>
             </li>
             <li class="dropdown">
               <a href="#" class="menu-toggle nav-link has-dropdown fondo"><i
                   data-feather="image"></i><span>Mi Perfíl</span></a>
               <ul class="dropdown-menu">
-                <li><a class="nav-link" href="avatar.html">Mis Datos</a></li>
+                <li><a class="nav-link" href="perfil.php">Mis Datos</a></li>
               </ul>
             </li>
           </ul>
