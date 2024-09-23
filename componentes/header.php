@@ -1,29 +1,42 @@
 <?php
 //session_start();
 error_reporting(E_ALL);
-ini_set('display_errors', 1);
+ini_set("display_errors", 1);
 
 // Verificar si el usuario ha iniciado sesión
-if (!isset($_SESSION['user']) || empty($_SESSION['user'])) {
+if (!isset($_SESSION["user"]) || empty($_SESSION["user"])) {
     header("Location: index.php");
     exit();
 }
-$nombre_usuario = $_SESSION['user']['Nombres'] ?? 'Usuario';
-$avatar_usuario = $_SESSION['user']['Avatar'] ?? 'Usuario';
+$nombre_usuario = $_SESSION["user"]["Nombres"] ?? "Usuario";
+$avatar_usuario = $_SESSION["user"]["Avatar"] ?? "Usuario";
+$iduser = $_SESSION["user"]["id_usuario"] ?? "Usuario";
 
-$ruta = 'https://super-duper-space-xylophone-7vr64vgg67wqcr6w7-3000.app.github.dev/';
+$ruta = "https://effective-acorn-95rwg54xrjp37j9x-3000.app.github.dev/";
 
+// Definir la ruta base para los avatares en Supabase
+$ruta_supabase =
+    "https://ekyjxzjwhxotpdfzcpfq.supabase.co/storage/v1/imagenes/";
 
- 
-$avatar_defecto = $ruta . 'assets/img/avatar.png';
-$current_file = basename($_SERVER['PHP_SELF']);
+$avatar_defecto = $ruta . "assets/img/avatar.png";
 
+// Construir la ruta completa del avatar
+if (!empty($avatar_usuario)) {
+    // Verificar si el avatar_usuario ya contiene la URL completa
+    if (strpos($avatar_usuario, "https://") === 0) {
+        $avatar_completo = $avatar_usuario;
+    } else {
+        $avatar_completo = $ruta_supabase . $avatar_usuario;
+    }
+} else {
+    $avatar_completo = $avatar_defecto;
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
-  
+
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
   <title>PADD - Origen Medios</title>
@@ -34,7 +47,7 @@ $current_file = basename($_SERVER['PHP_SELF']);
   <link rel="stylesheet" href="<?php echo $ruta; ?>assets/css/formulario.css">
   <link rel="stylesheet" href="<?php echo $ruta; ?>assets/bundles/bootstrap/css/bootstrap.min.css">
 
-  
+
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/fontawesome.min.css">
@@ -48,7 +61,7 @@ $current_file = basename($_SERVER['PHP_SELF']);
 
 
   <link rel="stylesheet" href="<?php echo $ruta; ?>assets/css/custom.css">
- 
+
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
   <link rel="stylesheet" href="<?php echo $ruta; ?>assets/bundles/datatables/datatables.min.css">
   <link rel="stylesheet" href="<?php echo $ruta; ?>assets/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
@@ -76,11 +89,14 @@ $current_file = basename($_SERVER['PHP_SELF']);
         <ul class="navbar-nav navbar-right duo">
    Bienvenid@ - <?php echo htmlspecialchars($nombre_usuario); ?>
           <li class="dropdown"><a href="#" data-bs-toggle="dropdown"
-              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="../assets/img/avatar.png"
+              class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+                  <img alt="image" src="<?php echo htmlspecialchars(
+                      $avatar_completo
+                  ); ?>"
                 class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
             <div class="dropdown-menu dropdown-menu-right pullDown">
-              
-              <a href="perfil.php" class="dropdown-item has-icon"> <i class="fa-solid fa-user-tag"></i> Mi Perfíl
+
+              <a href="profile.html" class="dropdown-item has-icon"> <i class="fa-solid fa-user-tag"></i> Mi Perfíl
               </a><a href="" class="dropdown-item has-icon"> <i class="fas fa-copy"></i>
                 Publicar Mensajes
               </a>

@@ -10,33 +10,19 @@
                     <div class="row">
                         <!-- Columna única -->
                         <div class="col-md-12 mb-3">
-                            <!-- ID Usuario (campo de selección o autogenerado) -->
-                            <label class="form-label" for="Usuario">Usuario</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-person"></i></span>
-                                <select class="form-control" id="Usuario" name="Usuario" required>
-                                    <?php foreach ($usuarioMap as $id => $user) : ?>
-                                        <option value="<?php echo $id; ?>"><?php echo $user['Nombres']; ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
+                        <input type="hidden" id="Usuario" name="Usuario" value="<?php echo $iduser; ?>">
+
 
                             <!-- Mensaje -->
                             <label class="form-label" for="Mensaje">Mensaje</label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text"><i class="bi bi-chat-dots"></i></span>
-                                <textarea class="form-control" id="Mensaje" name="Mensaje" placeholder="Escribe tu mensaje aquí..." required></textarea>
+                                <textarea class="form-control" id="Mensaje" name="Mensaje" cols="40" rows="5" placeholder="Escribe tu mensaje aquí..." required></textarea>
                             </div>
 
-                            <!-- Imagen -->
-                            <label class="form-label" for="Imagen">Imagen</label>
-                            <div class="input-group mb-3">
-                                <span class="input-group-text"><i class="bi bi-image"></i></span>
-                                <input type="file" class="form-control" id="Imagen" name="Imagen" accept="image/*">
-                            </div>
-
+                        
                             <!-- Botón de envío -->
-                            <div class="text-center">
+                            <div class="text-right-btn">
                                 <button type="button" class="btn btn-primary" onclick="AgregarAviso()">Enviar</button>
                             </div>
                         </div>
@@ -55,7 +41,6 @@ async function AgregarAviso() {
         // Obtener datos del formulario
         const usuario = document.getElementById("Usuario").value;
         const mensaje = document.getElementById("Mensaje").value;
-        const imagen = document.getElementById("Imagen").files[0]; // Obtener archivo de imagen
 
         // Validar si los campos obligatorios están vacíos
         if (!usuario || !mensaje) {
@@ -65,23 +50,14 @@ async function AgregarAviso() {
 
         let data;
 
-        // Si hay una imagen seleccionada, súbela y añade la URL al objeto de datos
-        if (imagen) {
-            const urlImagen = await subirImagen(imagen);
-            data = {
-                "mensaje": mensaje,
-                "imagen": urlImagen, // URL de la imagen
-                "estado": true,
-                "id_usuario": parseInt(usuario)
-            };
-        } else {
+
             // Si no hay imagen, crear el objeto sin la URL
             data = {
                 "mensaje": mensaje,
                 "estado": true,
                 "id_usuario": parseInt(usuario)
             };
-        }
+      
 
         // Realizar la petición POST
         const response = await fetch('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/aviso', {
@@ -161,3 +137,12 @@ function showLoading() {
 
 
 </script>
+
+<style>
+    textarea#Mensaje {
+    height: 300px !important;
+}
+.text-right-btn {
+    text-align: right;
+}
+</style>

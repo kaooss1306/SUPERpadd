@@ -34,7 +34,8 @@
                             <label class="form-label" for="Email">Email</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                                <input type="email" class="form-control" id="Email" name="Email" placeholder="Email" required>
+                                <input type="email" class="form-control email-input" id="Email" name="Email" placeholder="Email" required>
+                                <div class="custom-tooltip" id="Email-tooltip"></div>
                             </div>
                         </div>
 
@@ -90,6 +91,44 @@
 
 
 <script>
+
+
+document.addEventListener('DOMContentLoaded', function() { 
+    function showError(input, message) {
+        input.classList.add('is-invalid');
+        var tooltip = document.getElementById(input.id + '-tooltip');
+        tooltip.textContent = message;
+        tooltip.style.opacity = '1';
+        positionTooltip(input, tooltip);
+    }
+
+    function hideError(input) {
+        input.classList.remove('is-invalid');
+        var tooltip = document.getElementById(input.id + '-tooltip');
+        tooltip.style.opacity = '0';
+    }
+    function positionTooltip(input, tooltip) {
+        var rect = input.getBoundingClientRect();
+        tooltip.style.left = '10px';
+        tooltip.style.top = -(tooltip.offsetHeight + 5) + 'px';
+    }
+    var emailInputs = document.querySelectorAll('.email-input');
+var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+emailInputs.forEach(function(emailInput) {
+    emailInput.addEventListener('input', function() {
+        if (this.value === "") {
+            hideError(this);
+        } else if (!emailPattern.test(this.value)) {
+            showError(this, "EMAIL INCORRECTO");
+        } else {
+            hideError(this);
+        }
+    });
+});
+});
+
+
    async function guardarUsuario(event) {
     event.preventDefault();
 

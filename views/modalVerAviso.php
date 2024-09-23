@@ -17,15 +17,6 @@
                                 <!-- Reemplazo del textarea por un div -->
                                 <div class="form-control" id="MensajeVer" name="MensajeVer" style="background-color: #f8f9fa; border: 1px solid #ced4da; min-height: 100px;"></div>
                             </div>
-                        <!-- Imagen -->
-                            <label class="form-label" for="Imagen">Imagen</label>
-                            <div class="input-group mb-3">
-                                <span class="input-group-text"><i class="bi bi-image"></i></span>
-                                <!-- Imagen mostrada -->
-                                <img id="ImagenVerPreview" src="" alt="Imagen del aviso" class="img-fluid" style="display: none; max-height: 300px;" />
-                                <!-- Mensaje si no hay imagen -->
-                                <p id="sinImagenTexto" style="display: none;">No hay imagen disponible</p>
-                            </div>
                         </div>
                     </div>
                 </form>

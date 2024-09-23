@@ -58,7 +58,7 @@ function cargarDatosFormulario(id) {
         });
 }
 
-async function actualizarCompania() {
+function actualizarCompania() {
     const form = document.getElementById('formularioUpdateCampania');
     const formData = new FormData(form);
 
@@ -69,26 +69,32 @@ async function actualizarCompania() {
     const Id_AgenciaUpdate = formData.get('Id_AgenciaUpdate');
     const id_ProductoUpdate = formData.get('id_ProductoUpdate');
     const PresupuestoUpdate = formData.get('PresupuestoUpdate');
+
     const Id_Planes_Publicidad = formData.get('Planes_PublicidadUpdate');
 
     console.log('ID de la campaña: ' + Id_Planes_Publicidad);
 
     // Crear un objeto con los datos del formulario
+    const data = {};
+
+    // Mapeo de campos con "Update" al formato requerido
     const mapping = {
         "NombreCampania": NombreCampaniaUpdate,
-        "Anio": parseInt(AnioUpdate, 10),
-        "id_Cliente": parseInt(id_ClienteUpdate, 10),
-        "Id_Agencia": parseInt(Id_AgenciaUpdate, 10),
-        "id_Producto": parseInt(id_ProductoUpdate, 10),
-        "Presupuesto": parseFloat(PresupuestoUpdate),
-        "Id_Planes_Publicidad": Id_Planes_Publicidad !== null ? parseInt(Id_Planes_Publicidad, 10) : null
+        "Anio": parseInt(AnioUpdate),
+        "id_Cliente": parseInt(id_ClienteUpdate),
+        "Id_Agencia": parseInt(Id_AgenciaUpdate),
+        "id_Producto": parseInt(id_ProductoUpdate),
+        "Presupuesto": parseInt(PresupuestoUpdate),
+        "Id_Planes_Publicidad": parseInt(Id_Planes_Publicidad),
     };
+    
+   
 
-    // Construir la URL con el ID de la campaña
+    // Construir el path con el ID de la campaña
     const url = `https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Campania?id_campania=eq.${campaniaId}`;
 
-    try {
 
+  
     // Realizar la solicitud PUT o PATCH para actualizar la campaña
     fetch(url, {
         method: 'PATCH', // o 'PUT' dependiendo de tu API
@@ -133,56 +139,6 @@ async function mostrarExito(mensaje) {
     });
 }
    
-function showLoading() {
-    let loadingElement = document.getElementById('custom-loading');
-    if (!loadingElement) {
-        loadingElement = document.createElement('div');
-        loadingElement.id = 'custom-loading';
-        loadingElement.innerHTML = `
-            <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); display: flex; justify-content: center; align-items: center; z-index: 9999;">
-                <img src="/assets/img/loading.gif" alt="Cargando..." style="width: 220px; height: 135px;">
-            </div>
-        `;
-        document.body.appendChild(loadingElement);
-    }
-
-        if (response.ok) {
-            $('#modalUpdateCampania').modal('hide');
-
-            // Mostrar el mensaje de éxito usando SweetAlert con await
-            await Swal.fire({
-                title: '¡Éxito!',
-                text: 'Campaña actualizada correctamente',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            });
-
-            showLoading();  // Muestra el efecto de carga
-
-            // Recargar la página
-            location.reload();
-        } else {
-            // Manejar el error de respuesta
-            const errorData = await response.json();
-            await Swal.fire({
-                title: 'Error!',
-                text: 'Hubo un error al actualizar los datos: ' + errorData.message,
-                icon: 'error',
-                showConfirmButton: false,
-                timer: 1500
-            });
-        }
-    } catch (error) {
-        // Manejar el error en la solicitud
-        await Swal.fire({
-            title: 'Error!',
-            text: `Error en la solicitud: ${error.message}`,
-            icon: 'error',
-            confirmButtonText: 'OK'
-        });
-    }
-
-}
 function showLoading() {
     let loadingElement = document.getElementById('custom-loading');
     if (!loadingElement) {

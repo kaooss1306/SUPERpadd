@@ -14,6 +14,10 @@
   <script src="<?php echo $ruta; ?>assets/js/page/index.js"></script>
   <!-- Template JS File -->
   <script src="<?php echo $ruta; ?>assets/js/scripts.js"></script>
+
+  <script src="<?php echo $ruta; ?>assets/bundles/ckeditor/ckeditor.js"></script>
+  <!-- Page Specific JS File -->
+  <script src="<?php echo $ruta; ?>assets/js/page/ckeditor.js"></script>
   <!-- Custom JS File -->
   <script src="<?php echo $ruta; ?>assets/js/custom.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>

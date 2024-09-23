@@ -83,6 +83,9 @@ include 'componentes/sidebar.php';
 </div>
 
 <script>
+ // Validación en tiempo real para Email
+
+
 async function cargarUsuario(id) {
 
 // Hacemos una solicitud al backend para obtener los datos del usuario por su ID
