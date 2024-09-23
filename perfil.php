@@ -3,389 +3,268 @@
 session_start();
 include 'componentes/header.php';
 include 'componentes/sidebar.php';
-
-
 ?>
+
 <div id="app">
-
     <div class="main-wrapper main-wrapper-1">
+        <!-- Main Content -->
+        <div class="main-content">
+            <section class="section">
+                <div class="section-body">
+                    <div class="row mt-sm-4">
+                        <div class="col-12 col-md-12 col-lg-4">
+                            <div class="card author-box">
+                                <div class="card-body">
+                                    <div class="author-box-center">
+                                        <img  id="imagen-perfil" class="rounded-circle author-box-picture">
+                                        <div class="clearfix"></div>
+                                        <div class="author-box-name">
+                                            <a href="#" id="nombre_completo"></a>
+                                        </div>
+                                        <div class="author-box-job">Web Developer</div>
+                                        <p class="text-muted" id="correo"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-8">
+                            <div class="card">
+                                <div class="padding-20">
+                                    <ul class="nav nav-tabs" id="myTab2" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="home-tab2" data-bs-toggle="tab" href="#clave" role="tab" aria-selected="true">Cambiar Contraseña</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="home-tab2" data-bs-toggle="tab" href="#foto" role="tab" aria-selected="false">Actualizar foto de Perfil</a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content tab-bordered" id="myTab3Content">
+                                        <div class="tab-pane fade show active" id="clave" role="tabpanel" aria-labelledby="home-tab2">
+                                            <form id="change-password-form">
+                                                <div class="form-group">
+                                                    <label for="current-password">Contraseña Actual</label>
+                                                    <div class="input-group">
+                                                        <input type="password" id="current-password" class="form-control" readonly required>
+                                                        <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('current-password')">👁️</button>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="new-password">Nueva Contraseña</label>
+                                                    <div class="input-group">
+                                                        <input type="password" id="new-password" class="form-control" required>
+                                                        <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('new-password')">👁️</button>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="confirm-password">Confirmar Nueva Contraseña</label>
+                                                    <div class="input-group">
+                                                        <input type="password" id="confirm-password" class="form-control" required>
+                                                        <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('confirm-password')">👁️</button>
+                                                    </div>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">Cambiar Contraseña</button>
+                                            </form>
+                                        </div>
+                                        <div class="tab-pane fade" id="foto" role="tabpanel" aria-labelledby="home-tab2">
+                                        <form id="upload-avatar-form" enctype="multipart/form-data">
+                                            <div class="form-group">
+                                                <input type="file" id="imagen-input" accept="image/*" class="form-control" required>
+                                            </div>
+                                                 <!-- Imagen mostrada -->
+                                <img id="ImagenVerPreview" src="" alt="Imagen del aviso" class="img-fluid" style="display: none; max-height: 300px;" />
+                                            <button type="submit" class="btn btn-primary">Actualizar Foto</button>
+                                        </form>
 
-      <!-- Main Content -->
-      <div class="main-content">
-        <section class="section">
-          <div class="section-body">
-            <div class="row mt-sm-4">
-              <div class="col-12 col-md-12 col-lg-4">
-                <div class="card author-box">
-                  <div class="card-body">
-                    <div class="author-box-center">
-                      <img alt="image" src="assets/img/users/user-1.png" class="rounded-circle author-box-picture">
-                      <div class="clearfix"></div>
-                      <div class="author-box-name">
-                        <a href="#">Sarah Smith</a>
-                      </div>
-                      <div class="author-box-job">Web Developer</div>
-                    </div>
-                    <div class="text-center">
-                      <div class="author-box-description">
-                        <p>
-                          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur voluptatum alias molestias
-                          minus quod dignissimos.
-                        </p>
-                      </div>
-                      <div class="mb-2 mt-3">
-                        <div class="text-small fw-bold">Follow Hasan On</div>
-                      </div>
-                      <a href="#" class="btn btn-social-icon mr-1 btn-facebook">
-                        <i class="fab fa-facebook-f"></i>
-                      </a>
-                      <a href="#" class="btn btn-social-icon mr-1 btn-twitter">
-                        <i class="fab fa-twitter"></i>
-                      </a>
-                      <a href="#" class="btn btn-social-icon mr-1 btn-github">
-                        <i class="fab fa-github"></i>
-                      </a>
-                      <a href="#" class="btn btn-social-icon mr-1 btn-instagram">
-                        <i class="fab fa-instagram"></i>
-                      </a>
-                      <div class="w-100 d-sm-none"></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="card">
-                  <div class="card-header">
-                    <h4>Personal Details</h4>
-                  </div>
-                  <div class="card-body">
-                    <div class="py-4">
-                      <p class="clearfix">
-                        <span class="float-start">
-                          Birthday
-                        </span>
-                        <span class="float-right text-muted">
-                          30-05-1998
-                        </span>
-                      </p>
-                      <p class="clearfix">
-                        <span class="float-start">
-                          Phone
-                        </span>
-                        <span class="float-right text-muted">
-                          (0123)123456789
-                        </span>
-                      </p>
-                      <p class="clearfix">
-                        <span class="float-start">
-                          Mail
-                        </span>
-                        <span class="float-right text-muted">
-                          test@example.com
-                        </span>
-                      </p>
-                      <p class="clearfix">
-                        <span class="float-start">
-                          Facebook
-                        </span>
-                        <span class="float-right text-muted">
-                          <a href="#">John Deo</a>
-                        </span>
-                      </p>
-                      <p class="clearfix">
-                        <span class="float-start">
-                          Twitter
-                        </span>
-                        <span class="float-right text-muted">
-                          <a href="#">@johndeo</a>
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="card">
-                  <div class="card-header">
-                    <h4>Skills</h4>
-                  </div>
-                  <div class="card-body">
-                    <ul class="list-unstyled user-progress list-unstyled-border list-unstyled-noborder">
-                      <li class="media">
-                        <div class="media-body">
-                          <div class="media-title">Java</div>
-                        </div>
-                        <div class="media-progressbar p-t-10">
-                          <div class="progress" data-height="6">
-                            <div class="progress-bar bg-primary" data-width="70%"></div>
-                          </div>
-                        </div>
-                      </li>
-                      <li class="media">
-                        <div class="media-body">
-                          <div class="media-title">Web Design</div>
-                        </div>
-                        <div class="media-progressbar p-t-10">
-                          <div class="progress" data-height="6">
-                            <div class="progress-bar bg-warning" data-width="80%"></div>
-                          </div>
-                        </div>
-                      </li>
-                      <li class="media">
-                        <div class="media-body">
-                          <div class="media-title">Photoshop</div>
-                        </div>
-                        <div class="media-progressbar p-t-10">
-                          <div class="progress" data-height="6">
-                            <div class="progress-bar bg-green" data-width="48%"></div>
-                          </div>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div class="col-12 col-md-12 col-lg-8">
-                <div class="card">
-                  <div class="padding-20">
-                    <ul class="nav nav-tabs" id="myTab2" role="tablist">
-                      <li class="nav-item">
-                        <a class="nav-link active" id="home-tab2" data-bs-toggle="tab" href="#about" role="tab"
-                          aria-selected="true">About</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" id="profile-tab2" data-bs-toggle="tab" href="#settings" role="tab"
-                          aria-selected="false">Setting</a>
-                      </li>
-                    </ul>
-                    <div class="tab-content tab-bordered" id="myTab3Content">
-                      <div class="tab-pane fade show active" id="about" role="tabpanel" aria-labelledby="home-tab2">
-                        <div class="row">
-                          <div class="col-md-3 col-6 b-r">
-                            <strong>Full Name</strong>
-                            <br>
-                            <p class="text-muted">Emily Smith</p>
-                          </div>
-                          <div class="col-md-3 col-6 b-r">
-                            <strong>Mobile</strong>
-                            <br>
-                            <p class="text-muted">(123) 456 7890</p>
-                          </div>
-                          <div class="col-md-3 col-6 b-r">
-                            <strong>Email</strong>
-                            <br>
-                            <p class="text-muted">johndeo@example.com</p>
-                          </div>
-                          <div class="col-md-3 col-6">
-                            <strong>Location</strong>
-                            <br>
-                            <p class="text-muted">India</p>
-                          </div>
-                        </div>
-                        <p class="m-t-30">Completed my graduation in Arts from the well known and
-                          renowned institution
-                          of India – SARDAR PATEL ARTS COLLEGE, BARODA in 2000-01, which was
-                          affiliated
-                          to M.S. University. I ranker in University exams from the same
-                          university
-                          from 1996-01.</p>
-                        <p>Worked as Professor and Head of the department at Sarda Collage, Rajkot,
-                          Gujarat
-                          from 2003-2015 </p>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting
-                          industry. Lorem
-                          Ipsum has been the industry's standard dummy text ever since the 1500s,
-                          when
-                          an unknown printer took a galley of type and scrambled it to make a
-                          type
-                          specimen book. It has survived not only five centuries, but also the
-                          leap
-                          into electronic typesetting, remaining essentially unchanged.</p>
-                        <div class="section-title">Education</div>
-                        <ul>
-                          <li>B.A.,Gujarat University, Ahmedabad,India.</li>
-                          <li>M.A.,Gujarat University, Ahmedabad, India.</li>
-                          <li>P.H.D., Shaurashtra University, Rajkot</li>
-                        </ul>
-                        <div class="section-title">Experience</div>
-                        <ul>
-                          <li>One year experience as Jr. Professor from April-2009 to march-2010
-                            at B.
-                            J. Arts College, Ahmedabad.</li>
-                          <li>Three year experience as Jr. Professor at V.S. Arts &amp; Commerse
-                            Collage
-                            from April - 2008 to April - 2011.</li>
-                          <li>Lorem Ipsum is simply dummy text of the printing and typesetting
-                            industry.
-                          </li>
-                          <li>Lorem Ipsum is simply dummy text of the printing and typesetting
-                            industry.
-                          </li>
-                          <li>Lorem Ipsum is simply dummy text of the printing and typesetting
-                            industry.
-                          </li>
-                          <li>Lorem Ipsum is simply dummy text of the printing and typesetting
-                            industry.
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="profile-tab2">
-                        <form method="post" class="needs-validation">
-                          <div class="card-header">
-                            <h4>Edit Profile</h4>
-                          </div>
-                          <div class="card-body">
-                            <div class="row">
-                              <div class="form-group col-md-6 col-12">
-                                <label>First Name</label>
-                                <input type="text" class="form-control" value="John">
-                                <div class="invalid-feedback">
-                                  Please fill in the first name
+                                        </div>
+                                    </div>
                                 </div>
-                              </div>
-                              <div class="form-group col-md-6 col-12">
-                                <label>Last Name</label>
-                                <input type="text" class="form-control" value="Deo">
-                                <div class="invalid-feedback">
-                                  Please fill in the last name
-                                </div>
-                              </div>
                             </div>
-                            <div class="row">
-                              <div class="form-group col-md-7 col-12">
-                                <label>Email</label>
-                                <input type="email" class="form-control" value="test@example.com">
-                                <div class="invalid-feedback">
-                                  Please fill in the email
-                                </div>
-                              </div>
-                              <div class="form-group col-md-5 col-12">
-                                <label>Phone</label>
-                                <input type="tel" class="form-control" value="">
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="form-group col-12">
-                                <label>Bio</label>
-                                <textarea
-                                  class="form-control summernote-simple">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur voluptatum alias molestias minus quod dignissimos.</textarea>
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="form-group mb-0 col-12">
-                                <div class="custom-control custom-checkbox">
-                                  <input type="checkbox" name="remember" class="custom-control-input" id="newsletter">
-                                  <label class="custom-control-label" for="newsletter">Subscribe to newsletter</label>
-                                  <div class="text-muted form-text">
-                                    You will get new information about products, offers and promotions
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="card-footer text-end">
-                            <button class="btn btn-primary">Save Changes</button>
-                          </div>
-                        </form>
-                      </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        <div class="settingSidebar">
-          <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
-          </a>
-          <div class="settingSidebar-body ps-container ps-theme-default">
-            <div class=" fade show active">
-              <div class="setting-panel-header">Setting Panel
-              </div>
-              <div class="p-15 border-bottom">
-                <h6 class="font-medium m-b-10">Select Layout</h6>
-                <div class="selectgroup layout-color w-50">
-                  <label class="selectgroup-item">
-                    <input type="radio" name="value" value="1" class="selectgroup-input-radio select-layout" checked>
-                    <span class="selectgroup-button">Light</span>
-                  </label>
-                  <label class="selectgroup-item">
-                    <input type="radio" name="value" value="2" class="selectgroup-input-radio select-layout">
-                    <span class="selectgroup-button">Dark</span>
-                  </label>
-                </div>
-              </div>
-              <div class="p-15 border-bottom">
-                <h6 class="font-medium m-b-10">Sidebar Color</h6>
-                <div class="selectgroup selectgroup-pills sidebar-color">
-                  <label class="selectgroup-item">
-                    <input type="radio" name="icon-input" value="1" class="selectgroup-input select-sidebar">
-                    <span class="selectgroup-button selectgroup-button-icon" data-bs-toggle="tooltip"
-                      data-original-title="Light Sidebar"><i class="fas fa-sun"></i></span>
-                  </label>
-                  <label class="selectgroup-item">
-                    <input type="radio" name="icon-input" value="2" class="selectgroup-input select-sidebar" checked>
-                    <span class="selectgroup-button selectgroup-button-icon" data-bs-toggle="tooltip"
-                      data-original-title="Dark Sidebar"><i class="fas fa-moon"></i></span>
-                  </label>
-                </div>
-              </div>
-              <div class="p-15 border-bottom">
-                <h6 class="font-medium m-b-10">Color Theme</h6>
-                <div class="theme-setting-options">
-                  <ul class="choose-theme list-unstyled mb-0">
-                    <li title="white" class="active">
-                      <div class="white"></div>
-                    </li>
-                    <li title="cyan">
-                      <div class="cyan"></div>
-                    </li>
-                    <li title="black">
-                      <div class="black"></div>
-                    </li>
-                    <li title="purple">
-                      <div class="purple"></div>
-                    </li>
-                    <li title="orange">
-                      <div class="orange"></div>
-                    </li>
-                    <li title="green">
-                      <div class="green"></div>
-                    </li>
-                    <li title="red">
-                      <div class="red"></div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="p-15 border-bottom">
-                <div class="theme-setting-options">
-                  <label class="m-b-0">
-                    <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input"
-                      id="mini_sidebar_setting">
-                    <span class="custom-switch-indicator"></span>
-                    <span class="control-label p-l-10">Mini Sidebar</span>
-                  </label>
-                </div>
-              </div>
-              <div class="p-15 border-bottom">
-                <div class="theme-setting-options">
-                  <label class="m-b-0">
-                    <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input"
-                      id="sticky_header_setting">
-                    <span class="custom-switch-indicator"></span>
-                    <span class="control-label p-l-10">Sticky Header</span>
-                  </label>
-                </div>
-              </div>
-              <div class="mt-4 mb-4 p-3 align-center rt-sidebar-last-ele">
-                <a href="#" class="btn btn-icon icon-left btn-primary btn-restore-theme">
-                  <i class="fas fa-undo"></i> Restore Default
-                </a>
-              </div>
-            </div>
-          </div>
+            </section>
         </div>
-      </div>
     </div>
-  </div>
+</div>
+
+<script>
+function togglePassword(inputId) {
+    const input = document.getElementById(inputId);
+    input.type = (input.type === 'password') ? 'text' : 'password';
+}
+
+// Función para cargar datos del usuario
+function cargarDatosUsuario() {
+    const id = "<?php echo $iduser; ?>";
+
+    fetch(`https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Usuarios?id_usuario=eq.${id}`, {
+        method: 'GET',
+        headers: {
+            "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
+            "Content-Type": "application/json"
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data && data.length > 0) {
+            const nombreCompleto = `${data[0].Nombres} ${data[0].Apellidos}`;
+            document.getElementById('nombre_completo').innerText = nombreCompleto;
+            document.getElementById('correo').innerText = data[0].Email;
+            document.getElementById('current-password').value = data[0].Password;
+            document.getElementById('imagen-perfil').src = data[0].Avatar;
+        } else {
+            console.error('No se encontraron datos del usuario');
+        }
+    })
+    .catch(error => console.error('Error al cargar datos del usuario:', error));
+}
+
+// Función para manejar el envío del formulario de cambio de contraseña
+function manejarCambioContrasena(event) {
+    event.preventDefault();
+    const id = "<?php echo $iduser; ?>";
+    const currentPassword = document.getElementById('current-password').value;
+    const newPassword = document.getElementById('new-password').value;
+    const confirmPassword = document.getElementById('confirm-password').value;
+
+    if (newPassword !== confirmPassword) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Las contraseñas no coinciden',
+        });
+        return;
+    }
+
+    fetch(`https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Usuarios?id_usuario=eq.${id}`, {
+        method: 'PATCH',
+        headers: {
+            "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ Password: newPassword })
+    })
+    .then(response => {
+        if (response.ok) {
+            Swal.fire({
+                icon: 'success',
+                title: '¡Éxito!',
+                text: 'Contraseña actualizada con éxito',
+            });
+            window.location.reload();
+        } else {
+            throw new Error('Error en la respuesta del servidor');
+        }
+    })
+    .catch(error => {
+        console.error('Error al actualizar la contraseña:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Hubo un problema al actualizar la contraseña',
+        });
+    });
+}
+
+// Función para subir imagen a store
+async function subirImagen(imagen) {
+    const nombreArchivo = `${Date.now()}_${imagen.name}`;
+    const formData = new FormData();
+    formData.append("file", imagen);
+    try {
+        const response = await fetch(`https://ekyjxzjwhxotpdfzcpfq.supabase.co/storage/v1/object/imagenes/${nombreArchivo}`, {
+            method: 'POST',
+            headers: {
+                "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
+
+            },
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error("Error al subir la imagen");
+            
+        }else{
+               // Mostrar la imagen previa
+               const imgPreview = document.getElementById('ImagenVerPreview');
+                imgPreview.src = URL.createObjectURL(imagen);
+                imgPreview.style.display = 'block';
+        }
+
+        return `https://ekyjxzjwhxotpdfzcpfq.supabase.co/storage/v1/object/public/imagenes/${nombreArchivo}`;
+    } catch (error) {
+        console.error('Error al subir la imagen:', error);
+        throw error;
+    }
+}
+
+// Función para actualizar el avatar
+async function actualizarAvatar(urlImagen, userId) {
+    try {
+        const response = await fetch(`https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Usuarios?id_usuario=eq.${userId}`, {
+            method: 'PATCH',
+            headers: {
+                "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
+                'Content-Type': 'application/json',
+                'Prefer': 'return=representation'
+            },
+            body: JSON.stringify({ Avatar: urlImagen })
+        });
+
+        if (!response.ok) {
+            throw new Error("Error al actualizar el avatar");
+        }
+    } catch (error) {
+        console.error('Error al actualizar el avatar:', error);
+        throw error;
+    }
+}
+
+// Función para cambiar la imagen del avatar
+async function cambiarImagen(event) {
+    event.preventDefault();
+    const imagenInput = document.getElementById('imagen-input');
+    const imagen = imagenInput.files[0];
+
+    const userId = "<?php echo $iduser; ?>";
+
+    if (imagen) {
+        try {
+            
+            const urlImagen = await subirImagen(imagen);
+            await actualizarAvatar(urlImagen, userId);
+            Swal.fire({
+                icon: 'success',
+                title: '¡Éxito!',
+                text: 'Imagen de perfil actualizada con éxito',
+            });
+            cargarDatosUsuario(); // Recargar datos de usuario para mostrar la nueva imagen
+        } catch (error) {
+            console.error('Error al cambiar la imagen:', error);
+        }
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Por favor selecciona una imagen',
+        });
+    }
+}
+
+// Inicializar eventos después de cargar el DOM
+document.addEventListener('DOMContentLoaded', function() {
+    cargarDatosUsuario();
+    document.getElementById('change-password-form').addEventListener('submit', manejarCambioContrasena);
+    document.getElementById('upload-avatar-form').addEventListener('submit', cambiarImagen);
+});
 
 
-  <?php include 'componentes/settings.php'; ?>
+
+</script>
+
+<?php include 'componentes/settings.php'; ?>
 <?php include 'componentes/footer.php'; ?>
