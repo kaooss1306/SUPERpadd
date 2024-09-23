@@ -14,7 +14,7 @@ $nombre_usuario = $_SESSION["user"]["Nombres"] ?? "Usuario";
 $avatar_usuario = $_SESSION["user"]["Avatar"] ?? "Usuario";
 $iduser = $_SESSION["user"]["id_usuario"] ?? "Usuario";
 
-$ruta = "https://fuzzy-space-fiesta-4v56pv9rpvg25rgw-3000.app.github.dev/";
+$ruta = "https://coral-app-6fvkz.ondigitalocean.app/";
 
 // Definir la ruta base para los avatares en Supabase
 $ruta_supabase =
