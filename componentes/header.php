@@ -2,7 +2,7 @@
 //session_start();
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
-include_once 'querys/qusuarios.php';
+include 'querys/qusuarios.php';
 
 
 // Verificar si el usuario ha iniciado sesión
