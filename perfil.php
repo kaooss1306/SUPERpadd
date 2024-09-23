@@ -16,7 +16,7 @@ include 'componentes/sidebar.php';
                             <div class="card author-box">
                                 <div class="card-body">
                                     <div class="author-box-center">
-                                        <img  id="imagen-perfil" class="rounded-circle author-box-picture">
+                                        <img id="imagen-perfil" class="rounded-circle author-box-picture">
                                         <div class="clearfix"></div>
                                         <div class="author-box-name">
                                             <a href="#" id="nombre_completo"></a>
@@ -66,15 +66,22 @@ include 'componentes/sidebar.php';
                                             </form>
                                         </div>
                                         <div class="tab-pane fade" id="foto" role="tabpanel" aria-labelledby="home-tab2">
-                                        <form id="upload-avatar-form" enctype="multipart/form-data">
-                                            <div class="form-group">
-                                                <input type="file" id="imagen-input" accept="image/*" class="form-control" required>
-                                            </div>
-                                                 <!-- Imagen mostrada -->
-                                <img id="ImagenVerPreview" src="" alt="Imagen del aviso" class="img-fluid" style="display: none; max-height: 300px;" />
-                                            <button type="submit" class="btn btn-primary">Actualizar Foto</button>
-                                        </form>
-
+                                            <form id="upload-avatar-form" enctype="multipart/form-data">
+                                                <div class="form-group">
+                                                    <input type="file" id="imagen-input" accept="image/*" class="form-control" required>
+                                                </div>
+                                                <!-- Avatar actual -->
+                                                <div class="text-center mb-3">
+                                                    <img id="avatar-actual" src="" alt="Avatar actual" class="img-fluid " style="height: 30%; width:30%;" />
+                                                
+                                                </div>
+                                                <!-- Imagen mostrada -->
+                                                <div class="text-center mb-3" id="preview-container" style="display: none;">
+                                                    <img id="ImagenVerPreview" src="" alt="Nueva imagen del avatar" class="img-fluid" style="height: 30%; width:30%;" />
+                                                
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">Actualizar Foto</button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -108,11 +115,12 @@ function cargarDatosUsuario() {
     .then(response => response.json())
     .then(data => {
         if (data && data.length > 0) {
-            const nombreCompleto = `${data[0].Nombres} ${data[0].Apellidos}`;
+            const nombreCompleto = data[0].Nombres +" "+data[0].Apellidos;
             document.getElementById('nombre_completo').innerText = nombreCompleto;
             document.getElementById('correo').innerText = data[0].Email;
             document.getElementById('current-password').value = data[0].Password;
             document.getElementById('imagen-perfil').src = data[0].Avatar;
+            document.getElementById('avatar-actual').src = data[0].Avatar;
         } else {
             console.error('No se encontraron datos del usuario');
         }
@@ -178,20 +186,13 @@ async function subirImagen(imagen) {
             method: 'POST',
             headers: {
                 "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
-
+                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
             },
             body: formData
         });
 
         if (!response.ok) {
             throw new Error("Error al subir la imagen");
-            
-        }else{
-               // Mostrar la imagen previa
-               const imgPreview = document.getElementById('ImagenVerPreview');
-                imgPreview.src = URL.createObjectURL(imagen);
-                imgPreview.style.display = 'block';
         }
 
         return `https://ekyjxzjwhxotpdfzcpfq.supabase.co/storage/v1/object/public/imagenes/${nombreArchivo}`;
@@ -208,7 +209,7 @@ async function actualizarAvatar(urlImagen, userId) {
             method: 'PATCH',
             headers: {
                 "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
+                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
                 'Content-Type': 'application/json',
                 'Prefer': 'return=representation'
             },
@@ -234,7 +235,6 @@ async function cambiarImagen(event) {
 
     if (imagen) {
         try {
-            
             const urlImagen = await subirImagen(imagen);
             await actualizarAvatar(urlImagen, userId);
             Swal.fire({
@@ -243,8 +243,15 @@ async function cambiarImagen(event) {
                 text: 'Imagen de perfil actualizada con éxito',
             });
             cargarDatosUsuario(); // Recargar datos de usuario para mostrar la nueva imagen
+            showLoading();
+            window.location.reload();
         } catch (error) {
             console.error('Error al cambiar la imagen:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Hubo un problema al actualizar la imagen de perfil',
+            });
         }
     } else {
         Swal.fire({
@@ -255,15 +262,40 @@ async function cambiarImagen(event) {
     }
 }
 
+// Función para mostrar la vista previa de la imagen seleccionada
+function mostrarVistaPrevia(event) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const imgPreview = document.getElementById('ImagenVerPreview');
+        imgPreview.src = e.target.result;
+        document.getElementById('preview-container').style.display = 'block';
+        document.getElementById('avatar-actual').style.display = 'none';
+       
+    }
+    reader.readAsDataURL(event.target.files[0]);
+}
+
+function showLoading() {
+    let loadingElement = document.getElementById('custom-loading');
+    if (!loadingElement) {
+        loadingElement = document.createElement('div');
+        loadingElement.id = 'custom-loading';
+        loadingElement.innerHTML = `
+            <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); display: flex; justify-content: center; align-items: center; z-index: 9999;">
+                <img src="/assets/img/loading.gif" alt="Cargando..." style="width: 220px; height: 135px;">
+            </div>
+        `;
+        document.body.appendChild(loadingElement);
+    }
+    loadingElement.style.display = 'block';
+}
 // Inicializar eventos después de cargar el DOM
 document.addEventListener('DOMContentLoaded', function() {
     cargarDatosUsuario();
     document.getElementById('change-password-form').addEventListener('submit', manejarCambioContrasena);
     document.getElementById('upload-avatar-form').addEventListener('submit', cambiarImagen);
+    document.getElementById('imagen-input').addEventListener('change', mostrarVistaPrevia);
 });
-
-
-
 </script>
 
 <?php include 'componentes/settings.php'; ?>

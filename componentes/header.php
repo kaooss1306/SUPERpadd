@@ -2,6 +2,8 @@
 //session_start();
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
+include_once 'querys/qusuarios.php';
+
 
 // Verificar si el usuario ha iniciado sesión
 if (!isset($_SESSION["user"]) || empty($_SESSION["user"])) {
@@ -20,18 +22,24 @@ $ruta_supabase =
 
 $avatar_defecto = $ruta . "assets/img/avatar.png";
 
+$usuario = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Usuarios?select=*,Avatar&id_usuario=eq.' . $iduser);
+$url_imagen_p = $usuario[0]['Avatar'];
+
+
 // Construir la ruta completa del avatar
-if (!empty($avatar_usuario)) {
+if (!empty($url_imagen_p)) {
     // Verificar si el avatar_usuario ya contiene la URL completa
-    if (strpos($avatar_usuario, "https://") === 0) {
-        $avatar_completo = $avatar_usuario;
+    if (strpos($url_imagen_p, "https://") === 0) {
+        $avatar_completo = $url_imagen_p;
     } else {
-        $avatar_completo = $ruta_supabase . $avatar_usuario;
+        $avatar_completo = $url_imagen_p;
     }
 } else {
     $avatar_completo = $avatar_defecto;
 }
 ?>
+
+ 
 <!DOCTYPE html>
 <html lang="es">
 

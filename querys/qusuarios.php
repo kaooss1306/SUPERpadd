@@ -25,6 +25,7 @@ $usuario = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Usuario
 
 $perfiles = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Perfiles?select=*');
 
+$avatarPerfil = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Usuarios?select=*');
 
 $perfilesMap = [];
 foreach ($perfiles as $perfil) {
