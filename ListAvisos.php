@@ -43,7 +43,13 @@ include 'componentes/sidebar.php';
                                         <?php foreach ($aviso as $avisos): ?>
                                             <tr>
                                                 <td><?php echo $avisos['id']; ?></td>
-                                                <td> <?php echo $avisos['created_at']; ?></td>
+                                                <td>
+    <?php
+    setlocale(LC_TIME, 'es_ES.UTF-8');
+    $fecha = new DateTime($avisos['created_at']);
+    echo strftime('%d de %B de %Y a las %H:%M', $fecha->getTimestamp());
+    ?>
+</td>
                                                 <td><?php echo $avisos['mensaje']; ?></td>
                                                 <td><?php echo $usuarioMap[$avisos['id_usuario']]['Nombres'] ?? ''; ?></td>
                                                 <td> <a class="btn btn-primary micono" data-bs-toggle="modal" data-bs-target="#modalVerAviso"
