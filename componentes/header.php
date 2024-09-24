@@ -37,7 +37,7 @@ async function obtenerUsuario() {
         });
 
     let url_imagen_p = usuarios.length > 0 ? usuarios[0].Avatar : null;
-    const avatar_defecto = "default-avatar.png";  // Ruta al avatar por defecto
+    const avatar_defecto = "https://coral-app-6fvkz.ondigitalocean.app/assets/img/avatar.png";  // Ruta al avatar por defecto
 
     // Asignar el avatar o el avatar por defecto si no está disponible
     const avatar_completo = url_imagen_p ? url_imagen_p : avatar_defecto;
