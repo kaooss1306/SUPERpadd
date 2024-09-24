@@ -119,8 +119,13 @@ function cargarDatosUsuario() {
             document.getElementById('nombre_completo').innerText = nombreCompleto;
             document.getElementById('correo').innerText = data[0].Email;
             document.getElementById('current-password').value = data[0].Password;
-            document.getElementById('imagen-perfil').src = data[0].Avatar;
-            document.getElementById('avatar-actual').src = data[0].Avatar;
+            if (data[0].Avatar) {
+                document.getElementById('imagen-perfil').src = data[0].Avatar;
+                document.getElementById('avatar-actual').src = data[0].Avatar;
+            } else {
+                document.getElementById('imagen-perfil').src = "https://coral-app-6fvkz.ondigitalocean.app/assets/img/avatar.png";
+                document.getElementById('avatar-actual').src =  "https://coral-app-6fvkz.ondigitalocean.app/assets/img/avatar.png";
+            }
         } else {
             console.error('No se encontraron datos del usuario');
         }
