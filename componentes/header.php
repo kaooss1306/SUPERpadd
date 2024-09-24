@@ -13,7 +13,7 @@ $nombre_usuario = $_SESSION["user"]["Nombres"] ?? "Usuario";
 $avatar_usuario = $_SESSION["user"]["Avatar"] ?? "Usuario";
 $iduser = $_SESSION["user"]["id_usuario"] ?? "Usuario";
 
-$ruta = "https://fuzzy-zebra-w5pxq5j4w7vfj6p-3000.app.github.dev/";
+$ruta = "https://coral-app-6fvkz.ondigitalocean.app/";
 
 
 ?>
