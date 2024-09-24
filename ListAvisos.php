@@ -45,9 +45,16 @@ include 'componentes/sidebar.php';
                                                 <td><?php echo $avisos['id']; ?></td>
                                                 <td>
     <?php
-    setlocale(LC_TIME, 'es_ES.UTF-8');
     $fecha = new DateTime($avisos['created_at']);
-    echo strftime('%d de %B de %Y a las %H:%M', $fecha->getTimestamp());
+    $formatoFecha = new IntlDateFormatter(
+        'es_ES',
+        IntlDateFormatter::LONG,
+        IntlDateFormatter::SHORT,
+        'Europe/Madrid',
+        IntlDateFormatter::GREGORIAN,
+        "d 'de' MMMM 'de' y 'a las' HH:mm"
+    );
+    echo $formatoFecha->format($fecha);
     ?>
 </td>
                                                 <td><?php echo $avisos['mensaje']; ?></td>
