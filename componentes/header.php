@@ -13,7 +13,7 @@ $nombre_usuario = $_SESSION["user"]["Nombres"] ?? "Usuario";
 $avatar_usuario = $_SESSION["user"]["Avatar"] ?? "Usuario";
 $iduser = $_SESSION["user"]["id_usuario"] ?? "Usuario";
 
-$ruta = "https://coral-app-6fvkz.ondigitalocean.app/";
+$ruta = "https://fuzzy-zebra-w5pxq5j4w7vfj6p-3000.app.github.dev/";
 
 
 ?>
@@ -21,7 +21,7 @@ $ruta = "https://coral-app-6fvkz.ondigitalocean.app/";
 <script>
 async function obtenerUsuario() {
     const id = "<?php echo $iduser; ?>";  // Cargar el id del usuario desde PHP
-    const url = https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Usuarios?id_usuario=eq.${id};
+    const url = `https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Usuarios?id_usuario=eq.${id}`;
     
     const headers = {
         "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
@@ -116,7 +116,7 @@ obtenerUsuario().then(avatar => {
               <img id="avatarImagen" src="default-avatar.png" alt="Avatar" /></a>
             <div class="dropdown-menu dropdown-menu-right pullDown">
 
-              <a href="perfil.php" class="dropdown-item has-icon"> <i class="fa-solid fa-user-tag"></i> Mi Perfíl
+              <a href="profile.html" class="dropdown-item has-icon"> <i class="fa-solid fa-user-tag"></i> Mi Perfíl
               </a><a href="" class="dropdown-item has-icon"> <i class="fas fa-copy"></i>
                 Publicar Mensajes
               </a>
