@@ -116,7 +116,7 @@ obtenerUsuario().then(avatar => {
               <img id="avatarImagen" src="default-avatar.png" alt="Avatar" /></a>
             <div class="dropdown-menu dropdown-menu-right pullDown">
 
-              <a href="profile.html" class="dropdown-item has-icon"> <i class="fa-solid fa-user-tag"></i> Mi Perfíl
+              <a href="<?php echo $ruta; ?>perfil.php" class="dropdown-item has-icon"> <i class="fa-solid fa-user-tag"></i> Mi Perfíl
               </a><a href="" class="dropdown-item has-icon"> <i class="fas fa-copy"></i>
                 Publicar Mensajes
               </a>
