@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="VerAviso">Ver Aviso</h5>
+                <h5 class="modal-title" id="VerAviso">MENSAJE</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -11,7 +11,7 @@
                         <!-- Columna única -->
                         <div class="col-md-12 mb-3">
                          <!-- Mensaje -->
-                            <label class="form-label" for="MensajeVer">Mensaje</label>
+                            <label class="form-label" for="MensajeVer">Contenido</label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text"><i class="bi bi-chat-dots"></i></span>
                                 <!-- Reemplazo del textarea por un div -->
