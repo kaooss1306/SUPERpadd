@@ -21,7 +21,7 @@ include 'componentes/sidebar.php';
                                         <div class="author-box-name">
                                             <a href="#" id="nombre_completo"></a>
                                         </div>
-                                        <div class="author-box-job">Web Developer</div>
+                                      
                                         <p class="text-muted" id="correo"></p>
                                     </div>
                                 </div>
