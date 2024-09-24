@@ -2,6 +2,7 @@
 //session_start();
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
+include_once 'querys/qusuarios.php';
 
 
 // Verificar si el usuario ha iniciado sesión
@@ -15,45 +16,29 @@ $iduser = $_SESSION["user"]["id_usuario"] ?? "Usuario";
 
 $ruta = "https://coral-app-6fvkz.ondigitalocean.app/";
 
+// Definir la ruta base para los avatares en Supabase
+$ruta_supabase =
+    "https://ekyjxzjwhxotpdfzcpfq.supabase.co/storage/v1/imagenes/";
 
+$avatar_defecto = $ruta . "assets/img/avatar.png";
+
+$usuario = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Usuarios?select=*,Avatar&id_usuario=eq.' . $iduser);
+$url_imagen_p = $usuario[0]['Avatar'];
+
+
+// Construir la ruta completa del avatar
+if (!empty($url_imagen_p)) {
+    // Verificar si el avatar_usuario ya contiene la URL completa
+    if (strpos($url_imagen_p, "https://") === 0) {
+        $avatar_completo = $url_imagen_p;
+    } else {
+        $avatar_completo = $url_imagen_p;
+    }
+} else {
+    $avatar_completo = $avatar_defecto;
+}
 ?>
 
-<script>
-async function obtenerUsuario() {
-    const id = "<?php echo $iduser; ?>";  // Cargar el id del usuario desde PHP
-    const url = https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Usuarios?id_usuario=eq.${id};
-    
-    const headers = {
-        "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
-        "Content-Type": "application/json"
-    };
-
-    const usuarios = await fetch(url, { headers })
-        .then(response => response.json())
-        .catch(error => {
-            console.error('Error:', error);
-            return [];
-        });
-
-    let url_imagen_p = usuarios.length > 0 ? usuarios[0].Avatar : null;
-    const avatar_defecto = "default-avatar.png";  // Ruta al avatar por defecto
-
-    // Asignar el avatar o el avatar por defecto si no está disponible
-    const avatar_completo = url_imagen_p ? url_imagen_p : avatar_defecto;
-
-    // Actualizar la imagen en el campo <img> en el DOM
-    document.getElementById('avatarImagen').src = avatar_completo;
-
-    return avatar_completo;
-}
-
-// Ejemplo de uso
-obtenerUsuario().then(avatar => {
-    console.log('Avatar completo:', avatar);
-});
-
-</script>
  
 <!DOCTYPE html>
 <html lang="es">
@@ -113,7 +98,10 @@ obtenerUsuario().then(avatar => {
    Bienvenid@ - <?php echo htmlspecialchars($nombre_usuario); ?>
           <li class="dropdown"><a href="#" data-bs-toggle="dropdown"
               class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-              <img id="avatarImagen" src="default-avatar.png" alt="Avatar" /></a>
+                  <img alt="image" src="<?php echo htmlspecialchars(
+                      $avatar_completo
+                  ); ?>"
+                class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
             <div class="dropdown-menu dropdown-menu-right pullDown">
 
               <a href="profile.html" class="dropdown-item has-icon"> <i class="fa-solid fa-user-tag"></i> Mi Perfíl
