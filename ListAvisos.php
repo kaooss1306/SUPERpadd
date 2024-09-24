@@ -43,18 +43,12 @@ include 'componentes/sidebar.php';
                                         <?php foreach ($aviso as $avisos): ?>
                                             <tr>
                                                 <td><?php echo $avisos['id']; ?></td>
-                                                <td>
+                                               <td>
     <?php
     $fecha = new DateTime($avisos['created_at']);
-    $formatoFecha = new IntlDateFormatter(
-        'es_ES',
-        IntlDateFormatter::LONG,
-        IntlDateFormatter::SHORT,
-        'Europe/Madrid',
-        IntlDateFormatter::GREGORIAN,
-        "d 'de' MMMM 'de' y 'a las' HH:mm"
-    );
-    echo $formatoFecha->format($fecha);
+    $meses = array("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre");
+    $formatoFecha = $fecha->format('d') . ' de ' . $meses[$fecha->format('n') - 1] . ' de ' . $fecha->format('Y') . ' a las ' . $fecha->format('H:i');
+    echo $formatoFecha;
     ?>
 </td>
                                                 <td><?php echo $avisos['mensaje']; ?></td>
