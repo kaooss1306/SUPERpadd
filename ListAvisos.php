@@ -22,10 +22,10 @@ include 'componentes/sidebar.php';
                     <div class="card">
                         <div class="card-header milinea">
                             <div class="titulox">
-                                <h4>Listado de aviso</h4>
+                                <h4>Listado de Mensajes</h4>
                             </div>
                             <div class="agregar"><a class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#modalAgregarAviso"><i class="fas fa-plus-circle"></i> Agregar Aviso</a></div>
+                                    data-bs-target="#modalAgregarAviso"><i class="fas fa-plus-circle"></i> Agregar Mensaje</a></div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -48,7 +48,7 @@ include 'componentes/sidebar.php';
                                                 <td><?php echo $usuarioMap[$avisos['id_usuario']]['Nombres'] ?? ''; ?></td>
                                                 <td> <a class="btn btn-primary micono" data-bs-toggle="modal" data-bs-target="#modalVerAviso"
                                                         onclick="cargarMensaje(<?php echo $avisos['id']; ?>);">
-                                                        <i class="fas fa-eye"></i> VER AVISO
+                                                        <i class="fas fa-eye"></i> Ver Mensaje
                                                     </a></td>
                                             </tr>
                                         <?php endforeach; ?>
