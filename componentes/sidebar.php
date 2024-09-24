@@ -41,7 +41,7 @@
             <li class="dropdown">
               <a href="#" class="menu-toggle nav-link has-dropdown fondo"><i data-feather="copy"></i><span>Informaciones</span></a>
               <ul class="dropdown-menu">
-                <li><a class="nav-link" href="<?php echo $ruta; ?>ListAvisos.php">Avisos</a></li>
+                <li><a class="nav-link" href="<?php echo $ruta; ?>ListAvisos.php">Mensajes</a></li>
               </ul>
             </li>
             <li class="dropdown">
