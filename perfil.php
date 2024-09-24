@@ -72,7 +72,7 @@ include 'componentes/sidebar.php';
                                                 </div>
                                                 <!-- Avatar actual -->
                                                 <div class="text-center mb-3">
-                                                    <img id="avatar-actual" src="" alt="Avatar actual" class="img-fluid " style="height: 30%; width:30%;" />
+                                                    <img id="avatar-actual" src="" alt="Avatar actual" class="img-fluid " style="height: auto; width:auto;" />
                                                 
                                                 </div>
                                                 <!-- Imagen mostrada -->
